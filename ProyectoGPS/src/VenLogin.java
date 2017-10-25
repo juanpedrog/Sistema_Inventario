@@ -3,6 +3,8 @@ import java.awt.Color;
 import java.awt.event.KeyEvent;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
+import java.sql.Connection;
+import java.sql.DriverManager;
 
 /*
  * To change this license header, choose License Headers in Project Properties.
@@ -121,6 +123,19 @@ public class VenLogin extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    Connection conectar=null;//conectar es el estatus de la conexión con la base de datos.
+    //La función conectar es para hacer la conexión con la base de datos.
+    public Connection conexion(){
+        try{
+            Class.forName("com.mysql.jdbc.Driver");
+            conectar=DriverManager.getConnection("jdbc:mysql://localhost/Viaticos","root","residentec03");
+            txtusuario.setText("asdlkjfalkdjfas");
+        }catch(Exception e){
+            JOptionPane.showMessageDialog(this,e.getMessage());
+        }
+        return conectar;
+    }
+    
     public void validardatos(){
         String us=txtusuario.getText().trim();
         String pa=txtpassword.getText().trim();
