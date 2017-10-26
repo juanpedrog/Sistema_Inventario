@@ -25,6 +25,7 @@ public class VenLogin extends javax.swing.JFrame {
     int posx,posy;
     public VenLogin() {
         initComponents();
+        conexion();
         setLocationRelativeTo(null);
     }
 
@@ -128,10 +129,10 @@ public class VenLogin extends javax.swing.JFrame {
     public Connection conexion(){
         try{
             Class.forName("com.mysql.jdbc.Driver");
-            conectar=DriverManager.getConnection("jdbc:mysql://localhost/Viaticos","root","residentec03");
-            txtusuario.setText("asdlkjfalkdjfas");
+            conectar=DriverManager.getConnection("jdbc:mysql://localhost/viaticos","root","");
+            
         }catch(Exception e){
-            JOptionPane.showMessageDialog(this,e.getMessage());
+            JOptionPane.showMessageDialog(this,"Error en la conexión");
         }
         return conectar;
     }

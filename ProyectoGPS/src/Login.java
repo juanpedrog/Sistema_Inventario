@@ -21,6 +21,5 @@ public class Login {
         VenLogin vl=new VenLogin();
         AWTUtilities.setWindowOpaque(vl,false);
         vl.setVisible(true);
-        vl.conexion();
     }
 }
