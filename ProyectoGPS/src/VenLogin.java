@@ -5,6 +5,7 @@ import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.util.ArrayList;
 
 /*
  * To change this license header, choose License Headers in Project Properties.
@@ -25,7 +26,7 @@ public class VenLogin extends javax.swing.JFrame {
     int posx,posy;
     public VenLogin() {
         initComponents();
-        conexion();
+        ConexionBD.conexion();//Hace la conexión a la base de datos.
         setLocationRelativeTo(null);
     }
 
@@ -124,41 +125,28 @@ public class VenLogin extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    Connection conectar=null;//conectar es el estatus de la conexión con la base de datos.
-    //La función conectar es para hacer la conexión con la base de datos.
-    public Connection conexion(){
-        try{
-            Class.forName("com.mysql.jdbc.Driver");
-            conectar=DriverManager.getConnection("jdbc:mysql://localhost/viaticos","root","");
-            
-        }catch(Exception e){
-            JOptionPane.showMessageDialog(this,"Error en la conexión");
-        }
-        return conectar;
-    }
     
     public void validardatos(){
-        String us=txtusuario.getText().trim();
-        String pa=txtpassword.getText().trim();
+        String us=txtusuario.getText().trim();//Obtiene el nombre de usuario desde la interfaz
+        String pa=txtpassword.getText().trim();//Obtiene el password desde la interfaz
         jleusu.setText("");
         jlepass.setText("");
         
-        if(us.equals(usu) && pa.equals(pass)){
-            JOptionPane.showMessageDialog(this,"Usuario y Contraseña Correctos");
-        }
-        else if(!us.equals(usu)){
+        String query="SELECT usuario.usuario,usuario.password FROM usuario WHERE usuario.usuario='"+us+"' AND "
+                + "usuario.password='"+pa+"'";//Hace la consulta para verificar el usuario en la base de datos.
+        ArrayList<String>datos=ConexionBD.consultar(query);//Ejecuta el query para obtener los resultados de la base de datos.
+        
+        if(datos==null){
              //JOptionPane.showMessageDialog(this,"Usuario incorrecto");
              jleusu.setText("Usuario incorrecto");
              txtusuario.setText(" ");
              txtusuario.requestFocus();
+             jlepass.setText("Contraseña incorrecta");
+             txtpassword.setText("");
+                    }else{
+            JOptionPane.showMessageDialog(this, "Felicidades");
         }
-        
-            else if(!pa.equals(pass)){
-              //JOptionPane.showMessageDialog(this,"Contraseña incorrecta");
-              jlepass.setText("Contraseña incorrecta");
-              txtpassword.setText("");
-              txtpassword.requestFocus();
-                    }
+        System.out.print(query);
     }
     private void jlfondoMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jlfondoMousePressed
      posx=evt.getX();
@@ -186,6 +174,7 @@ public class VenLogin extends javax.swing.JFrame {
 
     private void jlaceptarMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jlaceptarMouseClicked
        validardatos();
+        
     }//GEN-LAST:event_jlaceptarMouseClicked
 
     private void txtpasswordKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtpasswordKeyPressed
