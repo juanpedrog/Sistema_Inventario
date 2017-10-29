@@ -1,11 +1,13 @@
 
 import java.awt.Color;
 import java.awt.event.KeyEvent;
+import java.sql.Connection;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.util.ArrayList;
 
 /*
  * To change this license header, choose License Headers in Project Properties.
@@ -18,15 +20,15 @@ import java.util.ArrayList;
  * @author usuario
  */
 public class VenLogin extends javax.swing.JFrame {
-    String usu="Guillermo";
-    String pass="1234";
+   Conexion cbd=new Conexion();
+    Connection cn=cbd.conexion();    
+
     /**
      * Creates new form VenLogin
      */
     int posx,posy;
     public VenLogin() {
         initComponents();
-        ConexionBD.conexion();//Hace la conexión a la base de datos.
         setLocationRelativeTo(null);
     }
 
@@ -125,29 +127,55 @@ public class VenLogin extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    public void Acceder(String usuario,String contraseña){
     
-    public void validardatos(){
-        String us=txtusuario.getText().trim();//Obtiene el nombre de usuario desde la interfaz
-        String pa=txtpassword.getText().trim();//Obtiene el password desde la interfaz
+        String roll="";
+        String mysql = "SELECT * FROM usuario WHERE Usuario = '"+usuario+"' AND Password = '"+contraseña+"'";
+        try{
+        java.sql.Statement stmt = cn.createStatement();
+        ResultSet rs = stmt.executeQuery(mysql);
+        while(rs.next()){  
+            roll=rs.getString("Rol_idRol");
+        }
+        if (roll.equals("1")){
+            VentanaAdmin va=new VentanaAdmin();
+            va.setVisible(true);
+            VentanaAdmin.jladmin.setText(usuario);
+            va.pack();
+            this.setVisible(false);
+        }
+        }catch (SQLException ex) {
+                        Logger.getLogger(VenLogin.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
+    /*public void validardatos(){
+        String us=txtusuario.getText().trim();
+        String pa=txtpassword.getText().trim();
         jleusu.setText("");
         jlepass.setText("");
         
-        String query="SELECT usuario.usuario,usuario.password FROM usuario WHERE usuario.usuario='"+us+"' AND "
-                + "usuario.password='"+pa+"'";//Hace la consulta para verificar el usuario en la base de datos.
-        ArrayList<String>datos=ConexionBD.consultar(query);//Ejecuta el query para obtener los resultados de la base de datos.
-        
-        if(datos==null){
+        if(us.equals(usu) && pa.equals(pass)){
+            JOptionPane.showMessageDialog(this,"Usuario y Contraseña Correctos");
+            VentanaAdmin va=new VentanaAdmin();
+            va.setVisible(true);
+            VentanaAdmin.jladmin.setText(usu);
+            this.setVisible(false);
+        }
+        else if(!us.equals(usu)){
              //JOptionPane.showMessageDialog(this,"Usuario incorrecto");
              jleusu.setText("Usuario incorrecto");
              txtusuario.setText(" ");
              txtusuario.requestFocus();
-             jlepass.setText("Contraseña incorrecta");
-             txtpassword.setText("");
-                    }else{
-            JOptionPane.showMessageDialog(this, "Felicidades");
         }
-        System.out.print(query);
-    }
+        
+            else if(!pa.equals(pass)){
+              //JOptionPane.showMessageDialog(this,"Contraseña incorrecta");
+              jlepass.setText("Contraseña incorrecta");
+              txtpassword.setText("");
+              txtpassword.requestFocus();
+                    }
+    }*/
     private void jlfondoMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jlfondoMousePressed
      posx=evt.getX();
      posy=evt.getY();
@@ -173,13 +201,18 @@ public class VenLogin extends javax.swing.JFrame {
     }//GEN-LAST:event_jlcancelarMouseClicked
 
     private void jlaceptarMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jlaceptarMouseClicked
-       validardatos();
-        
+       //validardatos();
+       String usu=txtusuario.getText();
+       String pas=txtpassword.getText();
+       Acceder(usu,pas);
     }//GEN-LAST:event_jlaceptarMouseClicked
 
     private void txtpasswordKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtpasswordKeyPressed
         if(evt.getKeyCode()==KeyEvent.VK_ENTER){
-            validardatos();
+            //validardatos();
+            String usu=txtusuario.getText();
+            String pas=txtpassword.getText();
+            Acceder(usu,pas);
         }
     }//GEN-LAST:event_txtpasswordKeyPressed
 
