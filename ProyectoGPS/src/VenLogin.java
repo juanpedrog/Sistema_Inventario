@@ -1,10 +1,13 @@
 
 import java.awt.Color;
 import java.awt.event.KeyEvent;
+import java.sql.Connection;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
-import java.sql.Connection;
-import java.sql.DriverManager;
 
 /*
  * To change this license header, choose License Headers in Project Properties.
@@ -17,8 +20,9 @@ import java.sql.DriverManager;
  * @author usuario
  */
 public class VenLogin extends javax.swing.JFrame {
-    String usu="Guillermo";
-    String pass="1234";
+   Conexion cbd=new Conexion();
+    Connection cn=cbd.conexion();    
+
     /**
      * Creates new form VenLogin
      */
@@ -123,20 +127,29 @@ public class VenLogin extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    Connection conectar=null;//conectar es el estatus de la conexión con la base de datos.
-    //La función conectar es para hacer la conexión con la base de datos.
-    public Connection conexion(){
-        try{
-            Class.forName("com.mysql.jdbc.Driver");
-            conectar=DriverManager.getConnection("jdbc:mysql://localhost/Viaticos","root","residentec03");
-            txtusuario.setText("asdlkjfalkdjfas");
-        }catch(Exception e){
-            JOptionPane.showMessageDialog(this,e.getMessage());
-        }
-        return conectar;
-    }
+    public void Acceder(String usuario,String contraseña){
     
-    public void validardatos(){
+        String roll="";
+        String mysql = "SELECT * FROM usuario WHERE Usuario = '"+usuario+"' AND Password = '"+contraseña+"'";
+        try{
+        java.sql.Statement stmt = cn.createStatement();
+        ResultSet rs = stmt.executeQuery(mysql);
+        while(rs.next()){  
+            roll=rs.getString("Rol_idRol");
+        }
+        if (roll.equals("1")){
+            VentanaAdmin va=new VentanaAdmin();
+            va.setVisible(true);
+            VentanaAdmin.jladmin.setText(usuario);
+            va.pack();
+            this.setVisible(false);
+        }
+        }catch (SQLException ex) {
+                        Logger.getLogger(VenLogin.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
+    /*public void validardatos(){
         String us=txtusuario.getText().trim();
         String pa=txtpassword.getText().trim();
         jleusu.setText("");
@@ -144,6 +157,10 @@ public class VenLogin extends javax.swing.JFrame {
         
         if(us.equals(usu) && pa.equals(pass)){
             JOptionPane.showMessageDialog(this,"Usuario y Contraseña Correctos");
+            VentanaAdmin va=new VentanaAdmin();
+            va.setVisible(true);
+            VentanaAdmin.jladmin.setText(usu);
+            this.setVisible(false);
         }
         else if(!us.equals(usu)){
              //JOptionPane.showMessageDialog(this,"Usuario incorrecto");
@@ -158,7 +175,7 @@ public class VenLogin extends javax.swing.JFrame {
               txtpassword.setText("");
               txtpassword.requestFocus();
                     }
-    }
+    }*/
     private void jlfondoMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jlfondoMousePressed
      posx=evt.getX();
      posy=evt.getY();
@@ -184,12 +201,18 @@ public class VenLogin extends javax.swing.JFrame {
     }//GEN-LAST:event_jlcancelarMouseClicked
 
     private void jlaceptarMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jlaceptarMouseClicked
-       validardatos();
+       //validardatos();
+       String usu=txtusuario.getText();
+       String pas=txtpassword.getText();
+       Acceder(usu,pas);
     }//GEN-LAST:event_jlaceptarMouseClicked
 
     private void txtpasswordKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtpasswordKeyPressed
         if(evt.getKeyCode()==KeyEvent.VK_ENTER){
-            validardatos();
+            //validardatos();
+            String usu=txtusuario.getText();
+            String pas=txtpassword.getText();
+            Acceder(usu,pas);
         }
     }//GEN-LAST:event_txtpasswordKeyPressed
 

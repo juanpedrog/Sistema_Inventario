@@ -1,6 +1,5 @@
 
 import com.sun.awt.AWTUtilities;
-import javax.swing.JOptionPane;
 
 /*
  * To change this license header, choose License Headers in Project Properties.
@@ -21,6 +20,5 @@ public class Login {
         VenLogin vl=new VenLogin();
         AWTUtilities.setWindowOpaque(vl,false);
         vl.setVisible(true);
-        vl.conexion();
     }
 }
