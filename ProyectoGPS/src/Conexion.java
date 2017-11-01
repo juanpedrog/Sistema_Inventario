@@ -1,7 +1,10 @@
 
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
+import java.util.ArrayList;
 import javax.swing.JOptionPane;
 
 /*
@@ -26,5 +29,29 @@ public class Conexion {
         }
         return conectar;
     }
-    
+    public boolean ejecutar(String sql) {
+        try {
+            Statement sentencia = conectar.createStatement(ResultSet.TYPE_FORWARD_ONLY, ResultSet.CONCUR_READ_ONLY);
+            sentencia.executeUpdate(sql);
+            sentencia.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }        return true;
+    }
+    public ArrayList<String> acceder(String sql){
+        ArrayList<String> arr=new ArrayList<String>();
+        try {
+            Statement comando=conectar.createStatement();
+            ResultSet registro = comando.executeQuery(sql);
+            while(registro.next()){
+                
+            }
+            comando.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return null;
+        }
+        return arr;
+    }
 }

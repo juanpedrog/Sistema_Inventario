@@ -1,3 +1,7 @@
+
+import javax.swing.JFrame;
+import javax.swing.JOptionPane;
+
 /*
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
@@ -15,6 +19,28 @@ public class Solicitud extends javax.swing.JFrame {
      */
     public Solicitud() {
         initComponents();
+        cmb_Vehiculo.setVisible(false);
+        date_Llegada.setVisible(false);; 
+       date_Salida.setVisible(false);
+        btn_Ok.setVisible(false);
+        cmb_Vehiculo.setVisible(false);
+        jScrollPane1.setVisible(false);
+        jSeparator1.setVisible(false);
+        txt_Actividad.setVisible(false);
+        txt_Pernoctado.setVisible(false);
+        lbl_Actividad.setVisible(false);
+        lbl_Fecha_Llegada.setVisible(false);
+        lbl_Fecha_Salida.setVisible(false);
+        lbl_Lugar.setVisible(false);
+        lbl_Nombre.setVisible(false);
+        lbl_Pernoctado.setVisible(false);
+        lbl_Puesto.setVisible(false);
+        lbl_Vehiculo.setVisible(false);
+        spr_Nombre.setVisible(false);
+        txt_Lugar.setVisible(false);
+        txt_Nombre.setVisible(false);
+        txt_Puesto.setVisible(false);
+        this.setLocationRelativeTo(null);
     }
 
     /**
@@ -32,25 +58,28 @@ public class Solicitud extends javax.swing.JFrame {
         spr_Nombre = new javax.swing.JSeparator();
         lbl_Fecha_Salida = new javax.swing.JLabel();
         date_Salida = new com.toedter.calendar.JDateChooser();
-        jLabel2 = new javax.swing.JLabel();
+        lbl_Fecha_Llegada = new javax.swing.JLabel();
         date_Llegada = new com.toedter.calendar.JDateChooser();
         jSeparator1 = new javax.swing.JSeparator();
         lbl_Actividad = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
-        jTextArea1 = new javax.swing.JTextArea();
-        jLabel3 = new javax.swing.JLabel();
+        txt_Actividad = new javax.swing.JTextArea();
+        lbl_Puesto = new javax.swing.JLabel();
         txt_Puesto = new javax.swing.JTextField();
-        jLabel4 = new javax.swing.JLabel();
+        lbl_Lugar = new javax.swing.JLabel();
         txt_Lugar = new javax.swing.JTextField();
-        jLabel5 = new javax.swing.JLabel();
+        lbl_Vehiculo = new javax.swing.JLabel();
         cmb_Vehiculo = new javax.swing.JComboBox();
-        jLabel6 = new javax.swing.JLabel();
-        jTextField1 = new javax.swing.JTextField();
-        jButton1 = new javax.swing.JButton();
+        lbl_Pernoctado = new javax.swing.JLabel();
+        txt_Pernoctado = new javax.swing.JTextField();
+        btn_Ok = new javax.swing.JButton();
+        btn_Cerrar = new javax.swing.JLabel();
         jLabel1 = new javax.swing.JLabel();
+        Fondo = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-        getContentPane().setLayout(null);
+        setUndecorated(true);
+        getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         btn_Solicitud.setText("Nueva Solicitud");
         btn_Solicitud.addActionListener(new java.awt.event.ActionListener() {
@@ -58,85 +87,231 @@ public class Solicitud extends javax.swing.JFrame {
                 btn_SolicitudActionPerformed(evt);
             }
         });
-        getContentPane().add(btn_Solicitud);
-        btn_Solicitud.setBounds(20, 200, 120, 40);
+        getContentPane().add(btn_Solicitud, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 200, 120, 40));
 
+        lbl_Nombre.setFont(new java.awt.Font("Arial Black", 0, 14)); // NOI18N
         lbl_Nombre.setText("Nombre");
-        getContentPane().add(lbl_Nombre);
-        lbl_Nombre.setBounds(200, 240, 40, 20);
-        getContentPane().add(txt_Nombre);
-        txt_Nombre.setBounds(260, 240, 290, 20);
-        getContentPane().add(spr_Nombre);
-        spr_Nombre.setBounds(190, 282, 690, 10);
+        getContentPane().add(lbl_Nombre, new org.netbeans.lib.awtextra.AbsoluteConstraints(200, 240, 60, 20));
+        getContentPane().add(txt_Nombre, new org.netbeans.lib.awtextra.AbsoluteConstraints(280, 240, 290, -1));
+        getContentPane().add(spr_Nombre, new org.netbeans.lib.awtextra.AbsoluteConstraints(190, 282, 690, 10));
 
+        lbl_Fecha_Salida.setFont(new java.awt.Font("Arial Black", 0, 14)); // NOI18N
         lbl_Fecha_Salida.setText("Fecha de salida");
-        getContentPane().add(lbl_Fecha_Salida);
-        lbl_Fecha_Salida.setBounds(210, 300, 80, 14);
-        getContentPane().add(date_Salida);
-        date_Salida.setBounds(200, 320, 170, 20);
+        getContentPane().add(lbl_Fecha_Salida, new org.netbeans.lib.awtextra.AbsoluteConstraints(210, 300, 130, -1));
+        getContentPane().add(date_Salida, new org.netbeans.lib.awtextra.AbsoluteConstraints(200, 320, 170, -1));
 
-        jLabel2.setText("Fecha de llegada");
-        getContentPane().add(jLabel2);
-        jLabel2.setBounds(490, 300, 90, 14);
-        getContentPane().add(date_Llegada);
-        date_Llegada.setBounds(480, 320, 170, 20);
-        getContentPane().add(jSeparator1);
-        jSeparator1.setBounds(190, 352, 700, 10);
+        lbl_Fecha_Llegada.setFont(new java.awt.Font("Arial Black", 0, 14)); // NOI18N
+        lbl_Fecha_Llegada.setText("Fecha de llegada");
+        getContentPane().add(lbl_Fecha_Llegada, new org.netbeans.lib.awtextra.AbsoluteConstraints(490, 300, 140, -1));
+        getContentPane().add(date_Llegada, new org.netbeans.lib.awtextra.AbsoluteConstraints(480, 320, 170, -1));
+        getContentPane().add(jSeparator1, new org.netbeans.lib.awtextra.AbsoluteConstraints(190, 352, 700, 10));
 
+        lbl_Actividad.setFont(new java.awt.Font("Arial Black", 0, 14)); // NOI18N
         lbl_Actividad.setText("Actividad a realizar");
-        getContentPane().add(lbl_Actividad);
-        lbl_Actividad.setBounds(220, 370, 100, 14);
+        getContentPane().add(lbl_Actividad, new org.netbeans.lib.awtextra.AbsoluteConstraints(220, 370, 150, -1));
 
-        jTextArea1.setColumns(20);
-        jTextArea1.setRows(5);
-        jScrollPane1.setViewportView(jTextArea1);
+        txt_Actividad.setColumns(20);
+        txt_Actividad.setRows(5);
+        jScrollPane1.setViewportView(txt_Actividad);
 
-        getContentPane().add(jScrollPane1);
-        jScrollPane1.setBounds(210, 400, 670, 80);
+        getContentPane().add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(210, 400, 670, 80));
 
-        jLabel3.setText("Puesto");
-        getContentPane().add(jLabel3);
-        jLabel3.setBounds(570, 240, 33, 14);
-        getContentPane().add(txt_Puesto);
-        txt_Puesto.setBounds(610, 240, 80, 20);
+        lbl_Puesto.setFont(new java.awt.Font("Arial Black", 0, 14)); // NOI18N
+        lbl_Puesto.setText("Puesto");
+        getContentPane().add(lbl_Puesto, new org.netbeans.lib.awtextra.AbsoluteConstraints(680, 240, -1, -1));
+        getContentPane().add(txt_Puesto, new org.netbeans.lib.awtextra.AbsoluteConstraints(760, 240, 80, -1));
 
-        jLabel4.setText("Lugar");
-        getContentPane().add(jLabel4);
-        jLabel4.setBounds(220, 500, 27, 14);
-        getContentPane().add(txt_Lugar);
-        txt_Lugar.setBounds(260, 500, 90, 20);
+        lbl_Lugar.setFont(new java.awt.Font("Arial Black", 0, 14)); // NOI18N
+        lbl_Lugar.setText("Lugar");
+        getContentPane().add(lbl_Lugar, new org.netbeans.lib.awtextra.AbsoluteConstraints(220, 500, -1, -1));
+        getContentPane().add(txt_Lugar, new org.netbeans.lib.awtextra.AbsoluteConstraints(270, 500, 90, -1));
 
-        jLabel5.setText("Vehículo");
-        getContentPane().add(jLabel5);
-        jLabel5.setBounds(380, 500, 60, 14);
+        lbl_Vehiculo.setFont(new java.awt.Font("Arial Black", 0, 14)); // NOI18N
+        lbl_Vehiculo.setText("Vehículo");
+        getContentPane().add(lbl_Vehiculo, new org.netbeans.lib.awtextra.AbsoluteConstraints(460, 500, 70, -1));
 
         cmb_Vehiculo.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
-        getContentPane().add(cmb_Vehiculo);
-        cmb_Vehiculo.setBounds(430, 500, 150, 20);
+        getContentPane().add(cmb_Vehiculo, new org.netbeans.lib.awtextra.AbsoluteConstraints(550, 500, 150, -1));
 
-        jLabel6.setText("Pernoctado");
-        getContentPane().add(jLabel6);
-        jLabel6.setBounds(750, 300, 70, 14);
-        getContentPane().add(jTextField1);
-        jTextField1.setBounds(740, 320, 70, 20);
+        lbl_Pernoctado.setFont(new java.awt.Font("Arial Black", 0, 14)); // NOI18N
+        lbl_Pernoctado.setText("Pernoctado");
+        getContentPane().add(lbl_Pernoctado, new org.netbeans.lib.awtextra.AbsoluteConstraints(730, 300, 90, -1));
 
-        jButton1.setBackground(new java.awt.Color(255, 51, 51));
-        jButton1.setText("OK");
-        getContentPane().add(jButton1);
-        jButton1.setBounds(780, 490, 130, 30);
+        txt_Pernoctado.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txt_PernoctadoActionPerformed(evt);
+            }
+        });
+        getContentPane().add(txt_Pernoctado, new org.netbeans.lib.awtextra.AbsoluteConstraints(740, 320, 70, -1));
 
-        jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Imagenes/prueba6.png"))); // NOI18N
-        getContentPane().add(jLabel1);
-        jLabel1.setBounds(0, 0, 960, 544);
+        btn_Ok.setBackground(new java.awt.Color(255, 51, 51));
+        btn_Ok.setText("OK");
+        btn_Ok.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btn_OkActionPerformed(evt);
+            }
+        });
+        getContentPane().add(btn_Ok, new org.netbeans.lib.awtextra.AbsoluteConstraints(780, 490, 130, 30));
+
+        btn_Cerrar.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseReleased(java.awt.event.MouseEvent evt) {
+                btn_CerrarMouseReleased(evt);
+            }
+        });
+        getContentPane().add(btn_Cerrar, new org.netbeans.lib.awtextra.AbsoluteConstraints(920, 0, 40, 40));
+
+        jLabel1.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseReleased(java.awt.event.MouseEvent evt) {
+                jLabel1MouseReleased(evt);
+            }
+        });
+        getContentPane().add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(870, 0, 40, 30));
+
+        Fondo.setFont(new java.awt.Font("Arial Black", 0, 14)); // NOI18N
+        Fondo.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Imagenes/prueba6.png"))); // NOI18N
+        getContentPane().add(Fondo, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, -1, -1));
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
     private void btn_SolicitudActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_SolicitudActionPerformed
         // TODO add your handling code here:
-        
+        cmb_Vehiculo.setVisible(true);
+        date_Llegada.setVisible(true);; 
+       date_Salida.setVisible(true);
+        btn_Ok.setVisible(true);
+        cmb_Vehiculo.setVisible(true);
+        jScrollPane1.setVisible(true);
+        jSeparator1.setVisible(true);
+        txt_Actividad.setVisible(true);
+        txt_Pernoctado.setVisible(true);
+        lbl_Actividad.setVisible(true);
+        lbl_Fecha_Llegada.setVisible(true);
+        lbl_Fecha_Salida.setVisible(true);
+        lbl_Lugar.setVisible(true);
+        lbl_Nombre.setVisible(true);
+        lbl_Pernoctado.setVisible(true);
+        lbl_Puesto.setVisible(true);
+        lbl_Vehiculo.setVisible(true);
+        spr_Nombre.setVisible(true);
+        txt_Lugar.setVisible(true);
+        txt_Nombre.setVisible(true);
+        txt_Puesto.setVisible(true);
+        //Limpiar
+        cmb_Vehiculo.setSelectedIndex(0);
+        date_Llegada.setDate(null);
+        date_Salida.setDate(null);
+        cmb_Vehiculo.setSelectedIndex(0);
+        txt_Actividad.setText(null);
+        txt_Pernoctado.setText(null);
+        txt_Lugar.setText(null);
+        txt_Nombre.setText(null);
+        txt_Puesto.setText(null);
     }//GEN-LAST:event_btn_SolicitudActionPerformed
 
+    private void txt_PernoctadoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txt_PernoctadoActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txt_PernoctadoActionPerformed
+
+    private void btn_CerrarMouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btn_CerrarMouseReleased
+        // TODO add your handling code here:
+        System.exit(1);
+    }//GEN-LAST:event_btn_CerrarMouseReleased
+
+    private void jLabel1MouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel1MouseReleased
+        // TODO add your handling code here:
+        setExtendedState(JFrame.CROSSHAIR_CURSOR);
+    }//GEN-LAST:event_jLabel1MouseReleased
+
+    private void btn_OkActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_OkActionPerformed
+        // TODO add your handling code here:
+        try{
+            verificar_excepcion=true;
+            validarDatos(true,"");
+        }catch(ExcepcionDatosIncompletos e){
+            if(verificar_excepcion)JOptionPane.showMessageDialog(this, e.getMessage());
+            return;
+        }
+    }//GEN-LAST:event_btn_OkActionPerformed
+    public void Insertar_Solicitud(){
+        Conexion conexion=new Conexion();
+        
+    }
+    
+    
+    //Función para validar los datos que se insertan en el formulario.
+    public void validarDatos(boolean verificar_fecha,String cad)throws ExcepcionDatosIncompletos{
+        try{
+            if(verificar_fecha && date_Llegada.getDate().before(date_Salida.getDate())){
+                if(cad.equals("")){
+                    cad+="-La fecha de salida es mayor que la de llegada";
+                }
+                else{
+                    cad+="\n-La fecha de salida es mayor que la de llegada";
+                }
+            }
+        }catch(NullPointerException e){
+            if(cad.equals("")){
+                cad+="-No se ha insertado alguna de las fechas, inserte las fechas de salida y de llegada";
+            }
+            else{
+                cad+="\n-No se ha insertado alguna de las fechas, inserte las fechas de salida y de llegada";
+            }
+            try{
+                verificar_excepcion=false;
+                validarDatos(false,cad);
+                return;
+            }catch(ExcepcionDatosIncompletos ex){
+                JOptionPane.showMessageDialog(this, ex.getMessage());
+                return;
+            }
+        }
+        if(cmb_Vehiculo.getSelectedIndex()==0){
+            if(cad.equals("")){
+                cad+="-Vehiculo no seleccionado";
+            }
+            else{
+                cad+="\n-Vehiculo no seleccionado";
+            }
+        }
+        if(txt_Actividad.getText().equals("")){
+            if(cad.equals("")){
+                cad+="-No se ha insertado ninguna actividad, escriba la acitividad y vuelva a intentarlo";
+            }
+            else{
+                cad+="\n-No se ha insertado ninguna actividad, escriba la acitividad y vuelva a intentarlo";
+            }
+        }
+        if(txt_Lugar.getText().equals("")){
+            if(cad.equals("")){
+                cad+="-No se ha insertado el lugar, escriba el lugar y vuelva a intentarlo";
+            }
+            else{
+                cad+="\n-No se ha insertado el lugar, escriba el lugar y vuelva a intentarlo";
+            }
+        }
+        if(txt_Nombre.getText().equals("")){
+            if(cad.equals("")){
+                cad+="-No se ha insertado el nombre del epmpleado, escriba el nombre del empleado y vuelva a intentarlo";
+            }
+            else{
+                cad+="\n-No se ha insertado el nombre del epmpleado, escriba el nombre del empleado y vuelva a intentarlo";
+            }
+        }
+        if(txt_Puesto.getText().equals("")){
+            if(cad.equals("")){
+                cad+="-No se ha insertado el puesto del epmpleado, escriba el nombre del empleado y vuelva a intentarlo";
+            }
+            else{
+                cad+="\n-No se ha insertado el puesto del epmpleado, escriba el nombre del empleado y vuelva a intentarlo";
+            }
+        }
+        if(!cad.equals("")){
+            throw new ExcepcionDatosIncompletos(cad);
+        }else{
+            return;
+        }
+    }
     /**
      * @param args the command line arguments
      */
@@ -158,11 +333,11 @@ public class Solicitud extends javax.swing.JFrame {
         } catch (InstantiationException ex) {
             java.util.logging.Logger.getLogger(Solicitud.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(Solicitud.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(Solicitud.class.getName()).log(java.util.logging.Level.SEVERE, null,ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
             java.util.logging.Logger.getLogger(Solicitud.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
-        //</editor-fold>
+        //</editor-fold>        //</editor-fold>
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
@@ -172,28 +347,31 @@ public class Solicitud extends javax.swing.JFrame {
         });
     }
 
+    private boolean verificar_excepcion=true;
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JLabel Fondo;
+    private javax.swing.JLabel btn_Cerrar;
+    private javax.swing.JButton btn_Ok;
     private javax.swing.JButton btn_Solicitud;
     private javax.swing.JComboBox cmb_Vehiculo;
     private com.toedter.calendar.JDateChooser date_Llegada;
     private com.toedter.calendar.JDateChooser date_Salida;
-    private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel1;
-    private javax.swing.JLabel jLabel2;
-    private javax.swing.JLabel jLabel3;
-    private javax.swing.JLabel jLabel4;
-    private javax.swing.JLabel jLabel5;
-    private javax.swing.JLabel jLabel6;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JSeparator jSeparator1;
-    private javax.swing.JTextArea jTextArea1;
-    private javax.swing.JTextField jTextField1;
     private javax.swing.JLabel lbl_Actividad;
+    private javax.swing.JLabel lbl_Fecha_Llegada;
     private javax.swing.JLabel lbl_Fecha_Salida;
+    private javax.swing.JLabel lbl_Lugar;
     private javax.swing.JLabel lbl_Nombre;
+    private javax.swing.JLabel lbl_Pernoctado;
+    private javax.swing.JLabel lbl_Puesto;
+    private javax.swing.JLabel lbl_Vehiculo;
     private javax.swing.JSeparator spr_Nombre;
+    private javax.swing.JTextArea txt_Actividad;
     private javax.swing.JTextField txt_Lugar;
     private javax.swing.JTextField txt_Nombre;
+    private javax.swing.JTextField txt_Pernoctado;
     private javax.swing.JTextField txt_Puesto;
     // End of variables declaration//GEN-END:variables
 }
