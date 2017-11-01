@@ -26,21 +26,116 @@ public class Solicitud extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        btn_Solicitud = new javax.swing.JButton();
+        lbl_Nombre = new javax.swing.JLabel();
+        txt_Nombre = new javax.swing.JTextField();
+        spr_Nombre = new javax.swing.JSeparator();
+        lbl_Fecha_Salida = new javax.swing.JLabel();
+        date_Salida = new com.toedter.calendar.JDateChooser();
+        jLabel2 = new javax.swing.JLabel();
+        date_Llegada = new com.toedter.calendar.JDateChooser();
+        jSeparator1 = new javax.swing.JSeparator();
+        lbl_Actividad = new javax.swing.JLabel();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        jTextArea1 = new javax.swing.JTextArea();
+        jLabel3 = new javax.swing.JLabel();
+        txt_Puesto = new javax.swing.JTextField();
+        jLabel4 = new javax.swing.JLabel();
+        txt_Lugar = new javax.swing.JTextField();
+        jLabel5 = new javax.swing.JLabel();
+        cmb_Vehiculo = new javax.swing.JComboBox();
+        jLabel6 = new javax.swing.JLabel();
+        jTextField1 = new javax.swing.JTextField();
+        jButton1 = new javax.swing.JButton();
+        jLabel1 = new javax.swing.JLabel();
 
-        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
-        getContentPane().setLayout(layout);
-        layout.setHorizontalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 400, Short.MAX_VALUE)
-        );
-        layout.setVerticalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 300, Short.MAX_VALUE)
-        );
+        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        getContentPane().setLayout(null);
+
+        btn_Solicitud.setText("Nueva Solicitud");
+        btn_Solicitud.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btn_SolicitudActionPerformed(evt);
+            }
+        });
+        getContentPane().add(btn_Solicitud);
+        btn_Solicitud.setBounds(20, 200, 120, 40);
+
+        lbl_Nombre.setText("Nombre");
+        getContentPane().add(lbl_Nombre);
+        lbl_Nombre.setBounds(200, 240, 40, 20);
+        getContentPane().add(txt_Nombre);
+        txt_Nombre.setBounds(260, 240, 290, 20);
+        getContentPane().add(spr_Nombre);
+        spr_Nombre.setBounds(190, 282, 690, 10);
+
+        lbl_Fecha_Salida.setText("Fecha de salida");
+        getContentPane().add(lbl_Fecha_Salida);
+        lbl_Fecha_Salida.setBounds(210, 300, 80, 14);
+        getContentPane().add(date_Salida);
+        date_Salida.setBounds(200, 320, 170, 20);
+
+        jLabel2.setText("Fecha de llegada");
+        getContentPane().add(jLabel2);
+        jLabel2.setBounds(490, 300, 90, 14);
+        getContentPane().add(date_Llegada);
+        date_Llegada.setBounds(480, 320, 170, 20);
+        getContentPane().add(jSeparator1);
+        jSeparator1.setBounds(190, 352, 700, 10);
+
+        lbl_Actividad.setText("Actividad a realizar");
+        getContentPane().add(lbl_Actividad);
+        lbl_Actividad.setBounds(220, 370, 100, 14);
+
+        jTextArea1.setColumns(20);
+        jTextArea1.setRows(5);
+        jScrollPane1.setViewportView(jTextArea1);
+
+        getContentPane().add(jScrollPane1);
+        jScrollPane1.setBounds(210, 400, 670, 80);
+
+        jLabel3.setText("Puesto");
+        getContentPane().add(jLabel3);
+        jLabel3.setBounds(570, 240, 33, 14);
+        getContentPane().add(txt_Puesto);
+        txt_Puesto.setBounds(610, 240, 80, 20);
+
+        jLabel4.setText("Lugar");
+        getContentPane().add(jLabel4);
+        jLabel4.setBounds(220, 500, 27, 14);
+        getContentPane().add(txt_Lugar);
+        txt_Lugar.setBounds(260, 500, 90, 20);
+
+        jLabel5.setText("Vehículo");
+        getContentPane().add(jLabel5);
+        jLabel5.setBounds(380, 500, 60, 14);
+
+        cmb_Vehiculo.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        getContentPane().add(cmb_Vehiculo);
+        cmb_Vehiculo.setBounds(430, 500, 150, 20);
+
+        jLabel6.setText("Pernoctado");
+        getContentPane().add(jLabel6);
+        jLabel6.setBounds(750, 300, 70, 14);
+        getContentPane().add(jTextField1);
+        jTextField1.setBounds(740, 320, 70, 20);
+
+        jButton1.setBackground(new java.awt.Color(255, 51, 51));
+        jButton1.setText("OK");
+        getContentPane().add(jButton1);
+        jButton1.setBounds(780, 490, 130, 30);
+
+        jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Imagenes/prueba6.png"))); // NOI18N
+        getContentPane().add(jLabel1);
+        jLabel1.setBounds(0, 0, 960, 544);
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void btn_SolicitudActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_SolicitudActionPerformed
+        // TODO add your handling code here:
+        
+    }//GEN-LAST:event_btn_SolicitudActionPerformed
 
     /**
      * @param args the command line arguments
@@ -78,5 +173,27 @@ public class Solicitud extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btn_Solicitud;
+    private javax.swing.JComboBox cmb_Vehiculo;
+    private com.toedter.calendar.JDateChooser date_Llegada;
+    private com.toedter.calendar.JDateChooser date_Salida;
+    private javax.swing.JButton jButton1;
+    private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel4;
+    private javax.swing.JLabel jLabel5;
+    private javax.swing.JLabel jLabel6;
+    private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JSeparator jSeparator1;
+    private javax.swing.JTextArea jTextArea1;
+    private javax.swing.JTextField jTextField1;
+    private javax.swing.JLabel lbl_Actividad;
+    private javax.swing.JLabel lbl_Fecha_Salida;
+    private javax.swing.JLabel lbl_Nombre;
+    private javax.swing.JSeparator spr_Nombre;
+    private javax.swing.JTextField txt_Lugar;
+    private javax.swing.JTextField txt_Nombre;
+    private javax.swing.JTextField txt_Puesto;
     // End of variables declaration//GEN-END:variables
 }
