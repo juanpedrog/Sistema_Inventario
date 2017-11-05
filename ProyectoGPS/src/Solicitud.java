@@ -1,4 +1,5 @@
 
+import java.text.SimpleDateFormat;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 
@@ -57,7 +58,6 @@ public class Solicitud extends javax.swing.JFrame {
         txt_Nombre = new javax.swing.JTextField();
         spr_Nombre = new javax.swing.JSeparator();
         lbl_Fecha_Salida = new javax.swing.JLabel();
-        date_Salida = new com.toedter.calendar.JDateChooser();
         lbl_Fecha_Llegada = new javax.swing.JLabel();
         date_Llegada = new com.toedter.calendar.JDateChooser();
         jSeparator1 = new javax.swing.JSeparator();
@@ -75,6 +75,7 @@ public class Solicitud extends javax.swing.JFrame {
         btn_Ok = new javax.swing.JButton();
         btn_Cerrar = new javax.swing.JLabel();
         jLabel1 = new javax.swing.JLabel();
+        date_Salida = new com.toedter.calendar.JDateChooser();
         Fondo = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -98,7 +99,6 @@ public class Solicitud extends javax.swing.JFrame {
         lbl_Fecha_Salida.setFont(new java.awt.Font("Arial Black", 0, 14)); // NOI18N
         lbl_Fecha_Salida.setText("Fecha de salida");
         getContentPane().add(lbl_Fecha_Salida, new org.netbeans.lib.awtextra.AbsoluteConstraints(210, 300, 130, -1));
-        getContentPane().add(date_Salida, new org.netbeans.lib.awtextra.AbsoluteConstraints(200, 320, 170, -1));
 
         lbl_Fecha_Llegada.setFont(new java.awt.Font("Arial Black", 0, 14)); // NOI18N
         lbl_Fecha_Llegada.setText("Fecha de llegada");
@@ -166,6 +166,7 @@ public class Solicitud extends javax.swing.JFrame {
             }
         });
         getContentPane().add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(870, 0, 40, 30));
+        getContentPane().add(date_Salida, new org.netbeans.lib.awtextra.AbsoluteConstraints(200, 320, 140, -1));
 
         Fondo.setFont(new java.awt.Font("Arial Black", 0, 14)); // NOI18N
         Fondo.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Imagenes/prueba6.png"))); // NOI18N
@@ -207,6 +208,7 @@ public class Solicitud extends javax.swing.JFrame {
         txt_Lugar.setText(null);
         txt_Nombre.setText(null);
         txt_Puesto.setText(null);
+        txt_Nombre.requestFocus();
     }//GEN-LAST:event_btn_SolicitudActionPerformed
 
     private void txt_PernoctadoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txt_PernoctadoActionPerformed
@@ -228,14 +230,34 @@ public class Solicitud extends javax.swing.JFrame {
         try{
             verificar_excepcion=true;
             validarDatos(true,"");
+            insertar_Solicitud();
         }catch(ExcepcionDatosIncompletos e){
             if(verificar_excepcion)JOptionPane.showMessageDialog(this, e.getMessage());
             return;
         }
-    }//GEN-LAST:event_btn_OkActionPerformed
-    public void Insertar_Solicitud(){
-        Conexion conexion=new Conexion();
         
+    }//GEN-LAST:event_btn_OkActionPerformed
+    public void insertar_Solicitud(){
+        try{
+            SimpleDateFormat sdf=new SimpleDateFormat("yyyy-MM-dd");
+            String fecha_Salida=sdf.format(date_Salida.getDate().getTime());
+            String fecha_Llegada=sdf.format(date_Llegada.getDate().getTime());
+            Conexion conexion=new Conexion();
+            conexion.conexion();
+            System.out.print("insert into Solicitud (Fecha_Salida,Lugar,Nombre,Actividad,Pernoctado,Vehiculo,Puesto,Fecha_Llegada,Estado) values('"+fecha_Salida+"','"+txt_Lugar.getText()+"'"
+                + ",'"+txt_Nombre.getText()+"','"+txt_Actividad.getText()+"',0,'"+cmb_Vehiculo.getSelectedItem().toString()+"'"
+                + ",'"+txt_Puesto.getText()+"','"+fecha_Llegada+"','No autorizada')");
+            boolean insersion=conexion.ejecutar("insert into Solicitud (Fecha_Salida,Lugar,Nombre,Actividad,Pernoctado,Vehiculo,Puesto,Fecha_Llegada,Estado) values('"+fecha_Salida+"','"+txt_Lugar.getText()+"'"
+                + ",'"+txt_Nombre.getText()+"','"+txt_Actividad.getText()+"',0,'"+cmb_Vehiculo.getSelectedItem().toString()+"'"
+                + ",'"+txt_Puesto.getText()+"','"+fecha_Llegada+"','No autorizada')");
+            if(insersion){
+                JOptionPane.showMessageDialog(this, "Insersión correcta");
+            }else{
+                JOptionPane.showMessageDialog(this, "Error al insertar pero no excepción");
+            }
+        }catch(Exception e){
+            JOptionPane.showMessageDialog(this, e.getMessage());
+        }
     }
     
     
