@@ -23,7 +23,7 @@ public class Conexion {
     public Connection conexion(){
         try{
             Class.forName("com.mysql.jdbc.Driver");
-            conectar=DriverManager.getConnection("jdbc:mysql://127.0.0.1:3306/Viaticos_prueba","root","");
+            conectar=DriverManager.getConnection("jdbc:mysql://127.0.0.1:3306/Viaticos","root","");
         }catch(Exception e){
             JOptionPane.showMessageDialog(null,e.getMessage());
         }
@@ -44,8 +44,14 @@ public class Conexion {
         try {
             Statement comando=conectar.createStatement();
             ResultSet registro = comando.executeQuery(sql);
+            /*for(int i=1;i<=registro.getMetaData().getColumnCount();i++){
+                arr.add(registro.getString(i));
+                System.out.print(registro.getString(i));
+            }*/
             while(registro.next()){
-                
+                for(int i=1;i<=registro.getMetaData().getColumnCount();i++){
+                System.out.print(registro.getString(i));
+                }
             }
             comando.close();
         } catch (SQLException e) {
