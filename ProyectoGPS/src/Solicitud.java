@@ -2,6 +2,22 @@
 import java.text.SimpleDateFormat;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import com.itextpdf.text.Document;
+import com.itextpdf.text.DocumentException;
+import com.itextpdf.text.Font;
+import com.itextpdf.text.FontFactory;
+import com.itextpdf.text.PageSize;
+import com.itextpdf.text.Paragraph;
+import com.itextpdf.text.Rectangle;
+import com.itextpdf.text.pdf.BaseFont;
+import com.itextpdf.text.pdf.PdfContentByte;
+import com.itextpdf.text.pdf.PdfWriter;
+import java.awt.Desktop;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.util.ArrayList;
 
 /*
  * To change this license header, choose License Headers in Project Properties.
@@ -14,7 +30,7 @@ import javax.swing.JOptionPane;
  * @author Juan Pedro Gil
  */
 public class Solicitud extends javax.swing.JFrame {
-
+    public String solicitudActual;
     /**
      * Creates new form Solicitud
      */
@@ -76,6 +92,7 @@ public class Solicitud extends javax.swing.JFrame {
         btn_Cerrar = new javax.swing.JLabel();
         jLabel1 = new javax.swing.JLabel();
         date_Salida = new com.toedter.calendar.JDateChooser();
+        jButton1 = new javax.swing.JButton();
         Fondo = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -168,6 +185,14 @@ public class Solicitud extends javax.swing.JFrame {
         getContentPane().add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(870, 0, 40, 30));
         getContentPane().add(date_Salida, new org.netbeans.lib.awtextra.AbsoluteConstraints(200, 320, 140, -1));
 
+        jButton1.setText("jButton1");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
+        getContentPane().add(jButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 260, -1, -1));
+
         Fondo.setFont(new java.awt.Font("Arial Black", 0, 14)); // NOI18N
         Fondo.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Imagenes/prueba6.png"))); // NOI18N
         getContentPane().add(Fondo, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, -1, -1));
@@ -237,6 +262,15 @@ public class Solicitud extends javax.swing.JFrame {
         }
         
     }//GEN-LAST:event_btn_OkActionPerformed
+
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        // TODO add your handling code here:
+        try{
+        generarPDF();
+        }catch(Exception e){
+            
+        }
+    }//GEN-LAST:event_jButton1ActionPerformed
     public void insertar_Solicitud(){
         try{
             SimpleDateFormat sdf=new SimpleDateFormat("yyyy-MM-dd");
@@ -288,14 +322,6 @@ public class Solicitud extends javax.swing.JFrame {
                 return;
             }
         }
-        if(cmb_Vehiculo.getSelectedIndex()==0){
-            if(cad.equals("")){
-                cad+="-Vehiculo no seleccionado";
-            }
-            else{
-                cad+="\n-Vehiculo no seleccionado";
-            }
-        }
         if(txt_Actividad.getText().equals("")){
             if(cad.equals("")){
                 cad+="-No se ha insertado ninguna actividad, escriba la acitividad y vuelva a intentarlo";
@@ -332,6 +358,121 @@ public class Solicitud extends javax.swing.JFrame {
             throw new ExcepcionDatosIncompletos(cad);
         }else{
             return;
+        }
+    }
+    public void generarPDF() throws FileNotFoundException, DocumentException{
+        String path="C:\\Users\\Juan Pedro Gil\\Desktop\\prueba.pdf";
+        try{
+        File f=new File(path);
+        f.delete();
+        Document document=new Document(PageSize.A4,0f,0f,0f,0f);
+        PdfWriter writer=PdfWriter.getInstance(document, new FileOutputStream(path));
+        ArrayList<String> datos;
+        Conexion conexion=new Conexion();
+        conexion.conexion();
+        document.open();
+        /*Font fuenteTitulo=new Font();
+        fuenteTitulo.setSize(16);
+        fuenteTitulo.setStyle(Font.BOLD);
+        Paragraph solicitud_Viaticos=new Paragraph("Solicitud de viáticos",fuenteTitulo);
+        solicitud_Viaticos.setAlignment(Paragraph.ALIGN_CENTER);
+        fuenteTitulo.isBold();
+        document.add(solicitud_Viaticos);
+        Conexion conexion=new Conexion();
+        conexion.conexion();
+        ArrayList<String> datos;
+        datos=conexion.acceder("select fecha_salida from solicitud where idSolicitud=(select max(idSolicitud) from solicitud);");
+        Font fontSubrayar=new Font();
+        Font fontNegritas=new Font();
+        fontNegritas.setStyle(Font.BOLD);
+        fontSubrayar.setStyle(Font.UNDERLINE);
+        Paragraph fecha_salida=new Paragraph("  Fecha de salida: ",fontNegritas);
+        Paragraph query=new Paragraph(datos.get(0),fontSubrayar);
+        Paragraph fecha2=new Paragraph("    Fecha de llegada: ",fontNegritas);
+        datos=conexion.acceder("select fecha_llegada from solicitud where idSolicitud=(select max(idSolicitud) from solicitud);");
+        query=new Paragraph(datos.get(0),fontSubrayar);
+        fecha2.add(query);
+        query.add(fecha2);
+        fecha_salida.add(query);
+        document.add(fecha_salida);*/
+        BaseFont bf=BaseFont.createFont(BaseFont.COURIER_BOLD,BaseFont.CP1252,BaseFont.NOT_EMBEDDED);
+        BaseFont bfNoNegritas=BaseFont.createFont(BaseFont.COURIER,BaseFont.CP1252,BaseFont.NOT_EMBEDDED);
+        PdfContentByte cb=writer.getDirectContent();
+        cb.setFontAndSize(bf,16);
+        cb.beginText();
+        //Label solicitud de viáticos
+        cb.setTextMatrix(250,800);
+        cb.showText("Solicitud de viaticos");
+        //Label fecha de salida
+        cb.setFontAndSize(bfNoNegritas,12);
+        cb.setTextMatrix(50,750);
+        cb.showText("Fecha de salida: ");
+        //Fecha de salida de la base de datos
+        cb.setFontAndSize(bf,12);
+        datos=conexion.acceder("select fecha_salida from solicitud where idSolicitud=(select max(idSolicitud) from solicitud);");
+        cb.setTextMatrix(180,750);
+        cb.showText(datos.get(0));
+        //Label fecha de llegada
+        cb.setTextMatrix(270,750);
+        cb.setFontAndSize(bfNoNegritas,12);
+        cb.showText("Fecha de llegada: ");
+        //Fecha de llegada de la base de datos
+        cb.setFontAndSize(bf,12);
+        datos=conexion.acceder("select fecha_llegada from solicitud where idSolicitud=(select max(idSolicitud) from solicitud);");
+        cb.setTextMatrix(400,750);
+        cb.showText(datos.get(0));
+        //Label nombre
+        cb.setFontAndSize(bfNoNegritas,12);
+        cb.setTextMatrix(50,700);
+        cb.showText("Nombre: ");
+        //Nombre base de datos
+        cb.setFontAndSize(bf,12);
+        datos=conexion.acceder("select nombre from solicitud where idSolicitud=(select max(idSolicitud) from solicitud);");
+        cb.setTextMatrix(130,700);
+        cb.showText(datos.get(0));
+        //Label lugar
+        cb.setFontAndSize(bfNoNegritas,12);
+        cb.setTextMatrix(270,700);
+        cb.showText("Lugar: ");
+        //Lugar base de datos
+        cb.setFontAndSize(bf,12);
+        datos=conexion.acceder("select lugar from solicitud where idSolicitud=(select max(idSolicitud) from solicitud);");
+        cb.setTextMatrix(320,700);
+        cb.showText(datos.get(0));
+        //Label actividad
+        cb.setFontAndSize(bfNoNegritas,12);
+        cb.setTextMatrix(50,650);
+        cb.showText("Actividad: ");
+        //Actividad base de datos
+        cb.setFontAndSize(bf,12);
+        datos=conexion.acceder("select actividad from solicitud where idSolicitud=(select max(idSolicitud) from solicitud);");
+        cb.setTextMatrix(50,625);
+        cb.showText(datos.get(0));
+        //Label pernoctado
+        cb.setFontAndSize(bfNoNegritas,12);
+        cb.setTextMatrix(50,525);
+        cb.showText("Pernoctado: ");
+        //Pernoctado base de datos
+        cb.setFontAndSize(bf,12);
+        datos=conexion.acceder("select pernoctado from solicitud where idSolicitud=(select max(idSolicitud) from solicitud);");
+        cb.setTextMatrix(150,525);
+        cb.showText(datos.get(0));
+        datos=conexion.acceder("select pernoctado from solicitud where idSolicitud=(select max(idSolicitud) from solicitud);");
+        if(!datos.get(0).equals("Seleccione vehiculo")){
+            //Label vehiculo
+            cb.setFontAndSize(bfNoNegritas,12);
+            cb.setTextMatrix(50,425);
+            cb.showText("Vehiculo: ");
+            //Vehiculo base de datos
+            cb.setFontAndSize(bf,12);
+            cb.setTextMatrix(50,425);
+            cb.showText(datos.get(0));
+        }
+        cb.endText();
+        document.close();
+            Desktop.getDesktop().open(f);
+        }catch(IOException e){
+            
         }
     }
     /**
@@ -378,6 +519,7 @@ public class Solicitud extends javax.swing.JFrame {
     private javax.swing.JComboBox cmb_Vehiculo;
     private com.toedter.calendar.JDateChooser date_Llegada;
     private com.toedter.calendar.JDateChooser date_Salida;
+    private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JSeparator jSeparator1;

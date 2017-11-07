@@ -51,6 +51,7 @@ public class Conexion {
             while(registro.next()){
                 for(int i=1;i<=registro.getMetaData().getColumnCount();i++){
                 System.out.print(registro.getString(i));
+                arr.add(registro.getString(i));
                 }
             }
             comando.close();
