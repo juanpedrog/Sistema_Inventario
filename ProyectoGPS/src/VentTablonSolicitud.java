@@ -1,4 +1,10 @@
 
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
+import javax.swing.JFrame;
 import javax.swing.table.DefaultTableModel;
 
 /*
@@ -41,6 +47,8 @@ public class VentTablonSolicitud extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        jlcerrar = new javax.swing.JLabel();
+        jlmini = new javax.swing.JLabel();
         jComboBox1 = new javax.swing.JComboBox();
         jButton1 = new javax.swing.JButton();
         jButton3 = new javax.swing.JButton();
@@ -57,7 +65,26 @@ public class VentTablonSolicitud extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setUndecorated(true);
+        addWindowListener(new java.awt.event.WindowAdapter() {
+            public void windowActivated(java.awt.event.WindowEvent evt) {
+                formWindowActivated(evt);
+            }
+        });
         getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        jlcerrar.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jlcerrarMouseClicked(evt);
+            }
+        });
+        getContentPane().add(jlcerrar, new org.netbeans.lib.awtextra.AbsoluteConstraints(910, 10, 50, 20));
+
+        jlmini.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jlminiMouseClicked(evt);
+            }
+        });
+        getContentPane().add(jlmini, new org.netbeans.lib.awtextra.AbsoluteConstraints(870, 10, 40, 20));
 
         jComboBox1.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Pendientes", "Aceptadas", "Canceladas", " " }));
         jComboBox1.addItemListener(new java.awt.event.ItemListener() {
@@ -156,6 +183,30 @@ public class VentTablonSolicitud extends javax.swing.JFrame {
                 modelo.addColumn("Fecha de llegada");
                 modelo.addColumn("Lugar");
                 this.jTable1.setModel(modelo);
+                try {
+                    Class.forName("com.mysql.jdbc.Driver");
+                    Connection con = DriverManager.getConnection("jdbc:mysql://127.0.0.1:3306/Viaticos", "root", "");
+
+                    Statement sentencia = con.createStatement();
+
+                    ResultSet rs = sentencia.executeQuery("SELECT Nombre, Puesto, Fecha_salida, Fecha_llegada,Lugar FROM solicitud WHERE Estado = 'P'");
+
+                    String solicitud[] = new String[5];
+                    while (rs.next()) {
+                        solicitud[0] = rs.getString("Nombre");
+                        solicitud[1] = rs.getString("Puesto");
+                        solicitud[2] = rs.getString("Fecha_salida");
+                        solicitud[3] = rs.getString("Fecha_llegada");
+                        solicitud[4] = rs.getString("Lugar");
+                        modelo.addRow(solicitud);
+                    }
+
+                } catch (SQLException ex) {
+                    javax.swing.JOptionPane.showMessageDialog(null, "Error en la consulta");
+
+                } catch (ClassNotFoundException e) {
+                    e.printStackTrace();
+                }//fin del catch
                 break;
             }
             case 1: {
@@ -171,6 +222,30 @@ public class VentTablonSolicitud extends javax.swing.JFrame {
                 modelo.addColumn("Fecha de llegada");
                 modelo.addColumn("Lugar");
                 this.jTable1.setModel(modelo);
+                try {
+                    Class.forName("com.mysql.jdbc.Driver");
+                    Connection con = DriverManager.getConnection("jdbc:mysql://127.0.0.1:3306/Viaticos", "root", "");
+
+                    Statement sentencia = con.createStatement();
+
+                    ResultSet rs = sentencia.executeQuery("SELECT O.Folio, V.Monto, S.Fecha_salida, S.Fecha_llegada,S.Lugar FROM solicitud S, oficio_comision O, viaticos V WHERE Estado = 'A' AND S.idSolicitud = O.Solicitud_idSolicitud AND O.idOficio_Comision = V.Oficio_Comision_idOficio_Comision");
+
+                    String solicitud[] = new String[5];
+                    while (rs.next()) {
+                        solicitud[0] = rs.getString("Folio");
+                        solicitud[1] = rs.getString("Monto");
+                        solicitud[2] = rs.getString("Fecha_salida");
+                        solicitud[3] = rs.getString("Fecha_llegada");
+                        solicitud[4] = rs.getString("Lugar");
+                        modelo.addRow(solicitud);
+                    }
+
+                } catch (SQLException ex) {
+                    javax.swing.JOptionPane.showMessageDialog(null, "Error en la consulta");
+
+                } catch (ClassNotFoundException e) {
+                    e.printStackTrace();
+                }//fin del catch
                 break;
             }
             case 2: {
@@ -186,6 +261,30 @@ public class VentTablonSolicitud extends javax.swing.JFrame {
                 modelo.addColumn("Fecha de llegada");
                 modelo.addColumn("Lugar");
                 this.jTable1.setModel(modelo);
+                try {
+                    Class.forName("com.mysql.jdbc.Driver");
+                    Connection con = DriverManager.getConnection("jdbc:mysql://127.0.0.1:3306/Viaticos", "root", "");
+
+                    Statement sentencia = con.createStatement();
+
+                    ResultSet rs = sentencia.executeQuery("SELECT Nombre, Puesto, Fecha_salida, Fecha_llegada,Lugar FROM solicitud WHERE Estado = 'C'");
+
+                    String solicitud[] = new String[5];
+                    while (rs.next()) {
+                        solicitud[0] = rs.getString("Nombre");
+                        solicitud[1] = rs.getString("Puesto");
+                        solicitud[2] = rs.getString("Fecha_salida");
+                        solicitud[3] = rs.getString("Fecha_llegada");
+                        solicitud[4] = rs.getString("Lugar");
+                        modelo.addRow(solicitud);
+                    }
+
+                } catch (SQLException ex) {
+                    javax.swing.JOptionPane.showMessageDialog(null, "Error en la consulta");
+
+                } catch (ClassNotFoundException e) {
+                    e.printStackTrace();
+                }//fin del catch
                 break;
             }
         }
@@ -194,6 +293,43 @@ public class VentTablonSolicitud extends javax.swing.JFrame {
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_jButton2ActionPerformed
+
+    private void formWindowActivated(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowActivated
+        // TODO add your handling code here:
+        try {
+            Class.forName("com.mysql.jdbc.Driver");
+            Connection con = DriverManager.getConnection("jdbc:mysql://127.0.0.1:3306/Viaticos", "root", "");
+
+            Statement sentencia = con.createStatement();
+
+            ResultSet rs = sentencia.executeQuery("SELECT Nombre, Puesto, Fecha_salida, Fecha_llegada,Lugar FROM solicitud WHERE Estado = 'P'");
+
+            String solicitud[] = new String[5];
+            while (rs.next()) {
+                solicitud[0] = rs.getString("Nombre");
+                solicitud[1] = rs.getString("Puesto");
+                solicitud[2] = rs.getString("Fecha_salida");
+                solicitud[3] = rs.getString("Fecha_llegada");
+                solicitud[4] = rs.getString("Lugar");
+                modelo.addRow(solicitud);
+            }
+
+        } catch (SQLException ex) {
+            javax.swing.JOptionPane.showMessageDialog(null, "Error en la consulta");
+
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        }//fin del catch
+    }//GEN-LAST:event_formWindowActivated
+
+    private void jlcerrarMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jlcerrarMouseClicked
+        System.exit(0);
+    }//GEN-LAST:event_jlcerrarMouseClicked
+
+    private void jlminiMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jlminiMouseClicked
+
+        setExtendedState(JFrame.CROSSHAIR_CURSOR);
+    }//GEN-LAST:event_jlminiMouseClicked
 
     /**
      * @param args the command line arguments
@@ -244,5 +380,7 @@ public class VentTablonSolicitud extends javax.swing.JFrame {
     private javax.swing.JTable jTable1;
     private javax.swing.JTextField jTextField1;
     private javax.swing.JLabel jlFondo;
+    private javax.swing.JLabel jlcerrar;
+    private javax.swing.JLabel jlmini;
     // End of variables declaration//GEN-END:variables
 }
