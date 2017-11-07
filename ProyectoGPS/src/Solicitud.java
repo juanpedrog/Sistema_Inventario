@@ -8,6 +8,7 @@ import com.itextpdf.text.Document;
 import com.itextpdf.text.DocumentException;
 import com.itextpdf.text.Font;
 import com.itextpdf.text.FontFactory;
+import com.itextpdf.text.Image;
 import com.itextpdf.text.PageSize;
 import com.itextpdf.text.Paragraph;
 import com.itextpdf.text.Rectangle;
@@ -18,6 +19,7 @@ import java.awt.Desktop;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
+import javax.swing.ImageIcon;
 
 /*
  * To change this license header, choose License Headers in Project Properties.
@@ -147,7 +149,7 @@ public class Solicitud extends javax.swing.JFrame {
         lbl_Vehiculo.setText("Vehículo");
         getContentPane().add(lbl_Vehiculo, new org.netbeans.lib.awtextra.AbsoluteConstraints(460, 500, 70, -1));
 
-        cmb_Vehiculo.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        cmb_Vehiculo.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Seleccione el vehículo", "Item 2", "Item 3", "Item 4" }));
         getContentPane().add(cmb_Vehiculo, new org.netbeans.lib.awtextra.AbsoluteConstraints(550, 500, 150, -1));
 
         lbl_Pernoctado.setFont(new java.awt.Font("Arial Black", 0, 14)); // NOI18N
@@ -256,9 +258,14 @@ public class Solicitud extends javax.swing.JFrame {
             verificar_excepcion=true;
             validarDatos(true,"");
             insertar_Solicitud();
+            generarPDF();
         }catch(ExcepcionDatosIncompletos e){
             if(verificar_excepcion)JOptionPane.showMessageDialog(this, e.getMessage());
             return;
+        }catch(DocumentException ex){
+            JOptionPane.showMessageDialog(this, ex.getMessage());
+        }catch(FileNotFoundException es){
+            JOptionPane.showMessageDialog(this, es.getMessage());
         }
         
     }//GEN-LAST:event_btn_OkActionPerformed
@@ -399,75 +406,83 @@ public class Solicitud extends javax.swing.JFrame {
         BaseFont bfNoNegritas=BaseFont.createFont(BaseFont.COURIER,BaseFont.CP1252,BaseFont.NOT_EMBEDDED);
         PdfContentByte cb=writer.getDirectContent();
         cb.setFontAndSize(bf,16);
+        Image image=Image.getInstance("C:\\Users\\Juan Pedro Gil\\Documents\\GitHub\\Sistema_Viaticos\\ProyectoGPS\\src\\Imagenes\\icono.png");
+        document.add(image);
         cb.beginText();
         //Label solicitud de viáticos
         cb.setTextMatrix(250,800);
         cb.showText("Solicitud de viaticos");
         //Label fecha de salida
         cb.setFontAndSize(bfNoNegritas,12);
-        cb.setTextMatrix(50,750);
+        cb.setTextMatrix(50,700);
         cb.showText("Fecha de salida: ");
         //Fecha de salida de la base de datos
         cb.setFontAndSize(bf,12);
         datos=conexion.acceder("select fecha_salida from solicitud where idSolicitud=(select max(idSolicitud) from solicitud);");
-        cb.setTextMatrix(180,750);
+        cb.setTextMatrix(180,700);
         cb.showText(datos.get(0));
         //Label fecha de llegada
-        cb.setTextMatrix(270,750);
+        cb.setTextMatrix(270,700);
         cb.setFontAndSize(bfNoNegritas,12);
         cb.showText("Fecha de llegada: ");
         //Fecha de llegada de la base de datos
         cb.setFontAndSize(bf,12);
         datos=conexion.acceder("select fecha_llegada from solicitud where idSolicitud=(select max(idSolicitud) from solicitud);");
-        cb.setTextMatrix(400,750);
+        cb.setTextMatrix(400,700);
         cb.showText(datos.get(0));
         //Label nombre
         cb.setFontAndSize(bfNoNegritas,12);
-        cb.setTextMatrix(50,700);
+        cb.setTextMatrix(50,650);
         cb.showText("Nombre: ");
         //Nombre base de datos
         cb.setFontAndSize(bf,12);
         datos=conexion.acceder("select nombre from solicitud where idSolicitud=(select max(idSolicitud) from solicitud);");
-        cb.setTextMatrix(130,700);
+        cb.setTextMatrix(130,650);
         cb.showText(datos.get(0));
         //Label lugar
         cb.setFontAndSize(bfNoNegritas,12);
-        cb.setTextMatrix(270,700);
+        cb.setTextMatrix(320,650);
         cb.showText("Lugar: ");
         //Lugar base de datos
         cb.setFontAndSize(bf,12);
         datos=conexion.acceder("select lugar from solicitud where idSolicitud=(select max(idSolicitud) from solicitud);");
-        cb.setTextMatrix(320,700);
+        cb.setTextMatrix(370,650);
         cb.showText(datos.get(0));
         //Label actividad
         cb.setFontAndSize(bfNoNegritas,12);
-        cb.setTextMatrix(50,650);
+        cb.setTextMatrix(50,600);
         cb.showText("Actividad: ");
         //Actividad base de datos
         cb.setFontAndSize(bf,12);
         datos=conexion.acceder("select actividad from solicitud where idSolicitud=(select max(idSolicitud) from solicitud);");
-        cb.setTextMatrix(50,625);
-        cb.showText(datos.get(0));
+        String aux=acomodar_Actividad(datos.get(0),cb,bf,575);
         //Label pernoctado
         cb.setFontAndSize(bfNoNegritas,12);
-        cb.setTextMatrix(50,525);
+        cb.setTextMatrix(50,475);
         cb.showText("Pernoctado: ");
         //Pernoctado base de datos
         cb.setFontAndSize(bf,12);
         datos=conexion.acceder("select pernoctado from solicitud where idSolicitud=(select max(idSolicitud) from solicitud);");
-        cb.setTextMatrix(150,525);
+        cb.setTextMatrix(150,475);
         cb.showText(datos.get(0));
-        datos=conexion.acceder("select pernoctado from solicitud where idSolicitud=(select max(idSolicitud) from solicitud);");
-        if(!datos.get(0).equals("Seleccione vehiculo")){
+        datos=conexion.acceder("select vehiculo from solicitud where idSolicitud=(select max(idSolicitud) from solicitud);");
+        if(!datos.get(0).equals("Seleccione el vehículo")){
             //Label vehiculo
             cb.setFontAndSize(bfNoNegritas,12);
-            cb.setTextMatrix(50,425);
+            cb.setTextMatrix(50,375);
             cb.showText("Vehiculo: ");
             //Vehiculo base de datos
             cb.setFontAndSize(bf,12);
-            cb.setTextMatrix(50,425);
+            cb.setTextMatrix(180,375);
             cb.showText(datos.get(0));
         }
+        //Label V° B°
+        cb.setFontAndSize(bfNoNegritas,12);
+        cb.setTextMatrix(250,275);
+        cb.showText("V° B°");
+        //Label para firmar
+        cb.setTextMatrix(175,225);
+        cb.showText("____________________________");
         cb.endText();
         document.close();
             Desktop.getDesktop().open(f);
@@ -475,6 +490,34 @@ public class Solicitud extends javax.swing.JFrame {
             
         }
     }
+    public String acomodar_Actividad(String cad, PdfContentByte cb,BaseFont f,int renglon){
+        int contador=0;
+        int inicio=0;
+        String aux="";
+        cb.setFontAndSize(f,12);
+        boolean salto=false;
+        for(int i=0;i<cad.length();i++){
+            contador++;
+            if(contador==63 || salto){
+                contador=0;
+                salto=true;
+                if(cad.charAt(i)==' '){
+                    cb.setTextMatrix(50,renglon);
+                    aux=cad.substring(inicio, i);
+                    cb.showText(aux);
+                    salto=false;
+                    inicio=i+1;
+                    renglon-=20;
+                }
+                
+            }
+        }
+        cb.setTextMatrix(50,renglon);
+        aux=cad.substring(inicio, cad.length());
+        cb.showText(aux);
+        return aux;
+    }
+    
     /**
      * @param args the command line arguments
      */
