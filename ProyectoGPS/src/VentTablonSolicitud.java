@@ -87,7 +87,7 @@ public class VentTablonSolicitud extends javax.swing.JFrame {
         });
         getContentPane().add(jlmini, new org.netbeans.lib.awtextra.AbsoluteConstraints(870, 10, 40, 20));
 
-        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Pendientes", "Aceptadas", "Canceladas", " " }));
+        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Pendientes", "Aceptadas", "Canceladas" }));
         jComboBox1.addItemListener(new java.awt.event.ItemListener() {
             public void itemStateChanged(java.awt.event.ItemEvent evt) {
                 jComboBox1ItemStateChanged(evt);
