@@ -301,10 +301,8 @@ public class VentTablonSolicitud extends javax.swing.JFrame {
                 Connection con = DriverManager.getConnection("jdbc:mysql://127.0.0.1:3306/Viaticos", "root", "");
 
                 Statement sentencia = con.createStatement();
-                int idOficioC = Integer.parseInt(javax.swing.JOptionPane.showInputDialog("Asignar ID de Ofiicio de comision"));
                 int folio = Integer.parseInt(javax.swing.JOptionPane.showInputDialog("Asignar folio"));
-                sentencia.execute("INSERT INTO oficio_comision VALUES(" + idOficioC + "," + folio + "," + id + ")");
-                sentencia.execute("INSERT INTO viaticos VALUES(" + idOficioC + "," + 0.00 + "," + idOficioC + ")");
+                sentencia.execute("INSERT INTO oficio_comision VALUES(" + folio + "," + id + ","+0.00+")");
 
                 sentencia.executeUpdate("UPDATE solicitud SET Estado = 'A' WHERE (idSolicitud = '" + id + "')");
 
@@ -340,18 +338,13 @@ public class VentTablonSolicitud extends javax.swing.JFrame {
         int k = jTable1.getSelectedRow();
         if (k >= 0) {
             String folio = jTable1.getValueAt(k, 0).toString();
-            String idOficioC = "";
             try {
                 Class.forName("com.mysql.jdbc.Driver");
                 Connection con = DriverManager.getConnection("jdbc:mysql://127.0.0.1:3306/Viaticos", "root", "");
 
                 Statement sentencia = con.createStatement();
-                ResultSet rs = sentencia.executeQuery("SELECT idOficio_Comision FROM oficio_comision WHERE Folio = '" + folio + "'");
-                while (rs.next()) {
-                    idOficioC = rs.getString("idOficio_Comision");
-                }
                 float monto = Float.parseFloat(javax.swing.JOptionPane.showInputDialog("Asignar monto"));
-                sentencia.executeUpdate("UPDATE viaticos SET Monto = " + monto + "WHERE(Oficio_Comision_idOficio_Comision =" + idOficioC + ")");
+                sentencia.executeUpdate("UPDATE oficio_comision SET Monto = " + monto + "WHERE(Folio =" + folio + ")");
                 javax.swing.JOptionPane.showMessageDialog(null, "Monto Asignado");
 
             } catch (SQLException ex) {
@@ -416,7 +409,7 @@ public class VentTablonSolicitud extends javax.swing.JFrame {
 
             Statement sentencia = con.createStatement();
 
-            ResultSet rs = sentencia.executeQuery("SELECT O.Folio, V.Monto, S.Fecha_salida, S.Fecha_llegada,S.Lugar FROM solicitud S, oficio_comision O, viaticos V WHERE Estado = 'A' AND S.idSolicitud = O.Solicitud_idSolicitud AND O.idOficio_Comision = V.Oficio_Comision_idOficio_Comision");
+            ResultSet rs = sentencia.executeQuery("SELECT O.Folio, O.Monto, S.Fecha_salida, S.Fecha_llegada,S.Lugar FROM solicitud S, oficio_comision O WHERE Estado = 'A' AND S.idSolicitud = O.Solicitud_idSolicitud");
 
             String solicitud[] = new String[5];
             while (rs.next()) {
