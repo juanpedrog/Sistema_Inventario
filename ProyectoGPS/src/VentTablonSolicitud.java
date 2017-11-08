@@ -183,6 +183,7 @@ public class VentTablonSolicitud extends javax.swing.JFrame {
                 jButton5.setVisible(false);
                 jButton6.setVisible(false);
                 SolicitudP();
+                i = 0;
                 break;
             }
             case 1: {
@@ -192,6 +193,7 @@ public class VentTablonSolicitud extends javax.swing.JFrame {
                 jButton5.setVisible(true);
                 jButton6.setVisible(true);
                 SolicitudA();
+                i = 1;
                 break;
             }
             case 2: {
@@ -201,6 +203,7 @@ public class VentTablonSolicitud extends javax.swing.JFrame {
                 jButton5.setVisible(false);
                 jButton6.setVisible(false);
                 SolicitudP();
+                i = 2;
                 break;
             }
         }
@@ -208,28 +211,60 @@ public class VentTablonSolicitud extends javax.swing.JFrame {
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
         // TODO add your handling code here:
-        int i = jTable1.getSelectedRow();
-        if (i >= 0) {
-            String id = jTable1.getValueAt(i, 0).toString();
-            try {
-                Class.forName("com.mysql.jdbc.Driver");
-                Connection con = DriverManager.getConnection("jdbc:mysql://127.0.0.1:3306/Viaticos", "root", "");
+        if (i == 0) {
+            int i = jTable1.getSelectedRow();
+            if (i >= 0) {
+                String id = jTable1.getValueAt(i, 0).toString();
+                try {
+                    Class.forName("com.mysql.jdbc.Driver");
+                    Connection con = DriverManager.getConnection("jdbc:mysql://127.0.0.1:3306/Viaticos", "root", "");
 
-                Statement sentencia = con.createStatement();
+                    Statement sentencia = con.createStatement();
 
-                sentencia.executeUpdate("UPDATE solicitud SET Estado = 'C' WHERE (idUsuario = '"+id+"')");
-                javax.swing.JOptionPane.showMessageDialog(null, "Solicitud cancelada");
-                
+                    sentencia.executeUpdate("UPDATE solicitud SET Estado = 'C' WHERE (idUsuario = '" + id + "')");
+                    javax.swing.JOptionPane.showMessageDialog(null, "Solicitud cancelada");
 
-            } catch (SQLException ex) {
-                javax.swing.JOptionPane.showMessageDialog(null, "Error en la consulta");
+                } catch (SQLException ex) {
+                    javax.swing.JOptionPane.showMessageDialog(null, "Error en la consulta");
 
-            } catch (ClassNotFoundException e) {
-                e.printStackTrace();
-            }//fin del catch
-            SolicitudP();
+                } catch (ClassNotFoundException e) {
+                    e.printStackTrace();
+                }//fin del catch
+                SolicitudP();
+            } else {
+                javax.swing.JOptionPane.showMessageDialog(null, "Seleccionar solicitud");
+            }
         } else {
-            javax.swing.JOptionPane.showMessageDialog(null, "Seleccionar solicitud");
+            int i = jTable1.getSelectedRow();
+            if (i >= 0) {
+                String folio = jTable1.getValueAt(i, 0).toString();
+                String idSolicitud = "";
+                String idOficioC = "";
+                try {
+                    Class.forName("com.mysql.jdbc.Driver");
+                    Connection con = DriverManager.getConnection("jdbc:mysql://127.0.0.1:3306/Viaticos", "root", "");
+
+                    Statement sentencia = con.createStatement();
+                    ResultSet rs = sentencia.executeQuery("SELECT Solicitud_idSolicitud, idOficio_Comision FROM oficio_comisionos WHERE Folio = '" + folio + "'");
+                    while (rs.next()) {
+                        idSolicitud = rs.getString("Solicitud_idSolicitud");
+                        idOficioC = rs.getString("idOficio_Comision");
+                    }
+                    sentencia.executeQuery("DELETE FROM viaticos WHERE(Oficio_Comision_idOficio_Comision = '" + idOficioC + "')");
+                    sentencia.executeQuery("DELETE FROM oficio_comision WHERE(Folio = '" + folio + "')");
+                    sentencia.executeUpdate("UPDATE solicitud SET Estado = 'C' WHERE (idUsuario = '" + idSolicitud + "')");
+                    javax.swing.JOptionPane.showMessageDialog(null, "Solicitud cancelada");
+
+                } catch (SQLException ex) {
+                    javax.swing.JOptionPane.showMessageDialog(null, "Error en la consulta");
+
+                } catch (ClassNotFoundException e) {
+                    e.printStackTrace();
+                }//fin del catch
+                SolicitudA();
+            } else {
+                javax.swing.JOptionPane.showMessageDialog(null, "Seleccionar solicitud");
+            }
         }
     }//GEN-LAST:event_jButton2ActionPerformed
 
@@ -272,29 +307,35 @@ public class VentTablonSolicitud extends javax.swing.JFrame {
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         // TODO add your handling code here:
-        int i = jTable1.getSelectedRow();
-        if (i >= 0) {
-            String id = jTable1.getValueAt(i, 0).toString();
+
+        int k = jTable1.getSelectedRow();
+        if (k >= 0) {
+            String id = jTable1.getValueAt(k, 0).toString();
             try {
                 Class.forName("com.mysql.jdbc.Driver");
                 Connection con = DriverManager.getConnection("jdbc:mysql://127.0.0.1:3306/Viaticos", "root", "");
 
                 Statement sentencia = con.createStatement();
 
-                sentencia.executeUpdate("UPDATE solicitud SET Estado = 'A' WHERE (idUsuario = '"+id+"')");
+                sentencia.executeUpdate("UPDATE solicitud SET Estado = 'A' WHERE (idUsuario = '" + id + "')");
                 javax.swing.JOptionPane.showMessageDialog(null, "Solicitud aceptada");
-                
-
+                if (i == 0) {
+                    SolicitudP();
+                } else {
+                    SolicitudC();
+                }
             } catch (SQLException ex) {
                 javax.swing.JOptionPane.showMessageDialog(null, "Error en la consulta");
 
             } catch (ClassNotFoundException e) {
                 e.printStackTrace();
             }//fin del catch
-            SolicitudP();
+
         } else {
             javax.swing.JOptionPane.showMessageDialog(null, "Seleccionar solicitud");
         }
+
+        SolicitudP();
     }//GEN-LAST:event_jButton1ActionPerformed
 
     public void SolicitudA() {
