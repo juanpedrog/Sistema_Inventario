@@ -245,18 +245,15 @@ public class VentTablonSolicitud extends javax.swing.JFrame {
             if (i >= 0) {
                 String folio = jTable1.getValueAt(i, 0).toString();
                 String idSolicitud = "";
-                String idOficioC = "";
                 try {
                     Class.forName("com.mysql.jdbc.Driver");
                     Connection con = DriverManager.getConnection("jdbc:mysql://127.0.0.1:3306/Viaticos", "root", "");
 
                     Statement sentencia = con.createStatement();
-                    ResultSet rs = sentencia.executeQuery("SELECT Solicitud_idSolicitud, idOficio_Comision FROM oficio_comision WHERE Folio = '" + folio + "'");
+                    ResultSet rs = sentencia.executeQuery("SELECT Solicitud_idSolicitud FROM oficio_comision WHERE Folio = '" + folio + "'");
                     while (rs.next()) {
                         idSolicitud = rs.getString("Solicitud_idSolicitud");
-                        idOficioC = rs.getString("idOficio_Comision");
                     }
-                    sentencia.execute("DELETE FROM viaticos WHERE (Oficio_Comision_idOficio_Comision = " + idOficioC+")");
                     sentencia.execute("DELETE FROM oficio_comision WHERE (Folio = " + folio+")");
                     sentencia.executeUpdate("UPDATE solicitud SET Estado = 'C' WHERE (idSolicitud = " + idSolicitud+")");
                     javax.swing.JOptionPane.showMessageDialog(null, "Solicitud cancelada");
