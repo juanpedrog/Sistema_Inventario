@@ -30,6 +30,7 @@ public class VentTablonSolicitud extends javax.swing.JFrame {
         jButton5.setVisible(false);
         jButton6.setVisible(false);
         modelo = new DefaultTableModel();
+        modelo.addColumn("ID");
         modelo.addColumn("Nombre");
         modelo.addColumn("Puesto");
         modelo.addColumn("Fecha de salida");
@@ -95,6 +96,11 @@ public class VentTablonSolicitud extends javax.swing.JFrame {
         getContentPane().add(jComboBox1, new org.netbeans.lib.awtextra.AbsoluteConstraints(470, 190, 120, -1));
 
         jButton1.setText("ACEPTAR");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
         getContentPane().add(jButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 410, 90, -1));
 
         jButton3.setText("ASIGNAR MONTO");
@@ -176,37 +182,7 @@ public class VentTablonSolicitud extends javax.swing.JFrame {
                 jButton1.setVisible(true);
                 jButton5.setVisible(false);
                 jButton6.setVisible(false);
-                modelo = new DefaultTableModel();
-                modelo.addColumn("Nombre");
-                modelo.addColumn("Puesto");
-                modelo.addColumn("Fecha de salida");
-                modelo.addColumn("Fecha de llegada");
-                modelo.addColumn("Lugar");
-                this.jTable1.setModel(modelo);
-                try {
-                    Class.forName("com.mysql.jdbc.Driver");
-                    Connection con = DriverManager.getConnection("jdbc:mysql://127.0.0.1:3306/Viaticos", "root", "");
-
-                    Statement sentencia = con.createStatement();
-
-                    ResultSet rs = sentencia.executeQuery("SELECT Nombre, Puesto, Fecha_salida, Fecha_llegada,Lugar FROM solicitud WHERE Estado = 'P'");
-
-                    String solicitud[] = new String[5];
-                    while (rs.next()) {
-                        solicitud[0] = rs.getString("Nombre");
-                        solicitud[1] = rs.getString("Puesto");
-                        solicitud[2] = rs.getString("Fecha_salida");
-                        solicitud[3] = rs.getString("Fecha_llegada");
-                        solicitud[4] = rs.getString("Lugar");
-                        modelo.addRow(solicitud);
-                    }
-
-                } catch (SQLException ex) {
-                    javax.swing.JOptionPane.showMessageDialog(null, "Error en la consulta");
-
-                } catch (ClassNotFoundException e) {
-                    e.printStackTrace();
-                }//fin del catch
+                SolicitudP();
                 break;
             }
             case 1: {
@@ -215,37 +191,7 @@ public class VentTablonSolicitud extends javax.swing.JFrame {
                 jButton2.setVisible(true);
                 jButton5.setVisible(true);
                 jButton6.setVisible(true);
-                modelo = new DefaultTableModel();
-                modelo.addColumn("Folio");
-                modelo.addColumn("Monto");
-                modelo.addColumn("Fecha de salida");
-                modelo.addColumn("Fecha de llegada");
-                modelo.addColumn("Lugar");
-                this.jTable1.setModel(modelo);
-                try {
-                    Class.forName("com.mysql.jdbc.Driver");
-                    Connection con = DriverManager.getConnection("jdbc:mysql://127.0.0.1:3306/Viaticos", "root", "");
-
-                    Statement sentencia = con.createStatement();
-
-                    ResultSet rs = sentencia.executeQuery("SELECT O.Folio, V.Monto, S.Fecha_salida, S.Fecha_llegada,S.Lugar FROM solicitud S, oficio_comision O, viaticos V WHERE Estado = 'A' AND S.idSolicitud = O.Solicitud_idSolicitud AND O.idOficio_Comision = V.Oficio_Comision_idOficio_Comision");
-
-                    String solicitud[] = new String[5];
-                    while (rs.next()) {
-                        solicitud[0] = rs.getString("Folio");
-                        solicitud[1] = rs.getString("Monto");
-                        solicitud[2] = rs.getString("Fecha_salida");
-                        solicitud[3] = rs.getString("Fecha_llegada");
-                        solicitud[4] = rs.getString("Lugar");
-                        modelo.addRow(solicitud);
-                    }
-
-                } catch (SQLException ex) {
-                    javax.swing.JOptionPane.showMessageDialog(null, "Error en la consulta");
-
-                } catch (ClassNotFoundException e) {
-                    e.printStackTrace();
-                }//fin del catch
+                SolicitudA();
                 break;
             }
             case 2: {
@@ -254,37 +200,7 @@ public class VentTablonSolicitud extends javax.swing.JFrame {
                 jButton1.setVisible(true);
                 jButton5.setVisible(false);
                 jButton6.setVisible(false);
-                modelo = new DefaultTableModel();
-                modelo.addColumn("Nombre");
-                modelo.addColumn("Puesto");
-                modelo.addColumn("Fecha de salida");
-                modelo.addColumn("Fecha de llegada");
-                modelo.addColumn("Lugar");
-                this.jTable1.setModel(modelo);
-                try {
-                    Class.forName("com.mysql.jdbc.Driver");
-                    Connection con = DriverManager.getConnection("jdbc:mysql://127.0.0.1:3306/Viaticos", "root", "");
-
-                    Statement sentencia = con.createStatement();
-
-                    ResultSet rs = sentencia.executeQuery("SELECT Nombre, Puesto, Fecha_salida, Fecha_llegada,Lugar FROM solicitud WHERE Estado = 'C'");
-
-                    String solicitud[] = new String[5];
-                    while (rs.next()) {
-                        solicitud[0] = rs.getString("Nombre");
-                        solicitud[1] = rs.getString("Puesto");
-                        solicitud[2] = rs.getString("Fecha_salida");
-                        solicitud[3] = rs.getString("Fecha_llegada");
-                        solicitud[4] = rs.getString("Lugar");
-                        modelo.addRow(solicitud);
-                    }
-
-                } catch (SQLException ex) {
-                    javax.swing.JOptionPane.showMessageDialog(null, "Error en la consulta");
-
-                } catch (ClassNotFoundException e) {
-                    e.printStackTrace();
-                }//fin del catch
+                SolicitudP();
                 break;
             }
         }
@@ -292,6 +208,29 @@ public class VentTablonSolicitud extends javax.swing.JFrame {
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
         // TODO add your handling code here:
+        int i = jTable1.getSelectedRow();
+        if (i >= 0) {
+            String id = jTable1.getValueAt(i, 0).toString();
+            try {
+                Class.forName("com.mysql.jdbc.Driver");
+                Connection con = DriverManager.getConnection("jdbc:mysql://127.0.0.1:3306/Viaticos", "root", "");
+
+                Statement sentencia = con.createStatement();
+
+                sentencia.executeUpdate("UPDATE solicitud SET Estado = 'C' WHERE (idUsuario = '"+id+"')");
+                javax.swing.JOptionPane.showMessageDialog(null, "Solicitud cancelada");
+                
+
+            } catch (SQLException ex) {
+                javax.swing.JOptionPane.showMessageDialog(null, "Error en la consulta");
+
+            } catch (ClassNotFoundException e) {
+                e.printStackTrace();
+            }//fin del catch
+            SolicitudP();
+        } else {
+            javax.swing.JOptionPane.showMessageDialog(null, "Seleccionar solicitud");
+        }
     }//GEN-LAST:event_jButton2ActionPerformed
 
     private void formWindowActivated(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowActivated
@@ -330,6 +269,139 @@ public class VentTablonSolicitud extends javax.swing.JFrame {
 
         setExtendedState(JFrame.CROSSHAIR_CURSOR);
     }//GEN-LAST:event_jlminiMouseClicked
+
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        // TODO add your handling code here:
+        int i = jTable1.getSelectedRow();
+        if (i >= 0) {
+            String id = jTable1.getValueAt(i, 0).toString();
+            try {
+                Class.forName("com.mysql.jdbc.Driver");
+                Connection con = DriverManager.getConnection("jdbc:mysql://127.0.0.1:3306/Viaticos", "root", "");
+
+                Statement sentencia = con.createStatement();
+
+                sentencia.executeUpdate("UPDATE solicitud SET Estado = 'A' WHERE (idUsuario = '"+id+"')");
+                javax.swing.JOptionPane.showMessageDialog(null, "Solicitud aceptada");
+                
+
+            } catch (SQLException ex) {
+                javax.swing.JOptionPane.showMessageDialog(null, "Error en la consulta");
+
+            } catch (ClassNotFoundException e) {
+                e.printStackTrace();
+            }//fin del catch
+            SolicitudP();
+        } else {
+            javax.swing.JOptionPane.showMessageDialog(null, "Seleccionar solicitud");
+        }
+    }//GEN-LAST:event_jButton1ActionPerformed
+
+    public void SolicitudA() {
+        modelo = new DefaultTableModel();
+        modelo.addColumn("Folio");
+        modelo.addColumn("Monto");
+        modelo.addColumn("Fecha de salida");
+        modelo.addColumn("Fecha de llegada");
+        modelo.addColumn("Lugar");
+        this.jTable1.setModel(modelo);
+        try {
+            Class.forName("com.mysql.jdbc.Driver");
+            Connection con = DriverManager.getConnection("jdbc:mysql://127.0.0.1:3306/Viaticos", "root", "");
+
+            Statement sentencia = con.createStatement();
+
+            ResultSet rs = sentencia.executeQuery("SELECT O.Folio, V.Monto, S.Fecha_salida, S.Fecha_llegada,S.Lugar FROM solicitud S, oficio_comision O, viaticos V WHERE Estado = 'A' AND S.idSolicitud = O.Solicitud_idSolicitud AND O.idOficio_Comision = V.Oficio_Comision_idOficio_Comision");
+
+            String solicitud[] = new String[5];
+            while (rs.next()) {
+                solicitud[0] = rs.getString("Folio");
+                solicitud[1] = rs.getString("Monto");
+                solicitud[2] = rs.getString("Fecha_salida");
+                solicitud[3] = rs.getString("Fecha_llegada");
+                solicitud[4] = rs.getString("Lugar");
+                modelo.addRow(solicitud);
+            }
+
+        } catch (SQLException ex) {
+            javax.swing.JOptionPane.showMessageDialog(null, "Error en la consulta");
+
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        }//fin del catch
+    }
+
+    public void SolicitudC() {
+        modelo = new DefaultTableModel();
+        modelo.addColumn("ID");
+        modelo.addColumn("Nombre");
+        modelo.addColumn("Puesto");
+        modelo.addColumn("Fecha de salida");
+        modelo.addColumn("Fecha de llegada");
+        modelo.addColumn("Lugar");
+        this.jTable1.setModel(modelo);
+        try {
+            Class.forName("com.mysql.jdbc.Driver");
+            Connection con = DriverManager.getConnection("jdbc:mysql://127.0.0.1:3306/Viaticos", "root", "");
+
+            Statement sentencia = con.createStatement();
+
+            ResultSet rs = sentencia.executeQuery("SELECT idSolicitud, Nombre, Puesto, Fecha_salida, Fecha_llegada,Lugar FROM solicitud WHERE Estado = 'C'");
+
+            String solicitud[] = new String[6];
+            while (rs.next()) {
+                solicitud[0] = rs.getString("idSolicitud");
+                solicitud[1] = rs.getString("Nombre");
+                solicitud[2] = rs.getString("Puesto");
+                solicitud[3] = rs.getString("Fecha_salida");
+                solicitud[4] = rs.getString("Fecha_llegada");
+                solicitud[5] = rs.getString("Lugar");
+                modelo.addRow(solicitud);
+            }
+
+        } catch (SQLException ex) {
+            javax.swing.JOptionPane.showMessageDialog(null, "Error en la consulta");
+
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        }//fin del catch
+    }
+
+    public void SolicitudP() {
+        modelo = new DefaultTableModel();
+        modelo.addColumn("ID");
+        modelo.addColumn("Nombre");
+        modelo.addColumn("Puesto");
+        modelo.addColumn("Fecha de salida");
+        modelo.addColumn("Fecha de llegada");
+        modelo.addColumn("Lugar");
+        this.jTable1.setModel(modelo);
+        try {
+            Class.forName("com.mysql.jdbc.Driver");
+            Connection con = DriverManager.getConnection("jdbc:mysql://127.0.0.1:3306/Viaticos", "root", "");
+
+            Statement sentencia = con.createStatement();
+
+            ResultSet rs = sentencia.executeQuery("SELECT idSolicitud, Nombre, Puesto, Fecha_salida, Fecha_llegada,Lugar FROM solicitud WHERE Estado = 'P'");
+
+            String solicitud[] = new String[6];
+            while (rs.next()) {
+                solicitud[0] = rs.getString("idSolicitud");
+                solicitud[1] = rs.getString("Nombre");
+                solicitud[2] = rs.getString("Puesto");
+                solicitud[3] = rs.getString("Fecha_salida");
+                solicitud[4] = rs.getString("Fecha_llegada");
+                solicitud[5] = rs.getString("Lugar");
+                modelo.addRow(solicitud);
+            }
+
+        } catch (SQLException ex) {
+            javax.swing.JOptionPane.showMessageDialog(null, "Error en la consulta");
+
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        }//fin del catch
+    }
 
     /**
      * @param args the command line arguments
