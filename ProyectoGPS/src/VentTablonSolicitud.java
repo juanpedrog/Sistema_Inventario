@@ -104,6 +104,11 @@ public class VentTablonSolicitud extends javax.swing.JFrame {
         getContentPane().add(jButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 410, 90, -1));
 
         jButton3.setText("ASIGNAR MONTO");
+        jButton3.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton3ActionPerformed(evt);
+            }
+        });
         getContentPane().add(jButton3, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 410, -1, -1));
 
         jButton2.setText("CANCELAR");
@@ -221,7 +226,7 @@ public class VentTablonSolicitud extends javax.swing.JFrame {
 
                     Statement sentencia = con.createStatement();
 
-                    sentencia.executeUpdate("UPDATE solicitud SET Estado = 'C' WHERE (idUsuario = '" + id + "')");
+                    sentencia.executeUpdate("UPDATE solicitud SET Estado = 'C' WHERE (idSolicitud = '" + id + "')");
                     javax.swing.JOptionPane.showMessageDialog(null, "Solicitud cancelada");
 
                 } catch (SQLException ex) {
@@ -317,7 +322,9 @@ public class VentTablonSolicitud extends javax.swing.JFrame {
 
                 Statement sentencia = con.createStatement();
 
-                sentencia.executeUpdate("UPDATE solicitud SET Estado = 'A' WHERE (idUsuario = '" + id + "')");
+                sentencia.executeUpdate("UPDATE solicitud SET Estado = 'A' WHERE (idSolicitud = '" + id + "')");
+                String folio = javax.swing.JOptionPane.showInputDialog("Asignar folio");
+                sentencia.executeQuery("INSERT INTO oficio_comision(Folio,Solicitud_idSolicitud) VALUES(" + folio + "," + id + ")");
                 javax.swing.JOptionPane.showMessageDialog(null, "Solicitud aceptada");
                 if (i == 0) {
                     SolicitudP();
@@ -334,9 +341,39 @@ public class VentTablonSolicitud extends javax.swing.JFrame {
         } else {
             javax.swing.JOptionPane.showMessageDialog(null, "Seleccionar solicitud");
         }
-
-        SolicitudP();
     }//GEN-LAST:event_jButton1ActionPerformed
+
+    private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
+        // TODO add your handling code here:
+        int k = jTable1.getSelectedRow();
+        if (k >= 0) {
+            String folio = jTable1.getValueAt(k, 0).toString();
+            String idOficioC = "";
+            try {
+                Class.forName("com.mysql.jdbc.Driver");
+                Connection con = DriverManager.getConnection("jdbc:mysql://127.0.0.1:3306/Viaticos", "root", "");
+
+                Statement sentencia = con.createStatement();
+                ResultSet rs = sentencia.executeQuery("SELECT idOficio_Comision FROM oficio_comisionos WHERE Folio = '" + folio + "'");
+                while (rs.next()) {
+                    idOficioC = rs.getString("idOficio_Comision");
+                }
+                float monto = Float.parseFloat(javax.swing.JOptionPane.showInputDialog("Asignar monto"));
+                sentencia.executeQuery("INSERT INTO viaticos(Monto,Oficio_Comision_idOficio_Comision) VALUES(" + monto + "," + idOficioC + ")");
+                javax.swing.JOptionPane.showMessageDialog(null, "Monto Asignado");
+                SolicitudA();
+
+            } catch (SQLException ex) {
+                javax.swing.JOptionPane.showMessageDialog(null, "Error en la consulta");
+
+            } catch (ClassNotFoundException e) {
+                e.printStackTrace();
+            }//fin del catch
+
+        } else {
+            javax.swing.JOptionPane.showMessageDialog(null, "Seleccionar solicitud");
+        }
+    }//GEN-LAST:event_jButton3ActionPerformed
 
     public void SolicitudA() {
         modelo = new DefaultTableModel();
