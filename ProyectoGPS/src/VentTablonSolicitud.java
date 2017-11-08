@@ -67,8 +67,8 @@ public class VentTablonSolicitud extends javax.swing.JFrame {
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setUndecorated(true);
         addWindowListener(new java.awt.event.WindowAdapter() {
-            public void windowActivated(java.awt.event.WindowEvent evt) {
-                formWindowActivated(evt);
+            public void windowOpened(java.awt.event.WindowEvent evt) {
+                formWindowOpened(evt);
             }
         });
         getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
@@ -207,7 +207,7 @@ public class VentTablonSolicitud extends javax.swing.JFrame {
                 jButton1.setVisible(true);
                 jButton5.setVisible(false);
                 jButton6.setVisible(false);
-                SolicitudP();
+                SolicitudC();
                 i = 2;
                 break;
             }
@@ -235,10 +235,11 @@ public class VentTablonSolicitud extends javax.swing.JFrame {
                 } catch (ClassNotFoundException e) {
                     e.printStackTrace();
                 }//fin del catch
-                SolicitudP();
+                
             } else {
                 javax.swing.JOptionPane.showMessageDialog(null, "Seleccionar solicitud");
             }
+            SolicitudP();
         } else {
             int i = jTable1.getSelectedRow();
             if (i >= 0) {
@@ -250,14 +251,14 @@ public class VentTablonSolicitud extends javax.swing.JFrame {
                     Connection con = DriverManager.getConnection("jdbc:mysql://127.0.0.1:3306/Viaticos", "root", "");
 
                     Statement sentencia = con.createStatement();
-                    ResultSet rs = sentencia.executeQuery("SELECT Solicitud_idSolicitud, idOficio_Comision FROM oficio_comisionos WHERE Folio = '" + folio + "'");
+                    ResultSet rs = sentencia.executeQuery("SELECT Solicitud_idSolicitud, idOficio_Comision FROM oficio_comision WHERE Folio = '" + folio + "'");
                     while (rs.next()) {
                         idSolicitud = rs.getString("Solicitud_idSolicitud");
                         idOficioC = rs.getString("idOficio_Comision");
                     }
-                    sentencia.executeQuery("DELETE FROM viaticos WHERE(Oficio_Comision_idOficio_Comision = '" + idOficioC + "')");
-                    sentencia.executeQuery("DELETE FROM oficio_comision WHERE(Folio = '" + folio + "')");
-                    sentencia.executeUpdate("UPDATE solicitud SET Estado = 'C' WHERE (idUsuario = '" + idSolicitud + "')");
+                    sentencia.execute("DELETE FROM viaticos WHERE (Oficio_Comision_idOficio_Comision = " + idOficioC+")");
+                    sentencia.execute("DELETE FROM oficio_comision WHERE (Folio = " + folio+")");
+                    sentencia.executeUpdate("UPDATE solicitud SET Estado = 'C' WHERE (idSolicitud = " + idSolicitud+")");
                     javax.swing.JOptionPane.showMessageDialog(null, "Solicitud cancelada");
 
                 } catch (SQLException ex) {
@@ -266,40 +267,19 @@ public class VentTablonSolicitud extends javax.swing.JFrame {
                 } catch (ClassNotFoundException e) {
                     e.printStackTrace();
                 }//fin del catch
-                SolicitudA();
+
             } else {
                 javax.swing.JOptionPane.showMessageDialog(null, "Seleccionar solicitud");
             }
+            int filas = jTable1.getRowCount();
+            if (filas != 0) {
+                for (int j = 0; filas > j; j++) {
+                    modelo.removeRow(0);
+                }
+            }
+            SolicitudA();
         }
     }//GEN-LAST:event_jButton2ActionPerformed
-
-    private void formWindowActivated(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowActivated
-        // TODO add your handling code here:
-        try {
-            Class.forName("com.mysql.jdbc.Driver");
-            Connection con = DriverManager.getConnection("jdbc:mysql://127.0.0.1:3306/Viaticos", "root", "");
-
-            Statement sentencia = con.createStatement();
-
-            ResultSet rs = sentencia.executeQuery("SELECT Nombre, Puesto, Fecha_salida, Fecha_llegada,Lugar FROM solicitud WHERE Estado = 'P'");
-
-            String solicitud[] = new String[5];
-            while (rs.next()) {
-                solicitud[0] = rs.getString("Nombre");
-                solicitud[1] = rs.getString("Puesto");
-                solicitud[2] = rs.getString("Fecha_salida");
-                solicitud[3] = rs.getString("Fecha_llegada");
-                solicitud[4] = rs.getString("Lugar");
-                modelo.addRow(solicitud);
-            }
-
-        } catch (SQLException ex) {
-            javax.swing.JOptionPane.showMessageDialog(null, "Error en la consulta");
-
-        } catch (ClassNotFoundException e) {
-            e.printStackTrace();
-        }//fin del catch
-    }//GEN-LAST:event_formWindowActivated
 
     private void jlcerrarMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jlcerrarMouseClicked
         System.exit(0);
@@ -312,25 +292,24 @@ public class VentTablonSolicitud extends javax.swing.JFrame {
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         // TODO add your handling code here:
-
         int k = jTable1.getSelectedRow();
         if (k >= 0) {
-            String id = jTable1.getValueAt(k, 0).toString();
+            int id = Integer.parseInt(jTable1.getValueAt(k, 0).toString());
+
             try {
                 Class.forName("com.mysql.jdbc.Driver");
                 Connection con = DriverManager.getConnection("jdbc:mysql://127.0.0.1:3306/Viaticos", "root", "");
 
                 Statement sentencia = con.createStatement();
+                int idOficioC = Integer.parseInt(javax.swing.JOptionPane.showInputDialog("Asignar ID de Ofiicio de comision"));
+                int folio = Integer.parseInt(javax.swing.JOptionPane.showInputDialog("Asignar folio"));
+                sentencia.execute("INSERT INTO oficio_comision VALUES(" + idOficioC + "," + folio + "," + id + ")");
+                sentencia.execute("INSERT INTO viaticos VALUES(" + idOficioC + "," + 0.00 + "," + idOficioC + ")");
 
                 sentencia.executeUpdate("UPDATE solicitud SET Estado = 'A' WHERE (idSolicitud = '" + id + "')");
-                String folio = javax.swing.JOptionPane.showInputDialog("Asignar folio");
-                sentencia.executeQuery("INSERT INTO oficio_comision(Folio,Solicitud_idSolicitud) VALUES(" + folio + "," + id + ")");
+
                 javax.swing.JOptionPane.showMessageDialog(null, "Solicitud aceptada");
-                if (i == 0) {
-                    SolicitudP();
-                } else {
-                    SolicitudC();
-                }
+
             } catch (SQLException ex) {
                 javax.swing.JOptionPane.showMessageDialog(null, "Error en la consulta");
 
@@ -340,6 +319,19 @@ public class VentTablonSolicitud extends javax.swing.JFrame {
 
         } else {
             javax.swing.JOptionPane.showMessageDialog(null, "Seleccionar solicitud");
+        }
+        int filas = jTable1.getRowCount();
+        if (filas != 0) {
+            for (int j = 0; filas > j; j++) {
+                modelo.removeRow(0);
+
+            }
+
+        }
+        if (i == 0) {
+            SolicitudP();
+        } else {
+            SolicitudC();
         }
     }//GEN-LAST:event_jButton1ActionPerformed
 
@@ -354,14 +346,13 @@ public class VentTablonSolicitud extends javax.swing.JFrame {
                 Connection con = DriverManager.getConnection("jdbc:mysql://127.0.0.1:3306/Viaticos", "root", "");
 
                 Statement sentencia = con.createStatement();
-                ResultSet rs = sentencia.executeQuery("SELECT idOficio_Comision FROM oficio_comisionos WHERE Folio = '" + folio + "'");
+                ResultSet rs = sentencia.executeQuery("SELECT idOficio_Comision FROM oficio_comision WHERE Folio = '" + folio + "'");
                 while (rs.next()) {
                     idOficioC = rs.getString("idOficio_Comision");
                 }
                 float monto = Float.parseFloat(javax.swing.JOptionPane.showInputDialog("Asignar monto"));
-                sentencia.executeQuery("INSERT INTO viaticos(Monto,Oficio_Comision_idOficio_Comision) VALUES(" + monto + "," + idOficioC + ")");
+                sentencia.executeUpdate("UPDATE viaticos SET Monto = " + monto + "WHERE(Oficio_Comision_idOficio_Comision =" + idOficioC + ")");
                 javax.swing.JOptionPane.showMessageDialog(null, "Monto Asignado");
-                SolicitudA();
 
             } catch (SQLException ex) {
                 javax.swing.JOptionPane.showMessageDialog(null, "Error en la consulta");
@@ -373,7 +364,43 @@ public class VentTablonSolicitud extends javax.swing.JFrame {
         } else {
             javax.swing.JOptionPane.showMessageDialog(null, "Seleccionar solicitud");
         }
+        int filas = jTable1.getRowCount();
+        if (filas != 0) {
+            for (int j = 0; filas > j; j++) {
+                modelo.removeRow(0);
+            }
+        }
+        SolicitudA();
     }//GEN-LAST:event_jButton3ActionPerformed
+
+    private void formWindowOpened(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowOpened
+        // TODO add your handling code here:
+        try {
+            Class.forName("com.mysql.jdbc.Driver");
+            Connection con = DriverManager.getConnection("jdbc:mysql://127.0.0.1:3306/Viaticos", "root", "");
+
+            Statement sentencia = con.createStatement();
+
+            ResultSet rs = sentencia.executeQuery("SELECT idSolicitud,Nombre, Puesto, Fecha_salida, Fecha_llegada,Lugar FROM solicitud WHERE Estado = 'P'");
+
+            String solicitud[] = new String[6];
+            while (rs.next()) {
+                solicitud[0] = rs.getString("idSolicitud");
+                solicitud[1] = rs.getString("Nombre");
+                solicitud[2] = rs.getString("Puesto");
+                solicitud[3] = rs.getString("Fecha_salida");
+                solicitud[4] = rs.getString("Fecha_llegada");
+                solicitud[5] = rs.getString("Lugar");
+                modelo.addRow(solicitud);
+            }
+
+        } catch (SQLException ex) {
+            javax.swing.JOptionPane.showMessageDialog(null, "Error en la consulta");
+
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        }//fin del catch
+    }//GEN-LAST:event_formWindowOpened
 
     public void SolicitudA() {
         modelo = new DefaultTableModel();
