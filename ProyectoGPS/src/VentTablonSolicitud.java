@@ -17,7 +17,7 @@ import javax.swing.table.DefaultTableModel;
  * @author DenisseYEA
  */
 public class VentTablonSolicitud extends javax.swing.JFrame {
-
+    SolicitudView s;
     int posx, posy, i;
     DefaultTableModel modelo;
 
@@ -120,6 +120,11 @@ public class VentTablonSolicitud extends javax.swing.JFrame {
         getContentPane().add(jButton2, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 470, -1, -1));
 
         jButton4.setText("CONSULTAR");
+        jButton4.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton4ActionPerformed(evt);
+            }
+        });
         getContentPane().add(jButton4, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 340, -1, -1));
         getContentPane().add(jTextField1, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 280, 130, -1));
 
@@ -391,6 +396,12 @@ public class VentTablonSolicitud extends javax.swing.JFrame {
             e.printStackTrace();
         }//fin del catch
     }//GEN-LAST:event_formWindowOpened
+
+    private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
+        // TODO add your handling code here:
+        s = new SolicitudView();
+        s.setVisible(true);
+    }//GEN-LAST:event_jButton4ActionPerformed
 
     public void SolicitudA() {
         modelo = new DefaultTableModel();

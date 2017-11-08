@@ -53,6 +53,8 @@ public class SolicitudView extends javax.swing.JFrame {
         Fondo = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setUndecorated(true);
+        setPreferredSize(new java.awt.Dimension(960, 550));
         getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
         getContentPane().add(jRadioButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(760, 320, -1, -1));
         getContentPane().add(jTextField3, new org.netbeans.lib.awtextra.AbsoluteConstraints(540, 500, 340, -1));
@@ -125,7 +127,7 @@ public class SolicitudView extends javax.swing.JFrame {
 
     private void btn_CerrarMouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btn_CerrarMouseReleased
         // TODO add your handling code here:
-        System.exit(1);
+        this.setVisible(false);
     }//GEN-LAST:event_btn_CerrarMouseReleased
 
     private void jLabel1MouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel1MouseReleased
