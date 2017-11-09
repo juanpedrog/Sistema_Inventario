@@ -1,4 +1,9 @@
 
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
 import javax.swing.JFrame;
 
 /*
@@ -12,7 +17,8 @@ import javax.swing.JFrame;
  * @author DenisseYEA
  */
 public class SolicitudView extends javax.swing.JFrame {
-
+    
+    int id;
     /**
      * Creates new form SolicitudView
      */
@@ -55,6 +61,11 @@ public class SolicitudView extends javax.swing.JFrame {
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setUndecorated(true);
         setPreferredSize(new java.awt.Dimension(960, 550));
+        addWindowListener(new java.awt.event.WindowAdapter() {
+            public void windowActivated(java.awt.event.WindowEvent evt) {
+                formWindowActivated(evt);
+            }
+        });
         getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
         getContentPane().add(jRadioButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(760, 320, -1, -1));
         getContentPane().add(jTextField3, new org.netbeans.lib.awtextra.AbsoluteConstraints(540, 500, 340, -1));
@@ -135,6 +146,43 @@ public class SolicitudView extends javax.swing.JFrame {
         setExtendedState(JFrame.CROSSHAIR_CURSOR);
     }//GEN-LAST:event_jLabel1MouseReleased
 
+    private void formWindowActivated(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowActivated
+        // TODO add your handling code here:
+        try {
+            Class.forName("com.mysql.jdbc.Driver");
+            Connection con = DriverManager.getConnection("jdbc:mysql://127.0.0.1:3306/Viaticos", "root", "");
+
+            Statement sentencia = con.createStatement();
+
+            ResultSet rs = sentencia.executeQuery("SELECT * FROM solicitud WHERE idSolicitud = " + id);
+
+            while (rs.next()) {
+                txt_Nombre.setText(rs.getString("Nombre"));
+                txt_Puesto.setText(rs.getString("Puesto"));
+                jTextField1.setText(rs.getString("Fecha_salida"));
+                jTextField2.setText(rs.getString("Fecha_llegada"));
+                txt_Lugar.setText(rs.getString("Lugar"));
+                txt_Actividad.setText(rs.getString("Actividad"));
+                jTextField3.setText("Vehiculo");
+                String p = rs.getString("Pernotado");
+                if (p == "1") {
+                    jRadioButton1.setSelected(true);
+                } else {
+                    jRadioButton1.setSelected(true);
+                }
+            }
+
+        } catch (SQLException ex) {
+            javax.swing.JOptionPane.showMessageDialog(null, "Error en la consulta");
+
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        }//fin del catch
+    }//GEN-LAST:event_formWindowActivated
+    
+    public void IdUsuario(int id) {
+        this.id = id;
+    }
     /**
      * @param args the command line arguments
      */
