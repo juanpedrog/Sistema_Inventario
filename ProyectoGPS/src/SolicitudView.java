@@ -11,14 +11,14 @@ import javax.swing.JFrame;
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-
 /**
  *
  * @author DenisseYEA
  */
 public class SolicitudView extends javax.swing.JFrame {
-    
+
     int id;
+
     /**
      * Creates new form SolicitudView
      */
@@ -60,21 +60,30 @@ public class SolicitudView extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setUndecorated(true);
-        setPreferredSize(new java.awt.Dimension(960, 550));
         addWindowListener(new java.awt.event.WindowAdapter() {
             public void windowActivated(java.awt.event.WindowEvent evt) {
                 formWindowActivated(evt);
             }
         });
         getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        jRadioButton1.setEnabled(false);
         getContentPane().add(jRadioButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(760, 320, -1, -1));
+
+        jTextField3.setEnabled(false);
         getContentPane().add(jTextField3, new org.netbeans.lib.awtextra.AbsoluteConstraints(540, 500, 340, -1));
+
+        jTextField1.setEnabled(false);
         getContentPane().add(jTextField1, new org.netbeans.lib.awtextra.AbsoluteConstraints(210, 320, 170, -1));
+
+        jTextField2.setEnabled(false);
         getContentPane().add(jTextField2, new org.netbeans.lib.awtextra.AbsoluteConstraints(490, 320, 170, -1));
 
         lbl_Nombre.setFont(new java.awt.Font("Arial Black", 0, 14)); // NOI18N
         lbl_Nombre.setText("Nombre");
         getContentPane().add(lbl_Nombre, new org.netbeans.lib.awtextra.AbsoluteConstraints(200, 240, 60, 20));
+
+        txt_Nombre.setEnabled(false);
         getContentPane().add(txt_Nombre, new org.netbeans.lib.awtextra.AbsoluteConstraints(280, 240, 290, -1));
         getContentPane().add(spr_Nombre, new org.netbeans.lib.awtextra.AbsoluteConstraints(190, 282, 690, 10));
 
@@ -93,6 +102,7 @@ public class SolicitudView extends javax.swing.JFrame {
 
         txt_Actividad.setColumns(20);
         txt_Actividad.setRows(5);
+        txt_Actividad.setEnabled(false);
         jScrollPane1.setViewportView(txt_Actividad);
 
         getContentPane().add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(210, 400, 670, 80));
@@ -100,11 +110,15 @@ public class SolicitudView extends javax.swing.JFrame {
         lbl_Puesto.setFont(new java.awt.Font("Arial Black", 0, 14)); // NOI18N
         lbl_Puesto.setText("Puesto");
         getContentPane().add(lbl_Puesto, new org.netbeans.lib.awtextra.AbsoluteConstraints(680, 240, -1, -1));
+
+        txt_Puesto.setEnabled(false);
         getContentPane().add(txt_Puesto, new org.netbeans.lib.awtextra.AbsoluteConstraints(760, 240, 80, -1));
 
         lbl_Lugar.setFont(new java.awt.Font("Arial Black", 0, 14)); // NOI18N
         lbl_Lugar.setText("Lugar");
         getContentPane().add(lbl_Lugar, new org.netbeans.lib.awtextra.AbsoluteConstraints(220, 500, -1, -1));
+
+        txt_Lugar.setEnabled(false);
         getContentPane().add(txt_Lugar, new org.netbeans.lib.awtextra.AbsoluteConstraints(270, 500, 90, -1));
 
         lbl_Vehiculo.setFont(new java.awt.Font("Arial Black", 0, 14)); // NOI18N
@@ -151,11 +165,9 @@ public class SolicitudView extends javax.swing.JFrame {
         try {
             Class.forName("com.mysql.jdbc.Driver");
             Connection con = DriverManager.getConnection("jdbc:mysql://127.0.0.1:3306/Viaticos", "root", "");
-
             Statement sentencia = con.createStatement();
-
             ResultSet rs = sentencia.executeQuery("SELECT * FROM solicitud WHERE idSolicitud = " + id);
-
+            String p = "";
             while (rs.next()) {
                 txt_Nombre.setText(rs.getString("Nombre"));
                 txt_Puesto.setText(rs.getString("Puesto"));
@@ -164,14 +176,14 @@ public class SolicitudView extends javax.swing.JFrame {
                 txt_Lugar.setText(rs.getString("Lugar"));
                 txt_Actividad.setText(rs.getString("Actividad"));
                 jTextField3.setText("Vehiculo");
-                String p = rs.getString("Pernotado");
-                if (p == "1") {
-                    jRadioButton1.setSelected(true);
-                } else {
-                    jRadioButton1.setSelected(true);
-                }
+                p = rs.getString("Pernoctado");
             }
-
+            int pern = Integer.parseInt(p);
+            if (pern == 1) {
+                jRadioButton1.setSelected(true);
+            } else {
+                jRadioButton1.setSelected(false);
+            }
         } catch (SQLException ex) {
             javax.swing.JOptionPane.showMessageDialog(null, "Error en la consulta");
 
@@ -179,10 +191,11 @@ public class SolicitudView extends javax.swing.JFrame {
             e.printStackTrace();
         }//fin del catch
     }//GEN-LAST:event_formWindowActivated
-    
+
     public void IdUsuario(int id) {
         this.id = id;
     }
+
     /**
      * @param args the command line arguments
      */
