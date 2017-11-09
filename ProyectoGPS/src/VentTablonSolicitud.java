@@ -127,6 +127,12 @@ public class VentTablonSolicitud extends javax.swing.JFrame {
             }
         });
         getContentPane().add(jButton4, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 340, -1, -1));
+
+        jTextField1.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                jTextField1KeyPressed(evt);
+            }
+        });
         getContentPane().add(jTextField1, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 280, 130, -1));
 
         jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Imagenes/buscar.png"))); // NOI18N
@@ -412,6 +418,49 @@ public class VentTablonSolicitud extends javax.swing.JFrame {
         }
         s.setVisible(true);
     }//GEN-LAST:event_jButton4ActionPerformed
+
+    private void jTextField1KeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTextField1KeyPressed
+        // TODO add your handling code here:
+        if (i == 2) {
+
+        } else {
+            modelo = new DefaultTableModel();
+            modelo.addColumn("ID");
+            modelo.addColumn("Nombre");
+            modelo.addColumn("Puesto");
+            modelo.addColumn("Fecha de salida");
+            modelo.addColumn("Fecha de llegada");
+            modelo.addColumn("Lugar");
+            this.jTable1.setModel(modelo);
+            try {
+                Class.forName("com.mysql.jdbc.Driver");
+                Connection con = DriverManager.getConnection("jdbc:mysql://127.0.0.1:3306/Viaticos", "root", "");
+
+                Statement sentencia = con.createStatement();
+
+                ResultSet rs = sentencia.executeQuery("SELECT idSolicitud, Nombre, Puesto, Fecha_salida, Fecha_llegada,Lugar FROM solicitud WHERE Estado = 'P' OR idSolicitud LIKE '%"+jTextField1.getText()+"%'"
+                        +"OR Nombre LIKE '%"+jTextField1.getText()+"%' OR Puesto LIKE '%"+jTextField1.getText()+"%' OR Fecha_salida LIKE '%"+jTextField1.getText()+"%' OR Fecha_llegada LIKE '%"+jTextField1.getText()+"%'"
+                        +"OR Lugar LIKE '%"+jTextField1.getText()+"%' ");
+
+                String solicitud[] = new String[6];
+                while (rs.next()) {
+                    solicitud[0] = rs.getString("idSolicitud");
+                    solicitud[1] = rs.getString("Nombre");
+                    solicitud[2] = rs.getString("Puesto");
+                    solicitud[3] = rs.getString("Fecha_salida");
+                    solicitud[4] = rs.getString("Fecha_llegada");
+                    solicitud[5] = rs.getString("Lugar");
+                    modelo.addRow(solicitud);
+                }
+
+            } catch (SQLException ex) {
+                javax.swing.JOptionPane.showMessageDialog(null, "Error en la consulta");
+
+            } catch (ClassNotFoundException e) {
+                e.printStackTrace();
+            }//fin del catch
+        }
+    }//GEN-LAST:event_jTextField1KeyPressed
 
     public void SolicitudA() {
         modelo = new DefaultTableModel();
