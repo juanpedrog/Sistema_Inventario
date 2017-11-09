@@ -17,8 +17,9 @@ import javax.swing.table.DefaultTableModel;
  * @author DenisseYEA
  */
 public class VentTablonSolicitud extends javax.swing.JFrame {
+
     SolicitudView s;
-    int posx, posy, i;
+    int posx, posy, i, c;
     DefaultTableModel modelo;
 
     /**
@@ -240,7 +241,7 @@ public class VentTablonSolicitud extends javax.swing.JFrame {
                 } catch (ClassNotFoundException e) {
                     e.printStackTrace();
                 }//fin del catch
-                
+
             } else {
                 javax.swing.JOptionPane.showMessageDialog(null, "Seleccionar solicitud");
             }
@@ -259,8 +260,8 @@ public class VentTablonSolicitud extends javax.swing.JFrame {
                     while (rs.next()) {
                         idSolicitud = rs.getString("Solicitud_idSolicitud");
                     }
-                    sentencia.execute("DELETE FROM oficio_comision WHERE (Folio = " + folio+")");
-                    sentencia.executeUpdate("UPDATE solicitud SET Estado = 'C' WHERE (idSolicitud = " + idSolicitud+")");
+                    sentencia.execute("DELETE FROM oficio_comision WHERE (Folio = " + folio + ")");
+                    sentencia.executeUpdate("UPDATE solicitud SET Estado = 'C' WHERE (idSolicitud = " + idSolicitud + ")");
                     javax.swing.JOptionPane.showMessageDialog(null, "Solicitud cancelada");
 
                 } catch (SQLException ex) {
@@ -304,7 +305,7 @@ public class VentTablonSolicitud extends javax.swing.JFrame {
 
                 Statement sentencia = con.createStatement();
                 int folio = Integer.parseInt(javax.swing.JOptionPane.showInputDialog("Asignar folio"));
-                sentencia.execute("INSERT INTO oficio_comision VALUES(" + folio + "," + id + ","+0.00+")");
+                sentencia.execute("INSERT INTO oficio_comision VALUES(" + folio + "," + id + "," + 0.00 + ")");
 
                 sentencia.executeUpdate("UPDATE solicitud SET Estado = 'A' WHERE (idSolicitud = '" + id + "')");
 
@@ -388,6 +389,7 @@ public class VentTablonSolicitud extends javax.swing.JFrame {
                 solicitud[5] = rs.getString("Lugar");
                 modelo.addRow(solicitud);
                 i = 0;
+                c = 0;
             }
 
         } catch (SQLException ex) {
@@ -400,41 +402,13 @@ public class VentTablonSolicitud extends javax.swing.JFrame {
 
     private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
         // TODO add your handling code here:
-        if (i == 1) {
-            int i = jTable1.getSelectedRow();
-            if (i >= 0) {
-                String folio = jTable1.getValueAt(i, 0).toString();
-                String idSolicitud = "";
-                try {
-                    Class.forName("com.mysql.jdbc.Driver");
-                    Connection con = DriverManager.getConnection("jdbc:mysql://127.0.0.1:3306/Viaticos", "root", "");
-
-                    Statement sentencia = con.createStatement();
-                    ResultSet rs = sentencia.executeQuery("SELECT Solicitud_idSolicitud FROM oficio_comision WHERE Folio = '" + folio + "'");
-                    while (rs.next()) {
-                        idSolicitud = rs.getString("Solicitud_idSolicitud");
-                    }
-                    s = new SolicitudView();
-                    s.IdUsuario(Integer.parseInt(idSolicitud));
-                } catch (SQLException ex) {
-                    javax.swing.JOptionPane.showMessageDialog(null, "Error en la consulta");
-
-                } catch (ClassNotFoundException e) {
-                    e.printStackTrace();
-                }//fin del catch
-
-            } else {
-                javax.swing.JOptionPane.showMessageDialog(null, "Seleccionar solicitud");
-            }
+        if (c == 0) {
+            Consultar();
+            c = 1;
         } else {
-            int k = jTable1.getSelectedRow();
-            if (k >= 0) {
-                int id = Integer.parseInt(jTable1.getValueAt(k, 0).toString());
-                s = new SolicitudView();
-                s.IdUsuario(id);
-            } else {
-                javax.swing.JOptionPane.showMessageDialog(null, "Seleccionar solicitud");
-            }
+            s.setVisible(false);
+            Consultar();
+            c = 0;
         }
         s.setVisible(true);
     }//GEN-LAST:event_jButton4ActionPerformed
@@ -543,6 +517,45 @@ public class VentTablonSolicitud extends javax.swing.JFrame {
         } catch (ClassNotFoundException e) {
             e.printStackTrace();
         }//fin del catch
+    }
+
+    public void Consultar() {
+        if (i == 1) {
+            int i = jTable1.getSelectedRow();
+            if (i >= 0) {
+                String folio = jTable1.getValueAt(i, 0).toString();
+                String idSolicitud = "";
+                try {
+                    Class.forName("com.mysql.jdbc.Driver");
+                    Connection con = DriverManager.getConnection("jdbc:mysql://127.0.0.1:3306/Viaticos", "root", "");
+
+                    Statement sentencia = con.createStatement();
+                    ResultSet rs = sentencia.executeQuery("SELECT Solicitud_idSolicitud FROM oficio_comision WHERE Folio = '" + folio + "'");
+                    while (rs.next()) {
+                        idSolicitud = rs.getString("Solicitud_idSolicitud");
+                    }
+                    s = new SolicitudView();
+                    s.IdUsuario(Integer.parseInt(idSolicitud));
+                } catch (SQLException ex) {
+                    javax.swing.JOptionPane.showMessageDialog(null, "Error en la consulta");
+
+                } catch (ClassNotFoundException e) {
+                    e.printStackTrace();
+                }//fin del catch
+
+            } else {
+                javax.swing.JOptionPane.showMessageDialog(null, "Seleccionar solicitud");
+            }
+        } else {
+            int k = jTable1.getSelectedRow();
+            if (k >= 0) {
+                int id = Integer.parseInt(jTable1.getValueAt(k, 0).toString());
+                s = new SolicitudView();
+                s.IdUsuario(id);
+            } else {
+                javax.swing.JOptionPane.showMessageDialog(null, "Seleccionar solicitud");
+            }
+        }
     }
 
     /**
