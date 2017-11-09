@@ -174,7 +174,7 @@ public class CrearPDF {
         cb.showText(aux);
         return aux;
     }
-    public void pdfFolio() throws DocumentException{
+    public void pdfFolio(String folio) throws DocumentException{
         String path="C:\\Users\\Juan Pedro Gil\\Desktop\\prueba.pdf";
         try{
         File f=new File(path);
@@ -192,7 +192,39 @@ public class CrearPDF {
         Image image=Image.getInstance("C:\\Users\\Juan Pedro Gil\\Documents\\GitHub\\Sistema_Viaticos\\ProyectoGPS\\src\\Imagenes\\icono.png");
         document.add(image);
         cb.beginText();
+        //Label Folio
+        cb.setFontAndSize(bfNoNegritas, 12);
+        cb.setTextMatrix(480,800);
+        cb.showText("Folio: ");
+        //Folio base de datos
+        cb.setFontAndSize(bf, 12);
+        cb.setTextMatrix(525,800);
+        datos=conexion.acceder("select folio from oficio_comision where folio="+folio);
+        cb.showText(datos.get(0));
         //Label solicitud de viáticos
+        cb.setFontAndSize(bf,18);
+        cb.setTextMatrix(250,700);
+        cb.showText("Viaticos");
+        //Label nombre
+        cb.setFontAndSize(bfNoNegritas, 12);
+        cb.setTextMatrix(50,650);
+        cb.showText("Nombre: ");        
+        //Nombre base de datos
+        cb.setFontAndSize(bf,12);
+        cb.setTextMatrix(105,650);
+        datos=conexion.acceder("select S.nombre from solicitud S INNER JOIN oficio_comision O ON S.idSolicitud=O.Solicitud_idSolicitud WHERE folio="+folio);
+        cb.showText(datos.get(0));
+        //Label puesto
+        cb.setFontAndSize(bfNoNegritas, 12);
+        cb.setTextMatrix(50,600);
+        cb.showText("Puesto: ");
+        //Puesto base de datos
+        cb.setFontAndSize(bf, 12);
+        datos=conexion.acceder("select S.puesto from solicitud S INNER JOIN oficio_comision O ON S.idSolicitud=O.Solicitud_idSolicitud WHERE folio="+folio);
+        cb.showText(datos.get(0));
+        cb.setTextMatrix(105,600);
+        
+        //Fin del contenido
         cb.endText();
         document.close();
             Desktop.getDesktop().open(f);
@@ -201,3 +233,4 @@ public class CrearPDF {
         }
     }
 }
+

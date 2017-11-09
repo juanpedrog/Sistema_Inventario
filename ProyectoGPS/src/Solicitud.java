@@ -46,7 +46,7 @@ public class Solicitud extends javax.swing.JFrame {
         jScrollPane1.setVisible(false);
         jSeparator1.setVisible(false);
         txt_Actividad.setVisible(false);
-        txt_Pernoctado.setVisible(false);
+        chb_Pernoctado.setVisible(false);
         lbl_Actividad.setVisible(false);
         lbl_Fecha_Llegada.setVisible(false);
         lbl_Fecha_Salida.setVisible(false);
@@ -89,12 +89,12 @@ public class Solicitud extends javax.swing.JFrame {
         lbl_Vehiculo = new javax.swing.JLabel();
         cmb_Vehiculo = new javax.swing.JComboBox();
         lbl_Pernoctado = new javax.swing.JLabel();
-        txt_Pernoctado = new javax.swing.JTextField();
         btn_Ok = new javax.swing.JButton();
         btn_Cerrar = new javax.swing.JLabel();
         jLabel1 = new javax.swing.JLabel();
         date_Salida = new com.toedter.calendar.JDateChooser();
         jButton1 = new javax.swing.JButton();
+        chb_Pernoctado = new javax.swing.JCheckBox();
         Fondo = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -149,19 +149,12 @@ public class Solicitud extends javax.swing.JFrame {
         lbl_Vehiculo.setText("Vehículo");
         getContentPane().add(lbl_Vehiculo, new org.netbeans.lib.awtextra.AbsoluteConstraints(460, 500, 70, -1));
 
-        cmb_Vehiculo.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Seleccione el vehículo", "Item 2", "Item 3", "Item 4" }));
+        cmb_Vehiculo.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
         getContentPane().add(cmb_Vehiculo, new org.netbeans.lib.awtextra.AbsoluteConstraints(550, 500, 150, -1));
 
         lbl_Pernoctado.setFont(new java.awt.Font("Arial Black", 0, 14)); // NOI18N
         lbl_Pernoctado.setText("Pernoctado");
         getContentPane().add(lbl_Pernoctado, new org.netbeans.lib.awtextra.AbsoluteConstraints(730, 300, 90, -1));
-
-        txt_Pernoctado.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                txt_PernoctadoActionPerformed(evt);
-            }
-        });
-        getContentPane().add(txt_Pernoctado, new org.netbeans.lib.awtextra.AbsoluteConstraints(740, 320, 70, -1));
 
         btn_Ok.setBackground(new java.awt.Color(255, 51, 51));
         btn_Ok.setText("OK");
@@ -194,6 +187,7 @@ public class Solicitud extends javax.swing.JFrame {
             }
         });
         getContentPane().add(jButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 260, -1, -1));
+        getContentPane().add(chb_Pernoctado, new org.netbeans.lib.awtextra.AbsoluteConstraints(760, 320, -1, -1));
 
         Fondo.setFont(new java.awt.Font("Arial Black", 0, 14)); // NOI18N
         Fondo.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Imagenes/prueba6.png"))); // NOI18N
@@ -212,7 +206,7 @@ public class Solicitud extends javax.swing.JFrame {
         jScrollPane1.setVisible(true);
         jSeparator1.setVisible(true);
         txt_Actividad.setVisible(true);
-        txt_Pernoctado.setVisible(true);
+        chb_Pernoctado.setVisible(true);
         lbl_Actividad.setVisible(true);
         lbl_Fecha_Llegada.setVisible(true);
         lbl_Fecha_Salida.setVisible(true);
@@ -231,16 +225,12 @@ public class Solicitud extends javax.swing.JFrame {
         date_Salida.setDate(null);
         cmb_Vehiculo.setSelectedIndex(0);
         txt_Actividad.setText(null);
-        txt_Pernoctado.setText(null);
+        chb_Pernoctado.setText(null);
         txt_Lugar.setText(null);
         txt_Nombre.setText(null);
         txt_Puesto.setText(null);
         txt_Nombre.requestFocus();
     }//GEN-LAST:event_btn_SolicitudActionPerformed
-
-    private void txt_PernoctadoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txt_PernoctadoActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_txt_PernoctadoActionPerformed
 
     private void btn_CerrarMouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btn_CerrarMouseReleased
         // TODO add your handling code here:
@@ -275,7 +265,7 @@ public class Solicitud extends javax.swing.JFrame {
         // TODO add your handling code here:
         try{
         CrearPDF pdf=new CrearPDF();
-        pdf.generarPDF();
+        pdf.pdfFolio("1");
         }catch(Exception e){
             
         }
@@ -287,12 +277,16 @@ public class Solicitud extends javax.swing.JFrame {
             String fecha_Llegada=sdf.format(date_Llegada.getDate().getTime());
             Conexion conexion=new Conexion();
             conexion.conexion();
+            String pernoctado="No";
+            if(chb_Pernoctado.isSelected()){
+                pernoctado="Si";
+            }
             System.out.print("insert into Solicitud (Fecha_Salida,Lugar,Nombre,Actividad,Pernoctado,Vehiculo,Puesto,Fecha_Llegada,Estado) values('"+fecha_Salida+"','"+txt_Lugar.getText()+"'"
-                + ",'"+txt_Nombre.getText()+"','"+txt_Actividad.getText()+"',0,'"+cmb_Vehiculo.getSelectedItem().toString()+"'"
-                + ",'"+txt_Puesto.getText()+"','"+fecha_Llegada+"','No autorizada')");
+                + ",'"+txt_Nombre.getText()+"','"+txt_Actividad.getText()+"','"+pernoctado+"','"+cmb_Vehiculo.getSelectedItem().toString()+"'"
+                + ",'"+txt_Puesto.getText()+"','"+fecha_Llegada+"','P')");
             boolean insersion=conexion.ejecutar("insert into Solicitud (Fecha_Salida,Lugar,Nombre,Actividad,Pernoctado,Vehiculo,Puesto,Fecha_Llegada,Estado) values('"+fecha_Salida+"','"+txt_Lugar.getText()+"'"
-                + ",'"+txt_Nombre.getText()+"','"+txt_Actividad.getText()+"',0,'"+cmb_Vehiculo.getSelectedItem().toString()+"'"
-                + ",'"+txt_Puesto.getText()+"','"+fecha_Llegada+"','No autorizada')");
+                + ",'"+txt_Nombre.getText()+"','"+txt_Actividad.getText()+"','"+pernoctado+"','"+cmb_Vehiculo.getSelectedItem().toString()+"'"
+                + ",'"+txt_Puesto.getText()+"','"+fecha_Llegada+"','P')");
             if(insersion){
                 JOptionPane.showMessageDialog(this, "Insersión correcta");
             }else{
@@ -411,6 +405,7 @@ public class Solicitud extends javax.swing.JFrame {
     private javax.swing.JLabel btn_Cerrar;
     private javax.swing.JButton btn_Ok;
     private javax.swing.JButton btn_Solicitud;
+    private javax.swing.JCheckBox chb_Pernoctado;
     private javax.swing.JComboBox cmb_Vehiculo;
     private com.toedter.calendar.JDateChooser date_Llegada;
     private com.toedter.calendar.JDateChooser date_Salida;
@@ -430,7 +425,6 @@ public class Solicitud extends javax.swing.JFrame {
     private javax.swing.JTextArea txt_Actividad;
     private javax.swing.JTextField txt_Lugar;
     private javax.swing.JTextField txt_Nombre;
-    private javax.swing.JTextField txt_Pernoctado;
     private javax.swing.JTextField txt_Puesto;
     // End of variables declaration//GEN-END:variables
 }
