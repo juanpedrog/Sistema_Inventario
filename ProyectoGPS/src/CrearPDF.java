@@ -112,7 +112,7 @@ public class CrearPDF {
         //Actividad base de datos
         cb.setFontAndSize(bf,12);
         datos=conexion.acceder("select actividad from solicitud where idSolicitud=(select max(idSolicitud) from solicitud);");
-        String aux=acomodar_Actividad(datos.get(0),cb,bf,575);
+        acomodar_Actividad(datos.get(0),cb,bf,575);
         //Label pernoctado
         cb.setFontAndSize(bfNoNegritas,12);
         cb.setTextMatrix(50,475);
@@ -122,6 +122,7 @@ public class CrearPDF {
         datos=conexion.acceder("select pernoctado from solicitud where idSolicitud=(select max(idSolicitud) from solicitud);");
         cb.setTextMatrix(150,475);
         cb.showText(datos.get(0));
+        //Vehiculo
         datos=conexion.acceder("select vehiculo from solicitud where idSolicitud=(select max(idSolicitud) from solicitud);");
         if(!datos.get(0).equals("Seleccione el vehículo")){
             //Label vehiculo
@@ -204,7 +205,7 @@ public class CrearPDF {
         //Label solicitud de viáticos
         cb.setFontAndSize(bf,18);
         cb.setTextMatrix(250,700);
-        cb.showText("Viaticos");
+        cb.showText("Viáticos");
         //Label nombre
         cb.setFontAndSize(bfNoNegritas, 12);
         cb.setTextMatrix(50,650);
@@ -220,9 +221,57 @@ public class CrearPDF {
         cb.showText("Puesto: ");
         //Puesto base de datos
         cb.setFontAndSize(bf, 12);
+        cb.setTextMatrix(105,600);
         datos=conexion.acceder("select S.puesto from solicitud S INNER JOIN oficio_comision O ON S.idSolicitud=O.Solicitud_idSolicitud WHERE folio="+folio);
         cb.showText(datos.get(0));
-        cb.setTextMatrix(105,600);
+        //Label descripción
+        cb.setFontAndSize(bfNoNegritas, 12);
+        cb.setTextMatrix(50,550);
+        cb.showText("Con base en el oficio de comisión se autoriza la cantidad de: ");
+        //Monto base de datos
+        cb.setFontAndSize(bf,10);
+        datos=conexion.acceder("select O.monto from solicitud S INNER JOIN oficio_comision O ON S.idSolicitud=O.Solicitud_idSolicitud WHERE folio="+folio);
+        cb.showText("$"+datos.get(0));
+        //Label motivo
+        cb.setFontAndSize(bfNoNegritas,12);
+        cb.setTextMatrix(50,500);
+        cb.showText("Con motivo de: ");
+        //Motivo base de datos
+        cb.setFontAndSize(bf,12);
+        datos=conexion.acceder("select S.actividad from solicitud S INNER JOIN oficio_comision O ON S.idSolicitud=O.Solicitud_idSolicitud WHERE folio="+folio);
+        acomodar_Actividad(datos.get(0),cb,bf,480);
+        //Label localidad
+        cb.setFontAndSize(bfNoNegritas,12);
+        cb.setTextMatrix(50,400);
+        cb.showText("Para llevar a cabo la visita de trabajo en la localidad de:");
+        //Localidad base de datos
+        cb.setFontAndSize(bf,12);
+        cb.setTextMatrix(50,380);
+        datos=conexion.acceder("select S.lugar from solicitud S INNER JOIN oficio_comision O ON S.idSolicitud=O.Solicitud_idSolicitud WHERE folio="+folio);
+        cb.showText(datos.get(0));
+        //Vehiculo
+        datos=conexion.acceder("select S.vehiculo from solicitud S INNER JOIN oficio_comision O ON S.idSolicitud=O.Solicitud_idSolicitud WHERE folio="+folio);
+        int espacio=0;
+        if(!datos.get(0).equals("Seleccione el vehículo")){
+            //Label vehiculo
+            cb.setFontAndSize(bfNoNegritas,12);
+            cb.setTextMatrix(50,330);
+            cb.showText("Con el vehículo oficial asignado: ");
+            //Vehiculo base de datos
+            cb.setFontAndSize(bf,12);
+            cb.setTextMatrix(50,310);
+            cb.showText(datos.get(0));
+            espacio=-60;
+        }
+        //Label periodo
+        cb.setFontAndSize(bfNoNegritas,12);
+        cb.setTextMatrix(50,330+espacio);
+        cb.showText("Entre los dias: ");
+        //Label fecha salida
+        cb.setFontAndSize(bf,12);
+        cb.setTextMatrix(90,330+espacio);
+        datos=conexion.acceder("select S.fecha_salida from solicitud S INNER JOIN oficio_comision O ON S.idSolicitud=O.Solicitud_idSolicitud WHERE folio="+folio);
+        cb.showText(datos.get(0));
         
         //Fin del contenido
         cb.endText();
