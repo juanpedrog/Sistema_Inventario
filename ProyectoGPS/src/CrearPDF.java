@@ -26,7 +26,7 @@ import java.util.Calendar;
  */
 public class CrearPDF {
     public void generarPDF() throws FileNotFoundException, DocumentException{
-        String path="C:\\Users\\Juan Pedro Gil\\Desktop\\prueba.pdf";
+        String path="C:\\Nueva carpeta\\prueba.pdf";
         try{
         File f=new File(path);
         f.delete();
@@ -64,7 +64,7 @@ public class CrearPDF {
         BaseFont bfNoNegritas=BaseFont.createFont(BaseFont.COURIER,BaseFont.CP1252,BaseFont.NOT_EMBEDDED);
         PdfContentByte cb=writer.getDirectContent();
         cb.setFontAndSize(bf,16);
-        Image image=Image.getInstance("C:\\Users\\Juan Pedro Gil\\Documents\\GitHub\\Sistema_Viaticos\\ProyectoGPS\\src\\Imagenes\\icono.png");
+        Image image=Image.getInstance(getClass().getResource("/Imagenes/icono.png"));
         document.add(image);
         cb.beginText();
         //Label solicitud de viáticos
@@ -177,7 +177,7 @@ public class CrearPDF {
         return aux;
     }
     public void pdfFolio(String folio) throws DocumentException{
-        String path="C:\\Users\\Juan Pedro Gil\\Desktop\\prueba.pdf";
+        String path="C:\\Nueva carpeta\\prueba.pdf";
         try{
         File f=new File(path);
         f.delete();
@@ -191,7 +191,7 @@ public class CrearPDF {
         BaseFont bfNoNegritas=BaseFont.createFont(BaseFont.COURIER,BaseFont.CP1252,BaseFont.NOT_EMBEDDED);
         PdfContentByte cb=writer.getDirectContent();
         cb.setFontAndSize(bf,16);
-        Image image=Image.getInstance("C:\\Users\\Juan Pedro Gil\\Documents\\GitHub\\Sistema_Viaticos\\ProyectoGPS\\src\\Imagenes\\icono.png");
+        Image image=Image.getInstance(getClass().getResource("/Imagenes/icono.png"));
         document.add(image);
         cb.beginText();
         //Label Folio
@@ -326,10 +326,10 @@ public class CrearPDF {
         }
     }
     public void oficio_comision(String folio) throws DocumentException{
-        String path="C:\\Users\\Juan Pedro Gil\\Desktop\\prueba.pdf";
+        String path="C:\\Nueva carpeta\\prueba.pdf";
         try{
             File f=new File(path);
-            f.delete();
+            //f.delete();
             Document document=new Document(PageSize.A4,0f,0f,0f,0f);
             PdfWriter writer=PdfWriter.getInstance(document, new FileOutputStream(path));
             ArrayList<String> datos;
@@ -340,7 +340,7 @@ public class CrearPDF {
             BaseFont bfNoNegritas=BaseFont.createFont(BaseFont.COURIER,BaseFont.CP1252,BaseFont.NOT_EMBEDDED);
             PdfContentByte cb=writer.getDirectContent();
             cb.setFontAndSize(bf,16);
-            Image image=Image.getInstance("C:\\Users\\Juan Pedro Gil\\Documents\\GitHub\\Sistema_Viaticos\\ProyectoGPS\\src\\Imagenes\\icono.png");
+            Image image=Image.getInstance(getClass().getResource("/Imagenes/icono.png"));
             document.add(image);
             cb.beginText();
             //Label Folio

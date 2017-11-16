@@ -84,6 +84,7 @@
     </Component>
     <Component class="javax.swing.JTextField" name="txt_Nombre">
       <Properties>
+        <Property name="editable" type="boolean" value="false"/>
         <Property name="enabled" type="boolean" value="false"/>
       </Properties>
       <Constraints>
@@ -146,6 +147,9 @@
       </Constraints>
     </Component>
     <Container class="javax.swing.JScrollPane" name="jScrollPane1">
+      <Properties>
+        <Property name="enabled" type="boolean" value="false"/>
+      </Properties>
       <AuxValues>
         <AuxValue name="autoScrollPane" type="java.lang.Boolean" value="true"/>
       </AuxValues>

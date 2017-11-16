@@ -1,9 +1,12 @@
 
+import com.itextpdf.text.DocumentException;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JFrame;
 import javax.swing.table.DefaultTableModel;
 
@@ -19,6 +22,7 @@ import javax.swing.table.DefaultTableModel;
 public class VentTablonSolicitud extends javax.swing.JFrame {
 
     SolicitudView s;
+    CrearPDF pdf = new CrearPDF();
     int posx, posy, i, c;
     DefaultTableModel modelo;
 
@@ -129,9 +133,6 @@ public class VentTablonSolicitud extends javax.swing.JFrame {
         getContentPane().add(jButton4, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 340, -1, -1));
 
         jTextField1.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyPressed(java.awt.event.KeyEvent evt) {
-                jTextField1KeyPressed(evt);
-            }
             public void keyReleased(java.awt.event.KeyEvent evt) {
                 jTextField1KeyReleased(evt);
             }
@@ -161,9 +162,19 @@ public class VentTablonSolicitud extends javax.swing.JFrame {
         getContentPane().add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(180, 230, 750, 300));
 
         jButton5.setText("OFICIO DE COMISIÒN");
+        jButton5.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton5ActionPerformed(evt);
+            }
+        });
         getContentPane().add(jButton5, new org.netbeans.lib.awtextra.AbsoluteConstraints(180, 190, -1, -1));
 
         jButton6.setText("OFICIO DE VIÀTICOS");
+        jButton6.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton6ActionPerformed(evt);
+            }
+        });
         getContentPane().add(jButton6, new org.netbeans.lib.awtextra.AbsoluteConstraints(780, 190, -1, -1));
 
         jlFondo.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Imagenes/prueba6.png"))); // NOI18N
@@ -313,18 +324,24 @@ public class VentTablonSolicitud extends javax.swing.JFrame {
                 Connection con = DriverManager.getConnection("jdbc:mysql://127.0.0.1:3306/Viaticos", "root", "");
 
                 Statement sentencia = con.createStatement();
-                int folio = Integer.parseInt(javax.swing.JOptionPane.showInputDialog("Asignar folio"));
-                sentencia.execute("INSERT INTO oficio_comision VALUES(" + folio + "," + id + "," + 0.00 + ")");
+                String valor = javax.swing.JOptionPane.showInputDialog("Asignar folio");
+                if (valor == null) {
+                } else {
+                    int folio = Integer.parseInt(valor);
+                    sentencia.execute("INSERT INTO oficio_comision VALUES(" + folio + "," + id + "," + 0.00 + ")");
 
-                sentencia.executeUpdate("UPDATE solicitud SET Estado = 'A' WHERE (idSolicitud = '" + id + "')");
+                    sentencia.executeUpdate("UPDATE solicitud SET Estado = 'A' WHERE (idSolicitud = '" + id + "')");
 
-                javax.swing.JOptionPane.showMessageDialog(null, "Solicitud aceptada");
+                    javax.swing.JOptionPane.showMessageDialog(null, "Solicitud aceptada");
+                }
 
             } catch (SQLException ex) {
-                javax.swing.JOptionPane.showMessageDialog(null, "Error en la consulta");
+                javax.swing.JOptionPane.showMessageDialog(null, "Error en la consulta o folio ya asignado");
 
             } catch (ClassNotFoundException e) {
                 e.printStackTrace();
+            } catch (NumberFormatException exp){
+                javax.swing.JOptionPane.showMessageDialog(null, "Ingresar solo números");
             }//fin del catch
 
         } else {
@@ -355,15 +372,22 @@ public class VentTablonSolicitud extends javax.swing.JFrame {
                 Connection con = DriverManager.getConnection("jdbc:mysql://127.0.0.1:3306/Viaticos", "root", "");
 
                 Statement sentencia = con.createStatement();
-                float monto = Float.parseFloat(javax.swing.JOptionPane.showInputDialog("Asignar monto"));
-                sentencia.executeUpdate("UPDATE oficio_comision SET Monto = " + monto + "WHERE(Folio =" + folio + ")");
-                javax.swing.JOptionPane.showMessageDialog(null, "Monto Asignado");
+                String valor = javax.swing.JOptionPane.showInputDialog("Asignar monto");
+                
+                if (valor == null) {
 
+                } else {
+                    float monto = Float.parseFloat(valor);
+                    sentencia.executeUpdate("UPDATE oficio_comision SET Monto = " + monto + "WHERE(Folio =" + folio + ")");
+                    javax.swing.JOptionPane.showMessageDialog(null, "Monto Asignado");
+                }
             } catch (SQLException ex) {
                 javax.swing.JOptionPane.showMessageDialog(null, "Error en la consulta");
 
             } catch (ClassNotFoundException e) {
                 e.printStackTrace();
+            } catch (NumberFormatException exp){
+                javax.swing.JOptionPane.showMessageDialog(null, "Ingresar solo números");
             }//fin del catch
 
         } else {
@@ -414,18 +438,13 @@ public class VentTablonSolicitud extends javax.swing.JFrame {
         if (c == 0) {
             Consultar();
             c = 1;
-        } else {
+        } else if (c == 1) {
             s.setVisible(false);
             Consultar();
             c = 0;
         }
-        s.setVisible(true);
-    }//GEN-LAST:event_jButton4ActionPerformed
 
-    private void jTextField1KeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTextField1KeyPressed
-        // TODO add your handling code here:
-        
-    }//GEN-LAST:event_jTextField1KeyPressed
+    }//GEN-LAST:event_jButton4ActionPerformed
 
     private void jTextField1KeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTextField1KeyReleased
         // TODO add your handling code here:
@@ -444,10 +463,7 @@ public class VentTablonSolicitud extends javax.swing.JFrame {
                 Statement sentencia = con.createStatement();
 
                 ResultSet rs = sentencia.executeQuery("SELECT O.Folio, O.Monto, S.Fecha_salida, S.Fecha_llegada,S.Lugar FROM solicitud S, oficio_comision O WHERE S.Estado = 'A' AND S.idSolicitud = O.Solicitud_idSolicitud AND (O.Folio LIKE '%" + jTextField1.getText() + "%'"
-                        + "OR O.Monto LIKE '%" + jTextField1.getText() + "%' OR S.Fecha_salida LIKE '%" + jTextField1.getText() +  "%' OR S.Fecha_llegada LIKE '%" + jTextField1.getText() + "%'"
-                        + "OR S.Lugar LIKE '%" + jTextField1.getText() + "%') ");
-                System.out.println("SELECT O.Folio, O.Monto, S.Fecha_salida, S.Fecha_llegada,S.Lugar FROM solicitud S, oficio_comision O WHERE S.Estado = 'A' AND S.idSolicitud = O.Solicitud_idSolicitud AND (O.Folio LIKE '%" + jTextField1.getText() + "%'"
-                        + "OR O.Monto LIKE '%" + jTextField1.getText() + "%' OR S.Fecha_salida LIKE '%" + jTextField1.getText() +  "%' OR S.Fecha_llegada LIKE '%" + jTextField1.getText() + "%'"
+                        + "OR O.Monto LIKE '%" + jTextField1.getText() + "%' OR S.Fecha_salida LIKE '%" + jTextField1.getText() + "%' OR S.Fecha_llegada LIKE '%" + jTextField1.getText() + "%'"
                         + "OR S.Lugar LIKE '%" + jTextField1.getText() + "%') ");
 
                 String solicitud[] = new String[5];
@@ -503,7 +519,8 @@ public class VentTablonSolicitud extends javax.swing.JFrame {
             } catch (ClassNotFoundException e) {
                 e.printStackTrace();
             }//fin del catch
-        } else {
+        }
+        if (i == 0) {
             modelo = new DefaultTableModel();
             modelo.addColumn("ID");
             modelo.addColumn("Nombre");
@@ -540,7 +557,30 @@ public class VentTablonSolicitud extends javax.swing.JFrame {
                 e.printStackTrace();
             }//fin del catch
         }
+
     }//GEN-LAST:event_jTextField1KeyReleased
+
+    private void jButton5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton5ActionPerformed
+        // TODO add your handling code here:
+        int i = jTable1.getSelectedRow();
+        String folio = jTable1.getValueAt(i, 0).toString();
+        try {
+            pdf.oficio_comision(folio);
+        } catch (DocumentException ex) {
+            Logger.getLogger(VentTablonSolicitud.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }//GEN-LAST:event_jButton5ActionPerformed
+
+    private void jButton6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton6ActionPerformed
+        // TODO add your handling code here:
+        int i = jTable1.getSelectedRow();
+        String folio = jTable1.getValueAt(i, 0).toString();
+        try {
+            pdf.pdfFolio(folio);
+        } catch (DocumentException ex) {
+            Logger.getLogger(VentTablonSolicitud.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }//GEN-LAST:event_jButton6ActionPerformed
 
     public void SolicitudA() {
         modelo = new DefaultTableModel();
@@ -671,7 +711,7 @@ public class VentTablonSolicitud extends javax.swing.JFrame {
                 } catch (ClassNotFoundException e) {
                     e.printStackTrace();
                 }//fin del catch
-
+                s.setVisible(true);
             } else {
                 javax.swing.JOptionPane.showMessageDialog(null, "Seleccionar solicitud");
             }
@@ -681,6 +721,7 @@ public class VentTablonSolicitud extends javax.swing.JFrame {
                 int id = Integer.parseInt(jTable1.getValueAt(k, 0).toString());
                 s = new SolicitudView();
                 s.IdUsuario(id);
+                s.setVisible(true);
             } else {
                 javax.swing.JOptionPane.showMessageDialog(null, "Seleccionar solicitud");
             }

@@ -83,6 +83,7 @@ public class SolicitudView extends javax.swing.JFrame {
         lbl_Nombre.setText("Nombre");
         getContentPane().add(lbl_Nombre, new org.netbeans.lib.awtextra.AbsoluteConstraints(200, 240, 60, 20));
 
+        txt_Nombre.setEditable(false);
         txt_Nombre.setEnabled(false);
         getContentPane().add(txt_Nombre, new org.netbeans.lib.awtextra.AbsoluteConstraints(280, 240, 290, -1));
         getContentPane().add(spr_Nombre, new org.netbeans.lib.awtextra.AbsoluteConstraints(190, 282, 690, 10));
@@ -99,6 +100,8 @@ public class SolicitudView extends javax.swing.JFrame {
         lbl_Actividad.setFont(new java.awt.Font("Arial Black", 0, 14)); // NOI18N
         lbl_Actividad.setText("Actividad a realizar");
         getContentPane().add(lbl_Actividad, new org.netbeans.lib.awtextra.AbsoluteConstraints(220, 370, 150, -1));
+
+        jScrollPane1.setEnabled(false);
 
         txt_Actividad.setColumns(20);
         txt_Actividad.setRows(5);
