@@ -157,6 +157,7 @@ public class VentTablonSolicitud extends javax.swing.JFrame {
 
             }
         ));
+        jTable1.setCellSelectionEnabled(true);
         jScrollPane1.setViewportView(jTable1);
 
         getContentPane().add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(180, 230, 750, 300));

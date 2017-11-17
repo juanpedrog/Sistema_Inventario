@@ -30,6 +30,7 @@ public class VentInforme extends javax.swing.JFrame {
         jTextArea2.enable(false);
         jButton1.setVisible(false);
         jButton2.setVisible(false);
+        SolicitudA();
     }
 
     /**
@@ -102,7 +103,7 @@ public class VentInforme extends javax.swing.JFrame {
                 jComboBox1ItemStateChanged(evt);
             }
         });
-        getContentPane().add(jComboBox1, new org.netbeans.lib.awtextra.AbsoluteConstraints(130, 140, 140, -1));
+        getContentPane().add(jComboBox1, new org.netbeans.lib.awtextra.AbsoluteConstraints(90, 140, 230, -1));
 
         jlcerrar.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
@@ -158,7 +159,7 @@ public class VentInforme extends javax.swing.JFrame {
         // TODO add your handling code here:
         switch (jComboBox1.getSelectedIndex()) {
             case 0: {
-                
+                SolicitudA();
                 break;
             }
             case 1: {
@@ -180,7 +181,7 @@ public class VentInforme extends javax.swing.JFrame {
 
             Statement sentencia = con.createStatement();
 
-            ResultSet rs = sentencia.executeQuery("SELECT O.Folio, S.Nombre FROM solicitud S, oficio_comision O WHERE S.Estado = 'A' AND S.idSolicitud = O.Solicitud_idSolicitud");
+            ResultSet rs = sentencia.executeQuery("SELECT O.Folio, S.Nombre FROM solicitud S, oficio_comision O WHERE S.Estado = 'A' AND S.Reporte = '0' AND S.idSolicitud = O.Solicitud_idSolicitud");
 
             String solicitud[] = new String[2];
             while (rs.next()) {
