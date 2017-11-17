@@ -1,5 +1,11 @@
 
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
 import javax.swing.JFrame;
+import javax.swing.table.DefaultTableModel;
 
 /*
  * To change this license header, choose License Headers in Project Properties.
@@ -13,6 +19,8 @@ import javax.swing.JFrame;
  */
 public class VentInforme extends javax.swing.JFrame {
     int posx, posy, i, c;
+    DefaultTableModel modelo;
+    
     /**
      * Creates new form VentInforme
      */
@@ -89,6 +97,11 @@ public class VentInforme extends javax.swing.JFrame {
         getContentPane().add(jButton2, new org.netbeans.lib.awtextra.AbsoluteConstraints(710, 130, -1, -1));
 
         jComboBox1.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Solicitudes Aceptadas", "Solicitudes Finalizadas", " " }));
+        jComboBox1.addItemListener(new java.awt.event.ItemListener() {
+            public void itemStateChanged(java.awt.event.ItemEvent evt) {
+                jComboBox1ItemStateChanged(evt);
+            }
+        });
         getContentPane().add(jComboBox1, new org.netbeans.lib.awtextra.AbsoluteConstraints(130, 140, 140, -1));
 
         jlcerrar.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -141,6 +154,48 @@ public class VentInforme extends javax.swing.JFrame {
         setExtendedState(JFrame.CROSSHAIR_CURSOR);
     }//GEN-LAST:event_jlminiMouseClicked
 
+    private void jComboBox1ItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_jComboBox1ItemStateChanged
+        // TODO add your handling code here:
+        switch (jComboBox1.getSelectedIndex()) {
+            case 0: {
+                
+                break;
+            }
+            case 1: {
+                
+                break;
+            }
+            
+        }
+    }//GEN-LAST:event_jComboBox1ItemStateChanged
+    
+    public void SolicitudA() {
+        modelo = new DefaultTableModel();
+        modelo.addColumn("Folio");
+        modelo.addColumn("Nombre");
+        this.jTable1.setModel(modelo);
+        try {
+            Class.forName("com.mysql.jdbc.Driver");
+            Connection con = DriverManager.getConnection("jdbc:mysql://127.0.0.1:3306/Viaticos", "root", "");
+
+            Statement sentencia = con.createStatement();
+
+            ResultSet rs = sentencia.executeQuery("SELECT O.Folio, S.Nombre FROM solicitud S, oficio_comision O WHERE S.Estado = 'A' AND S.idSolicitud = O.Solicitud_idSolicitud");
+
+            String solicitud[] = new String[2];
+            while (rs.next()) {
+                solicitud[0] = rs.getString("Folio");
+                solicitud[1] = rs.getString("Nombre");
+                modelo.addRow(solicitud);
+            }
+
+        } catch (SQLException ex) {
+            javax.swing.JOptionPane.showMessageDialog(null, "Error en la consulta");
+
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        }//fin del catch
+    }
     /**
      * @param args the command line arguments
      */
