@@ -12,15 +12,15 @@ import javax.swing.table.DefaultTableModel;
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-
 /**
  *
  * @author DenisseYEA
  */
 public class VentInforme extends javax.swing.JFrame {
+
     int posx, posy, i, c;
     DefaultTableModel modelo;
-    
+
     /**
      * Creates new form VentInforme
      */
@@ -30,7 +30,8 @@ public class VentInforme extends javax.swing.JFrame {
         jTextArea2.enable(false);
         jButton1.setVisible(false);
         jButton2.setVisible(false);
-        SolicitudA();
+        jButton4.setVisible(false);
+        Solicitud("SELECT O.Folio, S.Nombre FROM solicitud S, oficio_comision O WHERE S.Estado = 'A' AND S.Reporte = '0' AND S.idSolicitud = O.Solicitud_idSolicitud");
     }
 
     /**
@@ -55,6 +56,8 @@ public class VentInforme extends javax.swing.JFrame {
         jComboBox1 = new javax.swing.JComboBox();
         jlcerrar = new javax.swing.JLabel();
         jlmini = new javax.swing.JLabel();
+        jButton3 = new javax.swing.JButton();
+        jButton4 = new javax.swing.JButton();
         jlFondo = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -71,7 +74,7 @@ public class VentInforme extends javax.swing.JFrame {
         ));
         jScrollPane1.setViewportView(jTable1);
 
-        getContentPane().add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 173, 397, 366));
+        getContentPane().add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 170, 400, 370));
 
         jLabel1.setText("Observaciones Viaticos");
         getContentPane().add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(630, 190, -1, -1));
@@ -97,13 +100,13 @@ public class VentInforme extends javax.swing.JFrame {
         jButton2.setText("Guardar");
         getContentPane().add(jButton2, new org.netbeans.lib.awtextra.AbsoluteConstraints(710, 130, -1, -1));
 
-        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Solicitudes Aceptadas", "Solicitudes Finalizadas", " " }));
+        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Solicitudes Aceptadas", "Solicitudes Finalizadas" }));
         jComboBox1.addItemListener(new java.awt.event.ItemListener() {
             public void itemStateChanged(java.awt.event.ItemEvent evt) {
                 jComboBox1ItemStateChanged(evt);
             }
         });
-        getContentPane().add(jComboBox1, new org.netbeans.lib.awtextra.AbsoluteConstraints(90, 140, 230, -1));
+        getContentPane().add(jComboBox1, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 130, 230, -1));
 
         jlcerrar.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
@@ -118,6 +121,17 @@ public class VentInforme extends javax.swing.JFrame {
             }
         });
         getContentPane().add(jlmini, new org.netbeans.lib.awtextra.AbsoluteConstraints(870, 10, 40, 20));
+
+        jButton3.setText("Generar reporte");
+        jButton3.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton3ActionPerformed(evt);
+            }
+        });
+        getContentPane().add(jButton3, new org.netbeans.lib.awtextra.AbsoluteConstraints(290, 130, -1, -1));
+
+        jButton4.setText("Consultar Reporte");
+        getContentPane().add(jButton4, new org.netbeans.lib.awtextra.AbsoluteConstraints(280, 130, -1, -1));
 
         jlFondo.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Imagenes/prueba6.png"))); // NOI18N
         jlFondo.addMouseMotionListener(new java.awt.event.MouseMotionAdapter() {
@@ -159,18 +173,46 @@ public class VentInforme extends javax.swing.JFrame {
         // TODO add your handling code here:
         switch (jComboBox1.getSelectedIndex()) {
             case 0: {
-                SolicitudA();
+                Solicitud("SELECT O.Folio, S.Nombre FROM solicitud S, oficio_comision O WHERE S.Estado = 'A' AND S.Reporte = '0' AND S.idSolicitud = O.Solicitud_idSolicitud");
+                jButton3.setVisible(true);
+                jButton4.setVisible(false);
                 break;
             }
             case 1: {
-                
+                Solicitud("SELECT O.Folio, S.Nombre FROM solicitud S, oficio_comision O WHERE S.Estado = 'A' AND S.Reporte = '1' AND S.idSolicitud = O.Solicitud_idSolicitud");
+                jButton4.setVisible(true);
+                jButton3.setVisible(false);
                 break;
             }
-            
+
         }
     }//GEN-LAST:event_jComboBox1ItemStateChanged
-    
-    public void SolicitudA() {
+
+    private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
+        // TODO add your handling code here:
+        int k = jTable1.getSelectedRow();
+        int folio = 0;
+        if (k >= 0) {
+            folio = Integer.parseInt(jTable1.getValueAt(k, 0).toString());
+            int filas = jTable1.getRowCount();
+            if (filas != 0) {
+                for (int j = 0; filas > j; j++) {
+                    modelo.removeRow(0);
+
+                }
+
+            }
+            modelo = new DefaultTableModel();
+            modelo.addColumn("Descripción");
+            modelo.addColumn("Precio");
+            this.jTable1.setModel(modelo);
+        } else {
+            javax.swing.JOptionPane.showMessageDialog(null, "Seleccionar solicitud");
+        }
+
+    }//GEN-LAST:event_jButton3ActionPerformed
+
+    public void Solicitud(String s) {
         modelo = new DefaultTableModel();
         modelo.addColumn("Folio");
         modelo.addColumn("Nombre");
@@ -181,7 +223,7 @@ public class VentInforme extends javax.swing.JFrame {
 
             Statement sentencia = con.createStatement();
 
-            ResultSet rs = sentencia.executeQuery("SELECT O.Folio, S.Nombre FROM solicitud S, oficio_comision O WHERE S.Estado = 'A' AND S.Reporte = '0' AND S.idSolicitud = O.Solicitud_idSolicitud");
+            ResultSet rs = sentencia.executeQuery(s);
 
             String solicitud[] = new String[2];
             while (rs.next()) {
@@ -197,6 +239,7 @@ public class VentInforme extends javax.swing.JFrame {
             e.printStackTrace();
         }//fin del catch
     }
+
     /**
      * @param args the command line arguments
      */
@@ -235,6 +278,8 @@ public class VentInforme extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
+    private javax.swing.JButton jButton3;
+    private javax.swing.JButton jButton4;
     private javax.swing.JComboBox jComboBox1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
