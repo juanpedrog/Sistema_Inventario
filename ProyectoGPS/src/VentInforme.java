@@ -1,3 +1,6 @@
+
+import javax.swing.JFrame;
+
 /*
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
@@ -15,6 +18,10 @@ public class VentInforme extends javax.swing.JFrame {
      */
     public VentInforme() {
         initComponents();
+        jTextArea1.enable(false);
+        jTextArea2.enable(false);
+        jButton1.setVisible(false);
+        jButton2.setVisible(false);
     }
 
     /**
@@ -34,9 +41,15 @@ public class VentInforme extends javax.swing.JFrame {
         jScrollPane3 = new javax.swing.JScrollPane();
         jTextArea2 = new javax.swing.JTextArea();
         jLabel2 = new javax.swing.JLabel();
+        jButton1 = new javax.swing.JButton();
+        jButton2 = new javax.swing.JButton();
+        jComboBox1 = new javax.swing.JComboBox();
+        jlcerrar = new javax.swing.JLabel();
+        jlmini = new javax.swing.JLabel();
         jlFondo = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setUndecorated(true);
         getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         jTable1.setModel(new javax.swing.table.DefaultTableModel(
@@ -69,6 +82,29 @@ public class VentInforme extends javax.swing.JFrame {
         jLabel2.setText("Observaciones Vehículo");
         getContentPane().add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(630, 370, -1, -1));
 
+        jButton1.setText("Regresar");
+        getContentPane().add(jButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(550, 130, -1, -1));
+
+        jButton2.setText("Guardar");
+        getContentPane().add(jButton2, new org.netbeans.lib.awtextra.AbsoluteConstraints(710, 130, -1, -1));
+
+        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Solicitudes Aceptadas", "Solicitudes Finalizadas", " " }));
+        getContentPane().add(jComboBox1, new org.netbeans.lib.awtextra.AbsoluteConstraints(130, 140, 140, -1));
+
+        jlcerrar.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jlcerrarMouseClicked(evt);
+            }
+        });
+        getContentPane().add(jlcerrar, new org.netbeans.lib.awtextra.AbsoluteConstraints(910, 10, 50, 20));
+
+        jlmini.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jlminiMouseClicked(evt);
+            }
+        });
+        getContentPane().add(jlmini, new org.netbeans.lib.awtextra.AbsoluteConstraints(870, 10, 40, 20));
+
         jlFondo.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Imagenes/prueba6.png"))); // NOI18N
         jlFondo.addMouseMotionListener(new java.awt.event.MouseMotionAdapter() {
             public void mouseDragged(java.awt.event.MouseEvent evt) {
@@ -95,6 +131,15 @@ public class VentInforme extends javax.swing.JFrame {
         posx = evt.getX();
         posy = evt.getY();
     }//GEN-LAST:event_jlFondoMousePressed
+
+    private void jlcerrarMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jlcerrarMouseClicked
+        System.exit(0);
+    }//GEN-LAST:event_jlcerrarMouseClicked
+
+    private void jlminiMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jlminiMouseClicked
+
+        setExtendedState(JFrame.CROSSHAIR_CURSOR);
+    }//GEN-LAST:event_jlminiMouseClicked
 
     /**
      * @param args the command line arguments
@@ -132,6 +177,9 @@ public class VentInforme extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton jButton1;
+    private javax.swing.JButton jButton2;
+    private javax.swing.JComboBox jComboBox1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JScrollPane jScrollPane1;
@@ -141,5 +189,7 @@ public class VentInforme extends javax.swing.JFrame {
     private javax.swing.JTextArea jTextArea1;
     private javax.swing.JTextArea jTextArea2;
     private javax.swing.JLabel jlFondo;
+    private javax.swing.JLabel jlcerrar;
+    private javax.swing.JLabel jlmini;
     // End of variables declaration//GEN-END:variables
 }

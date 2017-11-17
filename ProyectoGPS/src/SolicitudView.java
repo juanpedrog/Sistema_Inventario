@@ -70,13 +70,13 @@ public class SolicitudView extends javax.swing.JFrame {
         jRadioButton1.setEnabled(false);
         getContentPane().add(jRadioButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(760, 320, -1, -1));
 
-        jTextField3.setEnabled(false);
+        jTextField3.setEditable(false);
         getContentPane().add(jTextField3, new org.netbeans.lib.awtextra.AbsoluteConstraints(540, 500, 340, -1));
 
-        jTextField1.setEnabled(false);
+        jTextField1.setEditable(false);
         getContentPane().add(jTextField1, new org.netbeans.lib.awtextra.AbsoluteConstraints(210, 320, 170, -1));
 
-        jTextField2.setEnabled(false);
+        jTextField2.setEditable(false);
         getContentPane().add(jTextField2, new org.netbeans.lib.awtextra.AbsoluteConstraints(490, 320, 170, -1));
 
         lbl_Nombre.setFont(new java.awt.Font("Arial Black", 0, 14)); // NOI18N
@@ -84,7 +84,6 @@ public class SolicitudView extends javax.swing.JFrame {
         getContentPane().add(lbl_Nombre, new org.netbeans.lib.awtextra.AbsoluteConstraints(200, 240, 60, 20));
 
         txt_Nombre.setEditable(false);
-        txt_Nombre.setEnabled(false);
         getContentPane().add(txt_Nombre, new org.netbeans.lib.awtextra.AbsoluteConstraints(280, 240, 290, -1));
         getContentPane().add(spr_Nombre, new org.netbeans.lib.awtextra.AbsoluteConstraints(190, 282, 690, 10));
 
@@ -103,9 +102,9 @@ public class SolicitudView extends javax.swing.JFrame {
 
         jScrollPane1.setEnabled(false);
 
+        txt_Actividad.setEditable(false);
         txt_Actividad.setColumns(20);
         txt_Actividad.setRows(5);
-        txt_Actividad.setEnabled(false);
         jScrollPane1.setViewportView(txt_Actividad);
 
         getContentPane().add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(210, 400, 670, 80));
@@ -114,14 +113,14 @@ public class SolicitudView extends javax.swing.JFrame {
         lbl_Puesto.setText("Puesto");
         getContentPane().add(lbl_Puesto, new org.netbeans.lib.awtextra.AbsoluteConstraints(680, 240, -1, -1));
 
-        txt_Puesto.setEnabled(false);
+        txt_Puesto.setEditable(false);
         getContentPane().add(txt_Puesto, new org.netbeans.lib.awtextra.AbsoluteConstraints(760, 240, 80, -1));
 
         lbl_Lugar.setFont(new java.awt.Font("Arial Black", 0, 14)); // NOI18N
         lbl_Lugar.setText("Lugar");
         getContentPane().add(lbl_Lugar, new org.netbeans.lib.awtextra.AbsoluteConstraints(220, 500, -1, -1));
 
-        txt_Lugar.setEnabled(false);
+        txt_Lugar.setEditable(false);
         getContentPane().add(txt_Lugar, new org.netbeans.lib.awtextra.AbsoluteConstraints(270, 500, 90, -1));
 
         lbl_Vehiculo.setFont(new java.awt.Font("Arial Black", 0, 14)); // NOI18N
