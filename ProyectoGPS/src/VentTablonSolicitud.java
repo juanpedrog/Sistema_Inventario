@@ -34,7 +34,11 @@ public class VentTablonSolicitud extends javax.swing.JFrame {
         jButton3.setVisible(false);
         jButton5.setVisible(false);
         jButton6.setVisible(false);
-        modelo = new DefaultTableModel();
+        modelo = new DefaultTableModel() {
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return false;
+            }
+        };
         modelo.addColumn("ID");
         modelo.addColumn("Nombre");
         modelo.addColumn("Puesto");
@@ -341,7 +345,7 @@ public class VentTablonSolicitud extends javax.swing.JFrame {
 
             } catch (ClassNotFoundException e) {
                 e.printStackTrace();
-            } catch (NumberFormatException exp){
+            } catch (NumberFormatException exp) {
                 javax.swing.JOptionPane.showMessageDialog(null, "Ingresar solo números");
             }//fin del catch
 
@@ -374,7 +378,7 @@ public class VentTablonSolicitud extends javax.swing.JFrame {
 
                 Statement sentencia = con.createStatement();
                 String valor = javax.swing.JOptionPane.showInputDialog("Asignar monto");
-                
+
                 if (valor == null) {
 
                 } else {
@@ -387,7 +391,7 @@ public class VentTablonSolicitud extends javax.swing.JFrame {
 
             } catch (ClassNotFoundException e) {
                 e.printStackTrace();
-            } catch (NumberFormatException exp){
+            } catch (NumberFormatException exp) {
                 javax.swing.JOptionPane.showMessageDialog(null, "Ingresar solo números");
             }//fin del catch
 
@@ -450,7 +454,11 @@ public class VentTablonSolicitud extends javax.swing.JFrame {
     private void jTextField1KeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTextField1KeyReleased
         // TODO add your handling code here:
         if (i == 1) {
-            modelo = new DefaultTableModel();
+            modelo = new DefaultTableModel() {
+                public boolean isCellEditable(int rowIndex, int columnIndex) {
+                    return false;
+                }
+            };
             modelo.addColumn("Folio");
             modelo.addColumn("Monto");
             modelo.addColumn("Fecha de salida");
@@ -485,7 +493,11 @@ public class VentTablonSolicitud extends javax.swing.JFrame {
             }//fin del catch
         }
         if (i == 2) {
-            modelo = new DefaultTableModel();
+            modelo = new DefaultTableModel() {
+                public boolean isCellEditable(int rowIndex, int columnIndex) {
+                    return false;
+                }
+            };
             modelo.addColumn("ID");
             modelo.addColumn("Nombre");
             modelo.addColumn("Puesto");
@@ -522,7 +534,11 @@ public class VentTablonSolicitud extends javax.swing.JFrame {
             }//fin del catch
         }
         if (i == 0) {
-            modelo = new DefaultTableModel();
+            modelo = new DefaultTableModel() {
+                public boolean isCellEditable(int rowIndex, int columnIndex) {
+                    return false;
+                }
+            };
             modelo.addColumn("ID");
             modelo.addColumn("Nombre");
             modelo.addColumn("Puesto");
@@ -584,7 +600,11 @@ public class VentTablonSolicitud extends javax.swing.JFrame {
     }//GEN-LAST:event_jButton6ActionPerformed
 
     public void SolicitudA() {
-        modelo = new DefaultTableModel();
+        modelo = new DefaultTableModel(){
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return false;
+            }
+        };
         modelo.addColumn("Folio");
         modelo.addColumn("Monto");
         modelo.addColumn("Fecha de salida");
@@ -618,7 +638,11 @@ public class VentTablonSolicitud extends javax.swing.JFrame {
     }
 
     public void SolicitudC() {
-        modelo = new DefaultTableModel();
+        modelo = new DefaultTableModel(){
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return false;
+            }
+        };
         modelo.addColumn("ID");
         modelo.addColumn("Nombre");
         modelo.addColumn("Puesto");
@@ -654,7 +678,11 @@ public class VentTablonSolicitud extends javax.swing.JFrame {
     }
 
     public void SolicitudP() {
-        modelo = new DefaultTableModel();
+        modelo = new DefaultTableModel(){
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return false;
+            }
+        };
         modelo.addColumn("ID");
         modelo.addColumn("Nombre");
         modelo.addColumn("Puesto");
