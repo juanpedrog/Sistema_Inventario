@@ -238,13 +238,34 @@ public class VentInforme extends javax.swing.JFrame {
             modelo.addColumn("Precio");
             this.jTable1.setModel(modelo);
             jTextArea1.enable(true);
-            jTextArea2.enable(true);
-            jButton1.setVisible(true);
-            jButton2.setVisible(true);
-            jButton5.setVisible(true);
-            jButton6.setVisible(true);
-            jButton3.setVisible(false);
-            jComboBox1.setVisible(false);
+            try {
+                Class.forName("com.mysql.jdbc.Driver");
+                Connection con = DriverManager.getConnection("jdbc:mysql://127.0.0.1:3306/Viaticos", "root", "");
+
+                Statement sentencia = con.createStatement();
+                String vehiculo = "";
+                ResultSet rs = sentencia.executeQuery("SELECT S.Vehiculo FROM Solicitud S, Oficio_Comision O WHERE S.Estado = 'A' AND S.Reporte = '0' AND S.idSolicitud = O.Solicitud_idSolicitud AND O.Folio = " + folio);
+                while (rs.next()) {
+                    vehiculo = rs.getString("Vehiculo");
+                }
+                if (vehiculo != "") {
+                    jTextArea2.enable(true);
+                } else {
+                    jTextArea2.enable(false);
+                }
+                jButton1.setVisible(true);
+                jButton2.setVisible(true);
+                jButton5.setVisible(true);
+                jButton6.setVisible(true);
+                jButton3.setVisible(false);
+                jComboBox1.setVisible(false);
+            } catch (SQLException ex) {
+                javax.swing.JOptionPane.showMessageDialog(null, "Error en la consulta");
+
+            } catch (ClassNotFoundException e) {
+                e.printStackTrace();
+            }
+
         } else {
             javax.swing.JOptionPane.showMessageDialog(null, "Seleccionar solicitud");
         }
@@ -276,7 +297,21 @@ public class VentInforme extends javax.swing.JFrame {
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
         // TODO add your handling code here:
+        try {
+            Class.forName("com.mysql.jdbc.Driver");
+            Connection con = DriverManager.getConnection("jdbc:mysql://127.0.0.1:3306/Viaticos", "root", "");
 
+            Statement sentencia = con.createStatement();
+
+            sentencia.execute("INSERT INTO oficio_comision VALUES()");
+            javax.swing.JOptionPane.showMessageDialog(null, "Reporte Generado");
+
+        } catch (SQLException ex) {
+            javax.swing.JOptionPane.showMessageDialog(null, "Error al generar reporte");
+
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        }
     }//GEN-LAST:event_jButton2ActionPerformed
 
     public void Solicitud(String s) {
