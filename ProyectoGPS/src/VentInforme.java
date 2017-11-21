@@ -5,6 +5,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import javax.swing.JFrame;
+import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 
 /*
@@ -277,15 +278,19 @@ public class VentInforme extends javax.swing.JFrame {
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         // TODO add your handling code here:
-        jTextArea1.enable(false);
-        jTextArea2.enable(false);
-        jButton1.setVisible(false);
-        jButton2.setVisible(false);
-        jButton5.setVisible(false);
-        jButton6.setVisible(false);
-        jButton3.setVisible(true);
-        jComboBox1.setVisible(true);
-        Solicitud("SELECT O.Folio, S.Nombre FROM solicitud S, oficio_comision O WHERE S.Estado = 'A' AND S.Reporte = '0' AND S.idSolicitud = O.Solicitud_idSolicitud");
+        int s = JOptionPane.showConfirmDialog(null, "¿Esta seguro?", "Alerta!", JOptionPane.YES_NO_OPTION);
+        if (s == JOptionPane.YES_OPTION) {
+            jTextArea1.enable(false);
+            jTextArea2.enable(false);
+            jButton1.setVisible(false);
+            jButton2.setVisible(false);
+            jButton5.setVisible(false);
+            jButton6.setVisible(false);
+            jButton3.setVisible(true);
+            jComboBox1.setVisible(true);
+            Solicitud("SELECT O.Folio, S.Nombre FROM solicitud S, oficio_comision O WHERE S.Estado = 'A' AND S.Reporte = '0' AND S.idSolicitud = O.Solicitud_idSolicitud");
+        } else {
+        }
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void jButton5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton5ActionPerformed
@@ -301,30 +306,31 @@ public class VentInforme extends javax.swing.JFrame {
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
         // TODO add your handling code here:
         try {
-            Class.forName("com.mysql.jdbc.Driver");
-            Connection con = DriverManager.getConnection("jdbc:mysql://127.0.0.1:3306/Viaticos", "root", "");
-            String id = "";
-            Statement sentencia = con.createStatement();
-            ResultSet rs = sentencia.executeQuery("SELECT Solicitud_idSolicitud FROM Oficio_Comision WHERE Folio = " + folio);
-            while (rs.next()) {
-                id = rs.getString("Solicitud_idSolicitud");
-            }
-            if (c == 1) {
-                sentencia.execute("INSERT INTO informe (Observaciones,Observaciones_Vehiculo,Solicitud_idSolicitud) VALUES('" + jTextArea1.getText() + "','" + jTextArea2.getText() + "'," + id + ")");
-            } else {
-                sentencia.execute("INSERT INTO informe (Observaciones,Observaciones_Vehiculo,Solicitud_idSolicitud) VALUES('" + jTextArea1.getText() + "',' '," + id + ")");
-            }
-            String act[][];
-            int filas = jTable1.getRowCount();
-            act = new String[filas][filas];
-            if (filas != 0) {
-                for (int j = 0; filas > j; j++) {
-                    act[j][0] = jTable1.getValueAt(j,0).toString();
-                    act[j][1] = jTable1.getValueAt(j,1).toString();
+            int s = JOptionPane.showConfirmDialog(null, "¿Esta seguro?", "Alerta!", JOptionPane.YES_NO_OPTION);
+            if (s == JOptionPane.YES_OPTION) {
+                Class.forName("com.mysql.jdbc.Driver");
+                Connection con = DriverManager.getConnection("jdbc:mysql://127.0.0.1:3306/Viaticos", "root", "");
+                String id = "";
+                Statement sentencia = con.createStatement();
+                ResultSet rs = sentencia.executeQuery("SELECT Solicitud_idSolicitud FROM Oficio_Comision WHERE Folio = " + folio);
+                while (rs.next()) {
+                    id = rs.getString("Solicitud_idSolicitud");
                 }
-            }
-            javax.swing.JOptionPane.showMessageDialog(null, "Reporte Generado");
+                if (c == 1) {
+                    sentencia.execute("INSERT INTO informe (Observaciones,Observaciones_Vehiculo,Solicitud_idSolicitud) VALUES('" + jTextArea1.getText() + "','" + jTextArea2.getText() + "'," + id + ")");
+                } else {
+                    sentencia.execute("INSERT INTO informe (Observaciones,Observaciones_Vehiculo,Solicitud_idSolicitud) VALUES('" + jTextArea1.getText() + "',' '," + id + ")");
+                }
+                int filas = jTable1.getRowCount();
+                if (filas != 0) {
+                    for (int j = 0; filas > j; j++) {
+                        sentencia.execute("INSERT INTO gastos (Precio,Descripcion) VALUES('" + jTable1.getValueAt(j, 0).toString() + "','" + jTable1.getValueAt(j, 1).toString() + "')");
+                    }
+                }
 
+                javax.swing.JOptionPane.showMessageDialog(null, "Reporte Generado");
+            } else {
+            }
         } catch (SQLException ex) {
             javax.swing.JOptionPane.showMessageDialog(null, "Error al generar reporte");
 
