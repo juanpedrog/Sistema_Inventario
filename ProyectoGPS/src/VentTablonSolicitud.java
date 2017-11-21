@@ -5,6 +5,7 @@ import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.Calendar;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JFrame;
@@ -329,16 +330,18 @@ public class VentTablonSolicitud extends javax.swing.JFrame {
                 Connection con = DriverManager.getConnection("jdbc:mysql://127.0.0.1:3306/Viaticos", "root", "");
 
                 Statement sentencia = con.createStatement();
-                String valor = javax.swing.JOptionPane.showInputDialog("Asignar folio");
-                if (valor == null) {
-                } else {
-                    int folio = Integer.parseInt(valor);
-                    sentencia.execute("INSERT INTO oficio_comision VALUES(" + folio + "," + id + "," + 0.00 + ")");
-
-                    sentencia.executeUpdate("UPDATE solicitud SET Estado = 'A' WHERE (idSolicitud = '" + id + "')");
-
-                    javax.swing.JOptionPane.showMessageDialog(null, "Solicitud aceptada");
+                String valor = "";
+                ResultSet rs = sentencia.executeQuery("SELECT MAX(Folio) FROM oficio_comision");
+                while (rs.next()) {
+                    valor = rs.getString("Folio");
                 }
+                valor = Calendar.YEAR+valor.substring(4);
+                int folio = Integer.parseInt(valor)+1;
+                sentencia.execute("INSERT INTO oficio_comision VALUES(" + folio + "," + id + "," + 0.00 + ")");
+
+                sentencia.executeUpdate("UPDATE solicitud SET Estado = 'A' WHERE (idSolicitud = '" + id + "')");
+
+                javax.swing.JOptionPane.showMessageDialog(null, "Solicitud aceptada");
 
             } catch (SQLException ex) {
                 javax.swing.JOptionPane.showMessageDialog(null, "Error en la consulta o folio ya asignado");
@@ -600,7 +603,7 @@ public class VentTablonSolicitud extends javax.swing.JFrame {
     }//GEN-LAST:event_jButton6ActionPerformed
 
     public void SolicitudA() {
-        modelo = new DefaultTableModel(){
+        modelo = new DefaultTableModel() {
             public boolean isCellEditable(int rowIndex, int columnIndex) {
                 return false;
             }
@@ -638,7 +641,7 @@ public class VentTablonSolicitud extends javax.swing.JFrame {
     }
 
     public void SolicitudC() {
-        modelo = new DefaultTableModel(){
+        modelo = new DefaultTableModel() {
             public boolean isCellEditable(int rowIndex, int columnIndex) {
                 return false;
             }
@@ -678,7 +681,7 @@ public class VentTablonSolicitud extends javax.swing.JFrame {
     }
 
     public void SolicitudP() {
-        modelo = new DefaultTableModel(){
+        modelo = new DefaultTableModel() {
             public boolean isCellEditable(int rowIndex, int columnIndex) {
                 return false;
             }
