@@ -18,7 +18,7 @@ import javax.swing.table.DefaultTableModel;
  */
 public class VentInforme extends javax.swing.JFrame {
 
-    int posx, posy, i, c;
+    int posx, posy, i, c, folio;
     DefaultTableModel modelo;
 
     /**
@@ -34,6 +34,7 @@ public class VentInforme extends javax.swing.JFrame {
         jButton5.setVisible(false);
         jButton6.setVisible(false);
         i = 0;
+        c = 0;
         Solicitud("SELECT O.Folio, S.Nombre FROM solicitud S, oficio_comision O WHERE S.Estado = 'A' AND S.Reporte = '0' AND S.idSolicitud = O.Solicitud_idSolicitud");
     }
 
@@ -222,7 +223,7 @@ public class VentInforme extends javax.swing.JFrame {
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
         // TODO add your handling code here:
         int k = jTable1.getSelectedRow();
-        int folio = 0;
+        folio = 0;
         if (k >= 0) {
             folio = Integer.parseInt(jTable1.getValueAt(k, 0).toString());
             int filas = jTable1.getRowCount();
@@ -250,8 +251,10 @@ public class VentInforme extends javax.swing.JFrame {
                 }
                 if (vehiculo != "") {
                     jTextArea2.enable(true);
+                    c = 1;
                 } else {
                     jTextArea2.enable(false);
+                    c = 0;
                 }
                 jButton1.setVisible(true);
                 jButton2.setVisible(true);
@@ -300,10 +303,26 @@ public class VentInforme extends javax.swing.JFrame {
         try {
             Class.forName("com.mysql.jdbc.Driver");
             Connection con = DriverManager.getConnection("jdbc:mysql://127.0.0.1:3306/Viaticos", "root", "");
-
+            String id = "";
             Statement sentencia = con.createStatement();
-
-            sentencia.execute("INSERT INTO oficio_comision VALUES()");
+            ResultSet rs = sentencia.executeQuery("SELECT Solicitud_idSolicitud FROM Oficio_Comision WHERE Folio = " + folio);
+            while (rs.next()) {
+                id = rs.getString("Solicitud_idSolicitud");
+            }
+            if (c == 1) {
+                sentencia.execute("INSERT INTO informe (Observaciones,Observaciones_Vehiculo,Solicitud_idSolicitud) VALUES('" + jTextArea1.getText() + "','" + jTextArea2.getText() + "'," + id + ")");
+            } else {
+                sentencia.execute("INSERT INTO informe (Observaciones,Observaciones_Vehiculo,Solicitud_idSolicitud) VALUES('" + jTextArea1.getText() + "',' '," + id + ")");
+            }
+            String act[][];
+            int filas = jTable1.getRowCount();
+            act = new String[filas][filas];
+            if (filas != 0) {
+                for (int j = 0; filas > j; j++) {
+                    act[j][0] = jTable1.getValueAt(j,0).toString();
+                    act[j][1] = jTable1.getValueAt(j,1).toString();
+                }
+            }
             javax.swing.JOptionPane.showMessageDialog(null, "Reporte Generado");
 
         } catch (SQLException ex) {
