@@ -317,20 +317,27 @@ public class VentInforme extends javax.swing.JFrame {
                     id = rs.getString("Solicitud_idSolicitud");
                 }
                 if (c == 1) {
-                    sentencia.execute("INSERT INTO informe VALUES(1,'" + jTextArea1.getText() + "','" + jTextArea2.getText() + "'," + id + ")");
-                    //sentencia.execute("INSERT INTO informe (Observaciones,Observaciones_Vehiculo,Solicitud_idSolicitud) VALUES('" + jTextArea1.getText() + "','" + jTextArea2.getText() + "'," + id + ")");
+                    sentencia.execute("INSERT INTO informe (Observaciones,Observaciones_Vehiculo,Solicitud_idSolicitud) VALUES('" + jTextArea1.getText() + "','" + jTextArea2.getText() + "'," + id + ")");
                 } else {
-                    sentencia.execute("INSERT INTO informe VALUES(1,'" + jTextArea1.getText() + "',' '," + id + ")");
-                    //sentencia.execute("INSERT INTO informe (Observaciones,Observaciones_Vehiculo,Solicitud_idSolicitud) VALUES('" + jTextArea1.getText() + "',' '," + id + ")");
+                    sentencia.execute("INSERT INTO informe (Observaciones,Observaciones_Vehiculo,Solicitud_idSolicitud) VALUES('" + jTextArea1.getText() + "',' '," + id + ")");
                 }
+                String idInforme = "";
+                ResultSet rs2 = sentencia.executeQuery("SELECT MAX(id_informe) FROM informe");
+                while (rs2.next()) {
+                    idInforme = rs2.getString("id_informe");
+                }
+                String idGastos = "";
                 int filas = jTable1.getRowCount();
                 if (filas != 0) {
                     for (int j = 0; filas > j; j++) {
-                        sentencia.execute("INSERT INTO gastos VALUES("+(j+1)+",'" + jTable1.getValueAt(j, 0).toString() + "','" + jTable1.getValueAt(j, 1).toString() + "')");                        
-                        //sentencia.execute("INSERT INTO gastos (Precio,Descripcion) VALUES('" + jTable1.getValueAt(j, 0).toString() + "','" + jTable1.getValueAt(j, 1).toString() + "')");
+                        sentencia.execute("INSERT INTO gastos (Precio,Descripcion) VALUES('" + jTable1.getValueAt(j, 0).toString() + "','" + jTable1.getValueAt(j, 1).toString() + "')");
+                        ResultSet rs3 = sentencia.executeQuery("SELECT MAX(id_gastos) FROM gastos");
+                        while (rs3.next()) {
+                            idGastos = rs3.getString("id_gastos");
+                        }
+                        sentencia.execute("INSERT INTO informe_gastos VALUES("+idInforme+","+idGastos+")");
                     }
                 }
-
                 javax.swing.JOptionPane.showMessageDialog(null, "Reporte Generado");
             } else {
             }
