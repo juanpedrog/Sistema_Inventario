@@ -328,19 +328,36 @@ public class VentTablonSolicitud extends javax.swing.JFrame {
             try {
                 Class.forName("com.mysql.jdbc.Driver");
                 Connection con = DriverManager.getConnection("jdbc:mysql://127.0.0.1:3306/Viaticos", "root", "");
-
+                String total = "";
                 Statement sentencia = con.createStatement();
-                String valor = "";
-                ResultSet rs = sentencia.executeQuery("SELECT MAX(Folio) FROM oficio_comision");
-                while (rs.next()) {
-                    valor = rs.getString("Folio");
+                ResultSet rs0 = sentencia.executeQuery("SELECT COUNT(*) as Folio FROM oficio_comision");
+                while (rs0.next()) {
+                    total = rs0.getString("Folio");
                 }
-                valor = Calendar.YEAR+valor.substring(4);
-                int folio = Integer.parseInt(valor)+1;
+                int total1 = Integer.parseInt(total);
+                int folio = 0;
+                String valor = "";
+                if (total1 == 0) {
+                    ResultSet rs = sentencia.executeQuery("SELECT MAX(Folio) FROM oficio_comision");
+                    while (rs.next()) {
+                        valor = rs.getString("Folio");
+                    }
+                    int an = Integer.parseInt(valor.substring(0, 3));
+                    if (an == Calendar.YEAR) {
+                        valor = valor.substring(4);
+                        folio = Integer.parseInt(valor) + 1;
+                        valor = an + folio + "";
+                        folio = Integer.parseInt(valor);
+                    } else {
+                        valor = Calendar.YEAR + 1 + "";
+                        folio = Integer.parseInt(valor);
+                    }
+                } else {
+                    valor = Calendar.YEAR + 1 + "";
+                    folio = Integer.parseInt(valor);
+                }
                 sentencia.execute("INSERT INTO oficio_comision VALUES(" + folio + "," + id + "," + 0.00 + ")");
-
                 sentencia.executeUpdate("UPDATE solicitud SET Estado = 'A' WHERE (idSolicitud = '" + id + "')");
-
                 javax.swing.JOptionPane.showMessageDialog(null, "Solicitud aceptada");
 
             } catch (SQLException ex) {
