@@ -324,7 +324,7 @@ public class VentTablonSolicitud extends javax.swing.JFrame {
         int k = jTable1.getSelectedRow();
         if (k >= 0) {
             int id = Integer.parseInt(jTable1.getValueAt(k, 0).toString());
-
+            Calendar calendar= Calendar.getInstance();
             try {
                 Class.forName("com.mysql.jdbc.Driver");
                 Connection con = DriverManager.getConnection("jdbc:mysql://127.0.0.1:3306/Viaticos", "root", "");
@@ -337,23 +337,23 @@ public class VentTablonSolicitud extends javax.swing.JFrame {
                 int total1 = Integer.parseInt(total);
                 int folio = 0;
                 String valor = "";
-                if (total1 == 0) {
+                if (total1 != 0) {
                     ResultSet rs = sentencia.executeQuery("SELECT MAX(Folio) FROM oficio_comision");
                     while (rs.next()) {
                         valor = rs.getString("Folio");
                     }
                     int an = Integer.parseInt(valor.substring(0, 3));
-                    if (an == Calendar.YEAR) {
+                    if (an == calendar.get(Calendar.YEAR)) {
                         valor = valor.substring(4);
                         folio = Integer.parseInt(valor) + 1;
                         valor = an + folio + "";
                         folio = Integer.parseInt(valor);
                     } else {
-                        valor = Calendar.YEAR + 1 + "";
+                        valor = calendar.get(Calendar.YEAR) + 1 + "";
                         folio = Integer.parseInt(valor);
                     }
                 } else {
-                    valor = Calendar.YEAR + 1 + "";
+                    valor = calendar.get(Calendar.YEAR) + 1 + "";
                     folio = Integer.parseInt(valor);
                 }
                 sentencia.execute("INSERT INTO oficio_comision VALUES(" + folio + "," + id + "," + 0.00 + ")");
