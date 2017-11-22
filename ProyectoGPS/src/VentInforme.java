@@ -1,9 +1,12 @@
 
+import com.itextpdf.text.DocumentException;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
@@ -18,7 +21,7 @@ import javax.swing.table.DefaultTableModel;
  * @author DenisseYEA
  */
 public class VentInforme extends javax.swing.JFrame {
-
+    CrearPDF pdf = new CrearPDF();
     int posx, posy, i, c, folio;
     DefaultTableModel modelo;
 
@@ -148,6 +151,11 @@ public class VentInforme extends javax.swing.JFrame {
         getContentPane().add(jButton3, new org.netbeans.lib.awtextra.AbsoluteConstraints(290, 130, -1, -1));
 
         jButton4.setText("Consultar Reporte");
+        jButton4.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton4ActionPerformed(evt);
+            }
+        });
         getContentPane().add(jButton4, new org.netbeans.lib.awtextra.AbsoluteConstraints(280, 130, -1, -1));
 
         jButton5.setText("Nueva Actividad");
@@ -348,6 +356,16 @@ public class VentInforme extends javax.swing.JFrame {
             e.printStackTrace();
         }
     }//GEN-LAST:event_jButton2ActionPerformed
+
+    private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
+        // TODO add your handling code here:
+        
+        try{
+            pdf.reporte(null);
+        }catch(DocumentException ex) {
+            Logger.getLogger(VentInforme.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }//GEN-LAST:event_jButton4ActionPerformed
 
     public void Solicitud(String s) {
         modelo = new DefaultTableModel() {

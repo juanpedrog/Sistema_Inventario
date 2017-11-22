@@ -5,6 +5,7 @@ import com.itextpdf.text.Image;
 import com.itextpdf.text.PageSize;
 import com.itextpdf.text.pdf.BaseFont;
 import com.itextpdf.text.pdf.PdfContentByte;
+import com.itextpdf.text.pdf.PdfPTable;
 import com.itextpdf.text.pdf.PdfWriter;
 import java.awt.Desktop;
 import java.io.File;
@@ -26,10 +27,14 @@ import java.util.Calendar;
  */
 public class CrearPDF {
     public void generarPDF() throws FileNotFoundException, DocumentException{
-        String path="C:\\Nueva carpeta\\prueba.pdf";
+        String path="C:\\Reportes_Viaticos\\prueba.pdf";
         try{
         File f=new File(path);
         f.delete();
+        File carpeta=new File("C:\\Reportes_Viaticos\\archivo.txt");
+        if(!carpeta.exists()){  
+                carpeta.mkdir();
+            }
         Document document=new Document(PageSize.A4,0f,0f,0f,0f);
         PdfWriter writer=PdfWriter.getInstance(document, new FileOutputStream(path));
         ArrayList<String> datos;
@@ -177,10 +182,14 @@ public class CrearPDF {
         return aux;
     }
     public void pdfFolio(String folio) throws DocumentException{
-        String path="C:\\Nueva carpeta\\prueba.pdf";
+        String path="C:\\Reportes_Viaticos\\prueba.pdf";
         try{
         File f=new File(path);
         f.delete();
+        File carpeta=new File("C:\\Reportes_Viaticos\\archivo.txt");
+        if(!carpeta.exists()){  
+                carpeta.mkdir();
+            }
         Document document=new Document(PageSize.A4,0f,0f,0f,0f);
         PdfWriter writer=PdfWriter.getInstance(document, new FileOutputStream(path));
         ArrayList<String> datos;
@@ -326,10 +335,14 @@ public class CrearPDF {
         }
     }
     public void oficio_comision(String folio) throws DocumentException{
-        String path="C:\\Nueva carpeta\\prueba.pdf";
+        String path="C:\\Reportes_Viaticos\\prueba.pdf";
         try{
             File f=new File(path);
-            //f.delete();
+            f.delete();
+            File carpeta=new File("C:\\Reportes_Viaticos");
+            if(!carpeta.exists()){  
+                carpeta.mkdir();
+            }
             Document document=new Document(PageSize.A4,0f,0f,0f,0f);
             PdfWriter writer=PdfWriter.getInstance(document, new FileOutputStream(path));
             ArrayList<String> datos;
@@ -469,10 +482,141 @@ public class CrearPDF {
             
         }
     }
+    public void reporte(String idInforme) throws DocumentException{
+        String path="C:\\Reportes_Viaticos\\prueba.pdf";
+        try{
+            File f=new File(path);
+            f.delete();
+            File carpeta=new File("C:\\Reportes_Viaticos");
+            if(!carpeta.exists()){  
+                carpeta.mkdir();
+            }
+            Document document=new Document(PageSize.A4,0f,0f,0f,0f);
+            PdfWriter writer=PdfWriter.getInstance(document, new FileOutputStream(path));
+            ArrayList<String> datos;
+            Conexion conexion=new Conexion();
+            conexion.conexion();
+            document.open();
+            BaseFont bf=BaseFont.createFont(BaseFont.COURIER_BOLD,BaseFont.CP1252,BaseFont.NOT_EMBEDDED);
+            BaseFont bfNoNegritas=BaseFont.createFont(BaseFont.COURIER,BaseFont.CP1252,BaseFont.NOT_EMBEDDED);
+            PdfContentByte cb=writer.getDirectContent();
+            cb.setFontAndSize(bf,16);
+            Image image=Image.getInstance(getClass().getResource("/Imagenes/icono.png"));
+            document.add(image);
+            int size=12;
+            cb.beginText();
+            //Label reporte actividad
+            cb.setFontAndSize(bf, 16);
+            cb.setTextMatrix(200,750);
+            cb.showText("Reporte de actividad");
+            //Label nombre
+            cb.setFontAndSize(bfNoNegritas, size);
+            cb.setTextMatrix(50,700);
+            cb.showText("Nombre: ");
+            //Nombre base de datos
+            cb.setFontAndSize(bf, size);
+            cb.setTextMatrix(120,700);
+            datos=conexion.acceder("select S.nombre from informe I inner join solicitud S on I.Solicitud_idSolicitud =S.idSolicitud;");
+            cb.showText(datos.get(0));
+            //Label puesto
+            cb.setFontAndSize(bfNoNegritas, size);
+            cb.setTextMatrix(50,675);
+            cb.showText("Puesto: ");
+            //Puesto base de datos
+            cb.setFontAndSize(bf,size);
+            cb.setTextMatrix(120,675);
+            datos=conexion.acceder("select S.puesto from informe I inner join solicitud S on I.Solicitud_idSolicitud =S.idSolicitud where I.id_informe="+idInforme);
+            cb.showText(datos.get(0));
+            //Label Folio de oficio
+            cb.setFontAndSize(bfNoNegritas, size);
+            cb.setTextMatrix(50,650);
+            cb.showText("Folio de oficio de comision:");
+            //Folio base de datos
+            cb.setFontAndSize(bf, size);
+            cb.setTextMatrix(250,650);
+            datos=conexion.acceder("select O.folio from informe I inner join solicitud S on I.Solicitud_idSolicitud =S.idSolicitud inner join oficio_comision O on S.idSolicitud=O.Solicitud_idSolicitud where I.id_informe="+idInforme);
+            cb.showText(datos.get(0));
+            //Label fecha
+            cb.setFontAndSize(bfNoNegritas, size);
+            cb.setTextMatrix(50,625);
+            cb.showText("Periodo de viaticos:");
+            //Fecha base de datos
+            cb.setFontAndSize(bf,size);
+            cb.setTextMatrix(200,625);
+            datos=conexion.acceder("select S.fecha_salida,S.fecha_llegada from solicitud S inner join informe I on S.idSolicitud=I.Solicitud_idSolicitud where I.id_informe="+idInforme);
+            cb.showText(datos.get(0)+" - "+datos.get(1));
+            //Label monto
+            cb.setFontAndSize(bfNoNegritas, size);
+            cb.setTextMatrix(50,600);
+            cb.showText("Monto: ");
+            //Monto base de datos
+            cb.setFontAndSize(bf, size);
+            cb.setTextMatrix(120,600);
+            datos=conexion.acceder("select C.monto from oficio_comision C inner join solicitud S on C.Solicitud_idSolicitud=S.idSolicitud inner join informe I on S.idSolicitud=I.Solicitud_idSolicitud where I.id_informe="+idInforme);
+            cb.showText(datos.get(0));
+            //Observaciones
+            cb.setFontAndSize(bfNoNegritas, size);
+            cb.setTextMatrix(50,575);
+            cb.showText("Observaciones: ");
+            //Observaciones base de datos
+            datos=conexion.acceder("select I.observaciones from informe I where I.id_informe="+idInforme);
+            acomodar_Actividad(datos.get(0),cb,bf,550);
+            int espacio=0;
+            datos=conexion.acceder("select S.vehiculo from informe I inner join solicitud S on I.Solicitud_idSolicitud=S.idSolicitud where I.id_informe="+idInforme);
+            if(!datos.get(0).equals("Seleccione el vehículo")){
+                espacio=-200;
+                cb.setFontAndSize(bfNoNegritas, size);
+                cb.setTextMatrix(50,375);
+                cb.showText("Observaciones de vehiculo: ");
+                //Vehiculo
+                cb.setFontAndSize(bf, size);
+                cb.setTextMatrix(50,350);
+                datos=conexion.acceder("select I.observaciones_vehiculo from informe I where I.id_informe="+idInforme);
+                cb.showText(datos.get(0));
+            }   
+            //Fin del contenido
+            cb.endText();
+            document.newPage();
+            document.add(image);
+            cb.beginText();
+            cb.setFontAndSize(bf, 16);
+            cb.setTextMatrix(250,800);
+            cb.showText("Comprobación de costos");
+            cb.endText();
+            imprimir_Costo("1",document);
+            document.close();
+            Desktop.getDesktop().open(f);
+        }catch(IOException e){
+            
+        }
+    }
+    public void imprimir_Costo(String idInforme,Document document) throws DocumentException{
+        Conexion conexion=new Conexion();
+        conexion.conexion();
+        ArrayList<String> indices;
+        ArrayList<String> datos;
+        indices=conexion.acceder("select IG.Gastos_id_gastos from informe_gastos IG inner join informe I on IG.Informe_id_informe=I.id_informe where I.id_informe="+idInforme);
+        String query="select precio,descripcion from gastos where ";
+        for(int i=0;i<indices.size();i++){
+            if(i==0){
+                query+="id_gastos="+indices.get(i);
+            }else{
+                query+=" or id_gastos="+indices.get(i);
+            }
+        }
+        datos=conexion.acceder(query);
+        PdfPTable tabla=new PdfPTable(2);
+        tabla.addCell("Precio");
+        tabla.addCell("Descripción");
+        for(int i=0;i<datos.size();i++){
+            tabla.addCell(datos.get(i));
+        }
+        document.add(tabla);
+    }
     public static void main(String[] args){
         CrearPDF a=new CrearPDF();
         try{
-            a.oficio_comision("1");
+            a.reporte("1");
         }catch(Exception e){}
     }
 }

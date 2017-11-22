@@ -338,22 +338,22 @@ public class VentTablonSolicitud extends javax.swing.JFrame {
                 int folio = 0;
                 String valor = "";
                 if (total1 != 0) {
-                    ResultSet rs = sentencia.executeQuery("SELECT MAX(Folio) FROM oficio_comision");
+                    ResultSet rs = sentencia.executeQuery("SELECT MAX(Folio) AS Folio FROM oficio_comision");
                     while (rs.next()) {
                         valor = rs.getString("Folio");
                     }
-                    int an = Integer.parseInt(valor.substring(0, 3));
+                    int an = Integer.parseInt(valor.substring(0, 4));
                     if (an == calendar.get(Calendar.YEAR)) {
                         valor = valor.substring(4);
                         folio = Integer.parseInt(valor) + 1;
-                        valor = an + folio + "";
+                        valor = an  + ""+ folio;
                         folio = Integer.parseInt(valor);
                     } else {
-                        valor = calendar.get(Calendar.YEAR) + 1 + "";
+                        valor = calendar.get(Calendar.YEAR) + "1";
                         folio = Integer.parseInt(valor);
                     }
                 } else {
-                    valor = calendar.get(Calendar.YEAR) + 1 + "";
+                    valor = calendar.get(Calendar.YEAR) + "1";
                     folio = Integer.parseInt(valor);
                 }
                 sentencia.execute("INSERT INTO oficio_comision VALUES(" + folio + "," + id + "," + 0.00 + ")");
@@ -365,9 +365,7 @@ public class VentTablonSolicitud extends javax.swing.JFrame {
 
             } catch (ClassNotFoundException e) {
                 e.printStackTrace();
-            } catch (NumberFormatException exp) {
-                javax.swing.JOptionPane.showMessageDialog(null, "Ingresar solo números");
-            }//fin del catch
+            } //fin del catch
 
         } else {
             javax.swing.JOptionPane.showMessageDialog(null, "Seleccionar solicitud");
