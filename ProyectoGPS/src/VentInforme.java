@@ -21,6 +21,7 @@ import javax.swing.table.DefaultTableModel;
  * @author DenisseYEA
  */
 public class VentInforme extends javax.swing.JFrame {
+
     CrearPDF pdf = new CrearPDF();
     int posx, posy, i, c, folio;
     DefaultTableModel modelo;
@@ -220,7 +221,7 @@ public class VentInforme extends javax.swing.JFrame {
                 break;
             }
             case 1: {
-                SolicitudR("SELECT O.Folio,O.Solicitud_idSolicitud, S.Nombre FROM solicitud S, oficio_comision O WHERE S.Estado = 'A' AND S.Reporte = '1' AND S.idSolicitud = O.Solicitud_idSolicitud");
+                SolicitudR("SELECT O.Folio,S.idSolicitud, S.Nombre FROM solicitud S, oficio_comision O WHERE S.Estado = 'A' AND S.Reporte = '1' AND S.idSolicitud = O.Solicitud_idSolicitud");
                 jButton4.setVisible(true);
                 jButton3.setVisible(false);
                 break;
@@ -288,6 +289,8 @@ public class VentInforme extends javax.swing.JFrame {
         // TODO add your handling code here:
         int s = JOptionPane.showConfirmDialog(null, "¿Esta seguro?", "Alerta!", JOptionPane.YES_NO_OPTION);
         if (s == JOptionPane.YES_OPTION) {
+            jTextArea1.setText("");
+            jTextArea2.setText("");
             jTextArea1.enable(false);
             jTextArea2.enable(false);
             jButton1.setVisible(false);
@@ -296,6 +299,7 @@ public class VentInforme extends javax.swing.JFrame {
             jButton6.setVisible(false);
             jButton3.setVisible(true);
             jComboBox1.setVisible(true);
+            jTable1.enable(true);
             Solicitud("SELECT O.Folio, S.Nombre FROM solicitud S, oficio_comision O WHERE S.Estado = 'A' AND S.Reporte = '0' AND S.idSolicitud = O.Solicitud_idSolicitud");
         } else {
         }
@@ -329,8 +333,9 @@ public class VentInforme extends javax.swing.JFrame {
                 } else {
                     sentencia.execute("INSERT INTO informe (Observaciones,Observaciones_Vehiculo,Solicitud_idSolicitud) VALUES('" + jTextArea1.getText() + "',' '," + id + ")");
                 }
+                sentencia.executeUpdate("UPDATE solicitud SET Reporte = '1' WHERE (idSolicitud = " + id + ")");
                 String idInforme = "";
-                ResultSet rs2 = sentencia.executeQuery("SELECT MAX(id_informe) FROM informe");
+                ResultSet rs2 = sentencia.executeQuery("SELECT MAX(id_informe) AS id_informe FROM informe");
                 while (rs2.next()) {
                     idInforme = rs2.getString("id_informe");
                 }
@@ -338,15 +343,23 @@ public class VentInforme extends javax.swing.JFrame {
                 int filas = jTable1.getRowCount();
                 if (filas != 0) {
                     for (int j = 0; filas > j; j++) {
-                        sentencia.execute("INSERT INTO gastos (Precio,Descripcion) VALUES('" + jTable1.getValueAt(j, 0).toString() + "','" + jTable1.getValueAt(j, 1).toString() + "')");
-                        ResultSet rs3 = sentencia.executeQuery("SELECT MAX(id_gastos) FROM gastos");
+                        sentencia.execute("INSERT INTO gastos (Descripcion,Precio) VALUES('" + jTable1.getValueAt(j, 0).toString() + "','" + jTable1.getValueAt(j, 1).toString() + "')");
+                        ResultSet rs3 = sentencia.executeQuery("SELECT MAX(id_gastos) AS id_gastos FROM gastos");
                         while (rs3.next()) {
                             idGastos = rs3.getString("id_gastos");
                         }
-                        sentencia.execute("INSERT INTO informe_gastos VALUES("+idInforme+","+idGastos+")");
+                        sentencia.execute("INSERT INTO informe_gastos VALUES(" + idInforme + "," + idGastos + ")");
                     }
                 }
                 javax.swing.JOptionPane.showMessageDialog(null, "Reporte Generado");
+                if (c == 1) {
+                    jTextArea1.enable(false);
+                    jTextArea2.enable(false);
+                    jTable1.enable(false);
+                } else {
+                    jTextArea1.enable(false);
+                    jTable1.enable(false);
+                }
             } else {
             }
         } catch (SQLException ex) {
@@ -359,9 +372,16 @@ public class VentInforme extends javax.swing.JFrame {
 
     private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
         // TODO add your handling code here:       
-        try{
-            pdf.reporte(null);
-        }catch(DocumentException ex) {
+        try {
+            int k = jTable1.getSelectedRow();
+            String idInforme = "";
+            if (k >= 0) {
+                idInforme = jTable1.getValueAt(k, 0).toString();
+                pdf.reporte(idInforme);
+            } else {
+                javax.swing.JOptionPane.showMessageDialog(null, "Seleccionar Informe");
+            }
+        } catch (DocumentException ex) {
             Logger.getLogger(VentInforme.class.getName()).log(Level.SEVERE, null, ex);
         }
     }//GEN-LAST:event_jButton4ActionPerformed
@@ -397,7 +417,7 @@ public class VentInforme extends javax.swing.JFrame {
             e.printStackTrace();
         }//fin del catch
     }
-    
+
     public void SolicitudR(String s) {
         modelo = new DefaultTableModel() {
             public boolean isCellEditable(int rowIndex, int columnIndex) {
@@ -405,7 +425,7 @@ public class VentInforme extends javax.swing.JFrame {
             }
         };
         modelo.addColumn("ID Informe");
-        modelo.addColumn("Folio");       
+        modelo.addColumn("Folio");
         modelo.addColumn("Nombre");
         this.jTable1.setModel(modelo);
         try {
@@ -419,15 +439,18 @@ public class VentInforme extends javax.swing.JFrame {
             String solicitud[] = new String[3];
             while (rs.next()) {
                 solicitud[1] = rs.getString("Folio");
-                idSolicitud = rs.getString("Solicitud_idSolicitud");
+                idSolicitud = rs.getString("idSolicitud");
                 solicitud[2] = rs.getString("Nombre");
-                
+
             }
-            ResultSet rs1 = sentencia.executeQuery("SELECT Id_Informe FROM informe WHERE Solicitud_idSolicitud = "+idSolicitud);
-            while (rs.next()) {
-                solicitud[0] = rs.getString("Id_Informe");                
+            if (idSolicitud != "") {
+                ResultSet rs1 = sentencia.executeQuery("SELECT Id_Informe FROM informe WHERE Solicitud_idSolicitud = " + idSolicitud);
+                while (rs1.next()) {
+                    solicitud[0] = rs1.getString("Id_Informe");
+                    modelo.addRow(solicitud);
+                }
             }
-            modelo.addRow(solicitud);
+
         } catch (SQLException ex) {
             javax.swing.JOptionPane.showMessageDialog(null, "Error en la consulta");
 
