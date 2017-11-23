@@ -220,7 +220,7 @@ public class VentInforme extends javax.swing.JFrame {
                 break;
             }
             case 1: {
-                Solicitud("SELECT O.Folio, S.Nombre FROM solicitud S, oficio_comision O WHERE S.Estado = 'A' AND S.Reporte = '1' AND S.idSolicitud = O.Solicitud_idSolicitud");
+                SolicitudR("SELECT O.Folio,O.Solicitud_idSolicitud, S.Nombre FROM solicitud S, oficio_comision O WHERE S.Estado = 'A' AND S.Reporte = '1' AND S.idSolicitud = O.Solicitud_idSolicitud");
                 jButton4.setVisible(true);
                 jButton3.setVisible(false);
                 break;
@@ -358,8 +358,7 @@ public class VentInforme extends javax.swing.JFrame {
     }//GEN-LAST:event_jButton2ActionPerformed
 
     private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
-        // TODO add your handling code here:
-        
+        // TODO add your handling code here:       
         try{
             pdf.reporte(null);
         }catch(DocumentException ex) {
@@ -391,6 +390,44 @@ public class VentInforme extends javax.swing.JFrame {
                 modelo.addRow(solicitud);
             }
 
+        } catch (SQLException ex) {
+            javax.swing.JOptionPane.showMessageDialog(null, "Error en la consulta");
+
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        }//fin del catch
+    }
+    
+    public void SolicitudR(String s) {
+        modelo = new DefaultTableModel() {
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return false;
+            }
+        };
+        modelo.addColumn("ID Informe");
+        modelo.addColumn("Folio");       
+        modelo.addColumn("Nombre");
+        this.jTable1.setModel(modelo);
+        try {
+            Class.forName("com.mysql.jdbc.Driver");
+            Connection con = DriverManager.getConnection("jdbc:mysql://127.0.0.1:3306/Viaticos", "root", "");
+
+            Statement sentencia = con.createStatement();
+
+            ResultSet rs = sentencia.executeQuery(s);
+            String idSolicitud = "";
+            String solicitud[] = new String[3];
+            while (rs.next()) {
+                solicitud[1] = rs.getString("Folio");
+                idSolicitud = rs.getString("Solicitud_idSolicitud");
+                solicitud[2] = rs.getString("Nombre");
+                
+            }
+            ResultSet rs1 = sentencia.executeQuery("SELECT Id_Informe FROM informe WHERE Solicitud_idSolicitud = "+idSolicitud);
+            while (rs.next()) {
+                solicitud[0] = rs.getString("Id_Informe");                
+            }
+            modelo.addRow(solicitud);
         } catch (SQLException ex) {
             javax.swing.JOptionPane.showMessageDialog(null, "Error en la consulta");
 
