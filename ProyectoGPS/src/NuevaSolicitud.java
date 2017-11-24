@@ -103,7 +103,7 @@ public class NuevaSolicitud extends javax.swing.JFrame {
         lbl_Lugar.setText("Lugar:");
         getContentPane().add(lbl_Lugar, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 350, -1, -1));
 
-        cmb_Vehiculo.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        cmb_Vehiculo.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Seleccione el vehículo", "Item 2", "Item 3", "Item 4" }));
         getContentPane().add(cmb_Vehiculo, new org.netbeans.lib.awtextra.AbsoluteConstraints(380, 350, 150, -1));
 
         lbl_Vehiculo.setFont(new java.awt.Font("Arial Black", 0, 14)); // NOI18N
@@ -181,12 +181,12 @@ public class NuevaSolicitud extends javax.swing.JFrame {
             if(chb_Pernoctado.isSelected()){
                 pernoctado="Si";
             }
-            System.out.print("insert into Solicitud (Fecha_Salida,Lugar,Nombre,Actividad,Pernoctado,Vehiculo,Puesto,Fecha_Llegada,Estado) values('"+fecha_Salida+"','"+txt_Lugar.getText()+"'"
+            System.out.print("insert into Solicitud (Fecha_Salida,Lugar,Nombre,Actividad,Pernoctado,Vehiculo,Puesto,Fecha_Llegada,Estado,Reporte) values('"+fecha_Salida+"','"+txt_Lugar.getText()+"'"
                 + ",'"+txt_Nombre.getText()+"','"+txt_Actividad.getText()+"','"+pernoctado+"','"+cmb_Vehiculo.getSelectedItem().toString()+"'"
-                + ",'"+txt_Puesto.getText()+"','"+fecha_Llegada+"','P')");
-            boolean insersion=conexion.ejecutar("insert into Solicitud (Fecha_Salida,Lugar,Nombre,Actividad,Pernoctado,Vehiculo,Puesto,Fecha_Llegada,Estado) values('"+fecha_Salida+"','"+txt_Lugar.getText()+"'"
+                + ",'"+txt_Puesto.getText()+"','"+fecha_Llegada+"','P','0')");
+            boolean insersion=conexion.ejecutar("insert into Solicitud (Fecha_Salida,Lugar,Nombre,Actividad,Pernoctado,Vehiculo,Puesto,Fecha_Llegada,Estado,Reporte) values('"+fecha_Salida+"','"+txt_Lugar.getText()+"'"
                 + ",'"+txt_Nombre.getText()+"','"+txt_Actividad.getText()+"','"+pernoctado+"','"+cmb_Vehiculo.getSelectedItem().toString()+"'"
-                + ",'"+txt_Puesto.getText()+"','"+fecha_Llegada+"','P')");
+                + ",'"+txt_Puesto.getText()+"','"+fecha_Llegada+"','P','0')");
             if(insersion){
                 JOptionPane.showMessageDialog(this, "Insersión correcta");
                 this.setVisible(false);
