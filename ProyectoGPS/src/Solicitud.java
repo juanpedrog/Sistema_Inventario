@@ -93,7 +93,6 @@ public class Solicitud extends javax.swing.JFrame {
         btn_Cerrar = new javax.swing.JLabel();
         jLabel1 = new javax.swing.JLabel();
         date_Salida = new com.toedter.calendar.JDateChooser();
-        jButton1 = new javax.swing.JButton();
         chb_Pernoctado = new javax.swing.JCheckBox();
         Fondo = new javax.swing.JLabel();
 
@@ -179,15 +178,7 @@ public class Solicitud extends javax.swing.JFrame {
         });
         getContentPane().add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(870, 0, 40, 30));
         getContentPane().add(date_Salida, new org.netbeans.lib.awtextra.AbsoluteConstraints(200, 320, 140, -1));
-
-        jButton1.setText("jButton1");
-        jButton1.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton1ActionPerformed(evt);
-            }
-        });
-        getContentPane().add(jButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 260, -1, -1));
-        getContentPane().add(chb_Pernoctado, new org.netbeans.lib.awtextra.AbsoluteConstraints(760, 320, -1, -1));
+        getContentPane().add(chb_Pernoctado, new org.netbeans.lib.awtextra.AbsoluteConstraints(740, 320, -1, -1));
 
         Fondo.setFont(new java.awt.Font("Arial Black", 0, 14)); // NOI18N
         Fondo.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Imagenes/prueba6.png"))); // NOI18N
@@ -260,16 +251,6 @@ public class Solicitud extends javax.swing.JFrame {
         }
         
     }//GEN-LAST:event_btn_OkActionPerformed
-
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        // TODO add your handling code here:
-        try{
-        CrearPDF pdf=new CrearPDF();
-        pdf.pdfFolio("1");
-        }catch(Exception e){
-            
-        }
-    }//GEN-LAST:event_jButton1ActionPerformed
     public void insertar_Solicitud(){
         try{
             SimpleDateFormat sdf=new SimpleDateFormat("yyyy-MM-dd");
@@ -409,7 +390,6 @@ public class Solicitud extends javax.swing.JFrame {
     private javax.swing.JComboBox cmb_Vehiculo;
     private com.toedter.calendar.JDateChooser date_Llegada;
     private com.toedter.calendar.JDateChooser date_Salida;
-    private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JSeparator jSeparator1;
