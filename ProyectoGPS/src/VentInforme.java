@@ -40,7 +40,7 @@ public class VentInforme extends javax.swing.JFrame {
         jButton6.setVisible(false);
         i = 0;
         c = 0;
-        Solicitud("SELECT O.Folio, S.Nombre FROM solicitud S, oficio_comision O WHERE S.Estado = 'A' AND S.Reporte = '0' AND S.idSolicitud = O.Solicitud_idSolicitud");
+        Solicitud("SELECT O.Folio, S.Nombre FROM solicitud S, oficio_comision O WHERE S.Estado = 'A' AND S.Reporte = '0' AND S.idSolicitud = O.Solicitud_idSolicitud AND O.Monto != 0");
     }
 
     /**
@@ -228,14 +228,14 @@ public class VentInforme extends javax.swing.JFrame {
         // TODO add your handling code here:
         switch (jComboBox1.getSelectedIndex()) {
             case 0: {
-                Solicitud("SELECT O.Folio, S.Nombre FROM solicitud S, oficio_comision O WHERE S.Estado = 'A' AND S.Reporte = '0' AND S.idSolicitud = O.Solicitud_idSolicitud");
+                Solicitud("SELECT O.Folio, S.Nombre FROM solicitud S, oficio_comision O WHERE S.Estado = 'A' AND S.Reporte = '0' AND S.idSolicitud = O.Solicitud_idSolicitud AND O.Monto != 0");
                 jButton3.setVisible(true);
                 jButton4.setVisible(false);
                 i = 0;
                 break;
             }
             case 1: {
-                SolicitudR("SELECT I.Id_Informe, O.FOLIO, S.Nombre FROM solicitud S, oficio_comision O, informe I WHERE S.Estado = 'A' AND S.Reporte = '1' AND S.idSolicitud = O.Solicitud_idSolicitud AND I.Solicitud_idSolicitud = S.idSolicitud");
+                SolicitudR("SELECT I.Id_Informe, O.FOLIO, S.Nombre FROM solicitud S, oficio_comision O, informe I WHERE S.Estado = 'A' AND S.Reporte = '1' AND S.idSolicitud = O.Solicitud_idSolicitud AND I.Solicitud_idSolicitud = S.idSolicitud AND O.Monto != 0");
                 jButton4.setVisible(true);
                 jButton3.setVisible(false);
                 i = 1;

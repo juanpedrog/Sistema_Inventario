@@ -282,18 +282,25 @@ public class VentTablonSolicitud extends javax.swing.JFrame {
             if (i >= 0) {
                 String folio = jTable1.getValueAt(i, 0).toString();
                 String idSolicitud = "";
+                String monto = "";
                 try {
                     Class.forName("com.mysql.jdbc.Driver");
                     Connection con = DriverManager.getConnection("jdbc:mysql://127.0.0.1:3306/Viaticos", "root", "");
 
                     Statement sentencia = con.createStatement();
-                    ResultSet rs = sentencia.executeQuery("SELECT Solicitud_idSolicitud FROM oficio_comision WHERE Folio = '" + folio + "'");
+                    ResultSet rs = sentencia.executeQuery("SELECT Solicitud_idSolicitud, Monto FROM oficio_comision WHERE Folio = '" + folio + "'");
                     while (rs.next()) {
                         idSolicitud = rs.getString("Solicitud_idSolicitud");
+                        monto = rs.getString("Monto");
                     }
-                    sentencia.execute("DELETE FROM oficio_comision WHERE (Folio = " + folio + ")");
-                    sentencia.executeUpdate("UPDATE solicitud SET Estado = 'C' WHERE (idSolicitud = " + idSolicitud + ")");
-                    javax.swing.JOptionPane.showMessageDialog(null, "Solicitud cancelada");
+                    int mont = Integer.parseInt(monto);
+                    if (mont == 0) {
+                        sentencia.execute("DELETE FROM oficio_comision WHERE (Folio = " + folio + ")");
+                        sentencia.executeUpdate("UPDATE solicitud SET Estado = 'C' WHERE (idSolicitud = " + idSolicitud + ")");
+                        javax.swing.JOptionPane.showMessageDialog(null, "Solicitud cancelada");
+                    } else {
+                        javax.swing.JOptionPane.showMessageDialog(null, "No se puede cancelar solicitud por que se asigno un monto");
+                    }
 
                 } catch (SQLException ex) {
                     javax.swing.JOptionPane.showMessageDialog(null, "Error en la consulta");
