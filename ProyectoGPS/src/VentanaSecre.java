@@ -161,6 +161,11 @@ public class VentanaSecre extends javax.swing.JFrame {
         jlfecha.setFont(new java.awt.Font("Arial Black", 0, 12)); // NOI18N
         getContentPane().add(jlfecha, new org.netbeans.lib.awtextra.AbsoluteConstraints(830, 80, 80, 20));
 
+        tablausu = new javax.swing.JTable(){
+            public boolean isCellEditable(int rowIndex,int colIndex){
+                return false;
+            }
+        };
         tablausu.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null, null, null, null},
@@ -318,9 +323,11 @@ public class VentanaSecre extends javax.swing.JFrame {
         String id=null;
         try{
             fila=tablausu.getSelectedRow();
+            tablausu.clearSelection();
+            CrearPDF pdf=new CrearPDF();
             if(fila>=0){
                 id=tablausu.getValueAt(fila, 0).toString();
-                
+                pdf.generarPDFSolicitud(id);
             }
         }catch(Exception e){
             

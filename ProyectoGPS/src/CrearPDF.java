@@ -154,6 +154,134 @@ public class CrearPDF {
             
         }
     }
+    public void generarPDFSolicitud(String id) throws FileNotFoundException, DocumentException{
+        String path="C:\\Reportes_Viaticos\\prueba.pdf";
+        try{
+        File f=new File(path);
+        f.delete();
+        File carpeta=new File("C:\\Reportes_Viaticos\\archivo.txt");
+        if(!carpeta.exists()){  
+                carpeta.mkdir();
+            }
+        Document document=new Document(PageSize.A4,0f,0f,0f,0f);
+        PdfWriter writer=PdfWriter.getInstance(document, new FileOutputStream(path));
+        ArrayList<String> datos;
+        Conexion conexion=new Conexion();
+        conexion.conexion();
+        document.open();
+        /*Font fuenteTitulo=new Font();
+        fuenteTitulo.setSize(16);
+        fuenteTitulo.setStyle(Font.BOLD);
+        Paragraph solicitud_Viaticos=new Paragraph("Solicitud de viáticos",fuenteTitulo);
+        solicitud_Viaticos.setAlignment(Paragraph.ALIGN_CENTER);
+        fuenteTitulo.isBold();
+        document.add(solicitud_Viaticos);
+        Conexion conexion=new Conexion();
+        conexion.conexion();
+        ArrayList<String> datos;
+        datos=conexion.acceder("select fecha_salida from solicitud where idSolicitud=(select max(idSolicitud) from solicitud);");
+        Font fontSubrayar=new Font();
+        Font fontNegritas=new Font();
+        fontNegritas.setStyle(Font.BOLD);
+        fontSubrayar.setStyle(Font.UNDERLINE);
+        Paragraph fecha_salida=new Paragraph("  Fecha de salida: ",fontNegritas);
+        Paragraph query=new Paragraph(datos.get(0),fontSubrayar);
+        Paragraph fecha2=new Paragraph("    Fecha de llegada: ",fontNegritas);
+        datos=conexion.acceder("select fecha_llegada from solicitud where idSolicitud=(select max(idSolicitud) from solicitud);");
+        query=new Paragraph(datos.get(0),fontSubrayar);
+        fecha2.add(query);
+        query.add(fecha2);
+        fecha_salida.add(query);
+        document.add(fecha_salida);*/
+        BaseFont bf=BaseFont.createFont(BaseFont.COURIER_BOLD,BaseFont.CP1252,BaseFont.NOT_EMBEDDED);
+        BaseFont bfNoNegritas=BaseFont.createFont(BaseFont.COURIER,BaseFont.CP1252,BaseFont.NOT_EMBEDDED);
+        PdfContentByte cb=writer.getDirectContent();
+        cb.setFontAndSize(bf,16);
+        Image image=Image.getInstance(getClass().getResource("/Imagenes/icono.png"));
+        document.add(image);
+        cb.beginText();
+        //Label solicitud de viáticos
+        cb.setTextMatrix(250,800);
+        cb.showText("Solicitud de viaticos");
+        //Label fecha de salida
+        cb.setFontAndSize(bfNoNegritas,12);
+        cb.setTextMatrix(50,700);
+        cb.showText("Fecha de salida: ");
+        //Fecha de salida de la base de datos
+        cb.setFontAndSize(bf,12);
+        datos=conexion.acceder("select fecha_salida from solicitud where idSolicitud="+id);
+        cb.setTextMatrix(180,700);
+        cb.showText(datos.get(0));
+        //Label fecha de llegada
+        cb.setTextMatrix(270,700);
+        cb.setFontAndSize(bfNoNegritas,12);
+        cb.showText("Fecha de llegada: ");
+        //Fecha de llegada de la base de datos
+        cb.setFontAndSize(bf,12);
+        datos=conexion.acceder("select fecha_llegada from solicitud where idSolicitud="+id);
+        cb.setTextMatrix(400,700);
+        cb.showText(datos.get(0));
+        //Label nombre
+        cb.setFontAndSize(bfNoNegritas,12);
+        cb.setTextMatrix(50,650);
+        cb.showText("Nombre: ");
+        //Nombre base de datos
+        cb.setFontAndSize(bf,12);
+        datos=conexion.acceder("select nombre from solicitud where idSolicitud="+id);
+        cb.setTextMatrix(130,650);
+        cb.showText(datos.get(0));
+        //Label lugar
+        cb.setFontAndSize(bfNoNegritas,12);
+        cb.setTextMatrix(320,650);
+        cb.showText("Lugar: ");
+        //Lugar base de datos
+        cb.setFontAndSize(bf,12);
+        datos=conexion.acceder("select lugar from solicitud where idSolicitud="+id);
+        cb.setTextMatrix(370,650);
+        cb.showText(datos.get(0));
+        //Label actividad
+        cb.setFontAndSize(bfNoNegritas,12);
+        cb.setTextMatrix(50,600);
+        cb.showText("Actividad: ");
+        //Actividad base de datos
+        cb.setFontAndSize(bf,12);
+        datos=conexion.acceder("select actividad from solicitud where idSolicitud="+id);
+        acomodar_Actividad(datos.get(0),cb,bf,575);
+        //Label pernoctado
+        cb.setFontAndSize(bfNoNegritas,12);
+        cb.setTextMatrix(50,475);
+        cb.showText("Pernoctado: ");
+        //Pernoctado base de datos
+        cb.setFontAndSize(bf,12);
+        datos=conexion.acceder("select pernoctado from solicitud where idSolicitud="+id);
+        cb.setTextMatrix(150,475);
+        cb.showText(datos.get(0));
+        //Vehiculo
+        datos=conexion.acceder("select vehiculo from solicitud where idSolicitud="+id);
+        if(!datos.get(0).equals("Seleccione el vehículo")){
+            //Label vehiculo
+            cb.setFontAndSize(bfNoNegritas,12);
+            cb.setTextMatrix(50,375);
+            cb.showText("Vehiculo: ");
+            //Vehiculo base de datos
+            cb.setFontAndSize(bf,12);
+            cb.setTextMatrix(180,375);
+            cb.showText(datos.get(0));
+        }
+        //Label V° B°
+        cb.setFontAndSize(bfNoNegritas,12);
+        cb.setTextMatrix(250,275);
+        cb.showText("V° B°");
+        //Label para firmar
+        cb.setTextMatrix(175,225);
+        cb.showText("____________________________");
+        cb.endText();
+        document.close();
+            Desktop.getDesktop().open(f);
+        }catch(IOException e){
+            
+        }
+    }
     public String acomodar_Actividad(String cad, PdfContentByte cb,BaseFont f,int renglon){
         int contador=0;
         int inicio=0;
