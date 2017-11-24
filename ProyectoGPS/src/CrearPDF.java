@@ -583,7 +583,7 @@ public class CrearPDF {
             cb.setTextMatrix(250,800);
             cb.showText("Comprobación de costos");
             cb.endText();
-            imprimir_Costo("1",document);
+            imprimir_Costo(idInforme,document);
             document.close();
             Desktop.getDesktop().open(f);
         }catch(IOException e){
@@ -616,7 +616,7 @@ public class CrearPDF {
     public static void main(String[] args){
         CrearPDF a=new CrearPDF();
         try{
-            a.reporte("1");
+            a.reporte("11");
         }catch(Exception e){}
     }
 }
