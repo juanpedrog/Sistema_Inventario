@@ -69,6 +69,8 @@ public class VentInforme extends javax.swing.JFrame {
         jButton4 = new javax.swing.JButton();
         jButton5 = new javax.swing.JButton();
         jButton6 = new javax.swing.JButton();
+        jLabel3 = new javax.swing.JLabel();
+        jTextField1 = new javax.swing.JTextField();
         jlFondo = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -175,6 +177,17 @@ public class VentInforme extends javax.swing.JFrame {
         });
         getContentPane().add(jButton6, new org.netbeans.lib.awtextra.AbsoluteConstraints(270, 130, -1, -1));
 
+        jLabel3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Imagenes/buscar.png"))); // NOI18N
+        jLabel3.setText("BUSCAR");
+        getContentPane().add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(560, 130, 90, 20));
+
+        jTextField1.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                jTextField1KeyReleased(evt);
+            }
+        });
+        getContentPane().add(jTextField1, new org.netbeans.lib.awtextra.AbsoluteConstraints(670, 130, 170, -1));
+
         jlFondo.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Imagenes/fondoadminfin.png"))); // NOI18N
         jlFondo.addMouseMotionListener(new java.awt.event.MouseMotionAdapter() {
             public void mouseDragged(java.awt.event.MouseEvent evt) {
@@ -218,12 +231,14 @@ public class VentInforme extends javax.swing.JFrame {
                 Solicitud("SELECT O.Folio, S.Nombre FROM solicitud S, oficio_comision O WHERE S.Estado = 'A' AND S.Reporte = '0' AND S.idSolicitud = O.Solicitud_idSolicitud");
                 jButton3.setVisible(true);
                 jButton4.setVisible(false);
+                i = 0;
                 break;
             }
             case 1: {
-                SolicitudR("SELECT O.Folio,S.idSolicitud, S.Nombre FROM solicitud S, oficio_comision O WHERE S.Estado = 'A' AND S.Reporte = '1' AND S.idSolicitud = O.Solicitud_idSolicitud");
+                SolicitudR("SELECT I.Id_Informe, O.FOLIO, S.Nombre FROM solicitud S, oficio_comision O, informe I WHERE S.Estado = 'A' AND S.Reporte = '1' AND S.idSolicitud = O.Solicitud_idSolicitud AND I.Solicitud_idSolicitud = S.idSolicitud");
                 jButton4.setVisible(true);
                 jButton3.setVisible(false);
+                i = 1;
                 break;
             }
 
@@ -272,6 +287,8 @@ public class VentInforme extends javax.swing.JFrame {
                 jButton6.setVisible(true);
                 jButton3.setVisible(false);
                 jComboBox1.setVisible(false);
+                jLabel3.setVisible(false);
+                jTextField1.setVisible(false);
             } catch (SQLException ex) {
                 javax.swing.JOptionPane.showMessageDialog(null, "Error en la consulta");
 
@@ -300,6 +317,8 @@ public class VentInforme extends javax.swing.JFrame {
             jButton3.setVisible(true);
             jComboBox1.setVisible(true);
             jTable1.enable(true);
+            jLabel3.setVisible(true);
+            jTextField1.setVisible(true);
             Solicitud("SELECT O.Folio, S.Nombre FROM solicitud S, oficio_comision O WHERE S.Estado = 'A' AND S.Reporte = '0' AND S.idSolicitud = O.Solicitud_idSolicitud");
         } else {
         }
@@ -386,6 +405,77 @@ public class VentInforme extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_jButton4ActionPerformed
 
+    private void jTextField1KeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTextField1KeyReleased
+        // TODO add your handling code here:
+        if (i == 1) {
+            modelo = new DefaultTableModel() {
+                public boolean isCellEditable(int rowIndex, int columnIndex) {
+                    return false;
+                }
+            };
+            modelo.addColumn("ID Informe");
+            modelo.addColumn("Folio");
+            modelo.addColumn("Nombre");
+            this.jTable1.setModel(modelo);
+            try {
+                Class.forName("com.mysql.jdbc.Driver");
+                Connection con = DriverManager.getConnection("jdbc:mysql://127.0.0.1:3306/Viaticos", "root", "");
+
+                Statement sentencia = con.createStatement();
+                ResultSet rs = sentencia.executeQuery("SELECT I.Id_Informe, O.Folio, S.Nombre FROM solicitud S, oficio_comision O, informe I WHERE S.Estado = 'A' AND S.Reporte = '1' AND S.idSolicitud = O.Solicitud_idSolicitud AND I.Solicitud_idSolicitud = S.idSolicitud AND (I.Id_Informe LIKE '%" + jTextField1.getText()
+                    + "%' OR O.Folio LIKE '%" + jTextField1.getText() + "%' OR S.Nombre LIKE '%" + jTextField1.getText() + "%') ");
+
+                String solicitud[] = new String[3];
+                while (rs.next()) {
+                    solicitud[0] = rs.getString("Id_Informe");
+                    solicitud[1] = rs.getString("Folio");
+                    solicitud[2] = rs.getString("Nombre");
+                    modelo.addRow(solicitud);
+
+                }
+
+            } catch (SQLException ex) {
+                javax.swing.JOptionPane.showMessageDialog(null, "Error en la consulta");
+
+            } catch (ClassNotFoundException e) {
+                e.printStackTrace();
+            }//fin del catch
+        }
+        if (i == 0) {
+            modelo = new DefaultTableModel() {
+                public boolean isCellEditable(int rowIndex, int columnIndex) {
+                    return false;
+                }
+            };
+            modelo.addColumn("Folio");
+            modelo.addColumn("Nombre");
+            this.jTable1.setModel(modelo);
+            this.jTable1.setModel(modelo);
+            try {
+                Class.forName("com.mysql.jdbc.Driver");
+                Connection con = DriverManager.getConnection("jdbc:mysql://127.0.0.1:3306/Viaticos", "root", "");
+
+                Statement sentencia = con.createStatement();
+
+                ResultSet rs = sentencia.executeQuery("SELECT O.Folio, S.Nombre FROM solicitud S, oficio_comision O WHERE S.Estado = 'A' AND S.Reporte = '0' AND S.idSolicitud = O.Solicitud_idSolicitud  AND (O.Folio LIKE '%" + jTextField1.getText() + "%'"
+                    + "OR S.Nombre LIKE '%" + jTextField1.getText() + "%') ");
+
+                String solicitud[] = new String[2];
+                while (rs.next()) {
+                    solicitud[0] = rs.getString("Folio");
+                    solicitud[1] = rs.getString("Nombre");
+                    modelo.addRow(solicitud);
+                }
+
+            } catch (SQLException ex) {
+                javax.swing.JOptionPane.showMessageDialog(null, "Error en la consulta");
+
+            } catch (ClassNotFoundException e) {
+                e.printStackTrace();
+            }//fin del catch
+        }
+    }//GEN-LAST:event_jTextField1KeyReleased
+
     public void Solicitud(String s) {
         modelo = new DefaultTableModel() {
             public boolean isCellEditable(int rowIndex, int columnIndex) {
@@ -435,21 +525,16 @@ public class VentInforme extends javax.swing.JFrame {
             Statement sentencia = con.createStatement();
 
             ResultSet rs = sentencia.executeQuery(s);
-            String idSolicitud = "";
             String solicitud[] = new String[3];
             while (rs.next()) {
+                solicitud[0] = rs.getString("Id_Informe");
                 solicitud[1] = rs.getString("Folio");
-                idSolicitud = rs.getString("idSolicitud");
                 solicitud[2] = rs.getString("Nombre");
+                modelo.addRow(solicitud);
 
             }
-            if (idSolicitud != "") {
-                ResultSet rs1 = sentencia.executeQuery("SELECT Id_Informe FROM informe WHERE Solicitud_idSolicitud = " + idSolicitud);
-                while (rs1.next()) {
-                    solicitud[0] = rs1.getString("Id_Informe");
-                    modelo.addRow(solicitud);
-                }
-            }
+            
+            
 
         } catch (SQLException ex) {
             javax.swing.JOptionPane.showMessageDialog(null, "Error en la consulta");
@@ -504,12 +589,14 @@ public class VentInforme extends javax.swing.JFrame {
     private javax.swing.JComboBox jComboBox1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel3;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JTable jTable1;
     private javax.swing.JTextArea jTextArea1;
     private javax.swing.JTextArea jTextArea2;
+    private javax.swing.JTextField jTextField1;
     private javax.swing.JLabel jlFondo;
     private javax.swing.JLabel jlcerrar;
     private javax.swing.JLabel jlmini;
