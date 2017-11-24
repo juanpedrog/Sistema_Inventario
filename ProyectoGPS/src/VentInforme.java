@@ -175,7 +175,7 @@ public class VentInforme extends javax.swing.JFrame {
         });
         getContentPane().add(jButton6, new org.netbeans.lib.awtextra.AbsoluteConstraints(270, 130, -1, -1));
 
-        jlFondo.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Imagenes/prueba6.png"))); // NOI18N
+        jlFondo.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Imagenes/fondoadminfin.png"))); // NOI18N
         jlFondo.addMouseMotionListener(new java.awt.event.MouseMotionAdapter() {
             public void mouseDragged(java.awt.event.MouseEvent evt) {
                 jlFondoMouseDragged(evt);
