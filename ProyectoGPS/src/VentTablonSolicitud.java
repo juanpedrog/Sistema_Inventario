@@ -329,7 +329,7 @@ public class VentTablonSolicitud extends javax.swing.JFrame {
         int k = jTable1.getSelectedRow();
         if (k >= 0) {
             int id = Integer.parseInt(jTable1.getValueAt(k, 0).toString());
-            Calendar calendar= Calendar.getInstance();
+            Calendar calendar = Calendar.getInstance();
             try {
                 Class.forName("com.mysql.jdbc.Driver");
                 Connection con = DriverManager.getConnection("jdbc:mysql://127.0.0.1:3306/Viaticos", "root", "");
@@ -351,7 +351,7 @@ public class VentTablonSolicitud extends javax.swing.JFrame {
                     if (an == calendar.get(Calendar.YEAR)) {
                         valor = valor.substring(4);
                         folio = Integer.parseInt(valor) + 1;
-                        valor = an  + ""+ folio;
+                        valor = an + "" + folio;
                         folio = Integer.parseInt(valor);
                     } else {
                         valor = calendar.get(Calendar.YEAR) + "1";
@@ -603,22 +603,30 @@ public class VentTablonSolicitud extends javax.swing.JFrame {
     private void jButton5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton5ActionPerformed
         // TODO add your handling code here:
         int i = jTable1.getSelectedRow();
-        String folio = jTable1.getValueAt(i, 0).toString();
-        try {
-            pdf.oficio_comision(folio);
-        } catch (DocumentException ex) {
-            Logger.getLogger(VentTablonSolicitud.class.getName()).log(Level.SEVERE, null, ex);
+        if (i >= 0) {
+            String folio = jTable1.getValueAt(i, 0).toString();
+            try {
+                pdf.oficio_comision(folio);
+            } catch (DocumentException ex) {
+                Logger.getLogger(VentTablonSolicitud.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        } else {
+            javax.swing.JOptionPane.showMessageDialog(null, "Seleccionar solicitud");
         }
     }//GEN-LAST:event_jButton5ActionPerformed
 
     private void jButton6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton6ActionPerformed
         // TODO add your handling code here:
         int i = jTable1.getSelectedRow();
-        String folio = jTable1.getValueAt(i, 0).toString();
-        try {
-            pdf.pdfFolio(folio);
-        } catch (DocumentException ex) {
-            Logger.getLogger(VentTablonSolicitud.class.getName()).log(Level.SEVERE, null, ex);
+        if (i >= 0) {
+            String folio = jTable1.getValueAt(i, 0).toString();
+            try {
+                pdf.pdfFolio(folio);
+            } catch (DocumentException ex) {
+                Logger.getLogger(VentTablonSolicitud.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        } else {
+            javax.swing.JOptionPane.showMessageDialog(null, "Seleccionar solicitud");
         }
     }//GEN-LAST:event_jButton6ActionPerformed
 
