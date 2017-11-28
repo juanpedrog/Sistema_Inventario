@@ -17,6 +17,7 @@ public class NuevaSolicitud extends javax.swing.JFrame {
     Conexion cbd=new Conexion();
     Connection cn=cbd.conexion();
     int posx,posy;
+    public static boolean imprimirSolicitud=false;
     /**
      * Creates new form NuevaSolicitud
      */
@@ -58,6 +59,11 @@ public class NuevaSolicitud extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setUndecorated(true);
+        addWindowListener(new java.awt.event.WindowAdapter() {
+            public void windowActivated(java.awt.event.WindowEvent evt) {
+                formWindowActivated(evt);
+            }
+        });
         getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         jLabel2.setFont(new java.awt.Font("Arial Black", 1, 16)); // NOI18N
@@ -160,7 +166,9 @@ public class NuevaSolicitud extends javax.swing.JFrame {
        try{
             verificar_excepcion=true;
             validarDatos(true,"");
-            insertar_Solicitud();
+            if(cmb_Vehiculo.getSelectedIndex()==0){
+                insertar_Solicitud();
+            }
         }catch(ExcepcionDatosIncompletos e){
             if(verificar_excepcion)JOptionPane.showMessageDialog(this, e.getMessage());
             return;
@@ -170,6 +178,13 @@ public class NuevaSolicitud extends javax.swing.JFrame {
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
         this.setVisible(false);
     }//GEN-LAST:event_jButton2ActionPerformed
+
+    private void formWindowActivated(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowActivated
+        // TODO add your handling code here:
+        if(imprimirSolicitud){
+            insertar_Solicitud();
+        }
+    }//GEN-LAST:event_formWindowActivated
     public void insertar_Solicitud(){
         try{
             SimpleDateFormat sdf=new SimpleDateFormat("yyyy-MM-dd");
@@ -224,13 +239,24 @@ public class NuevaSolicitud extends javax.swing.JFrame {
                 return;
             }
         }
-        if(cmb_Vehiculo.getSelectedIndex()==0){
+        if(chb_Pernoctado.isSelected()){
+            if(date_Salida.getDate().getYear()==date_Llegada.getDate().getYear()
+                    && date_Salida.getDate().getMonth()==date_Llegada.getDate().getMonth()
+                    && date_Salida.getDate().getDay()==date_Llegada.getDate().getDay()){
+                cad+="\nNo se puede seleccionar pernoctadar para una fecha de salida y de llagada igual";
+            }
+            
+        }
+        /*if(cmb_Vehiculo.getSelectedIndex()==0){
             if(cad.equals("")){
                 cad+="-Vehiculo no seleccionado";
             }
             else{
                 cad+="\n-Vehiculo no seleccionado";
             }
+        }*/
+        if(cmb_Vehiculo.getSelectedIndex()!=0){
+            new descVehiculo().setVisible(true);
         }
         if(txt_Actividad.getText().equals("")){
             if(cad.equals("")){

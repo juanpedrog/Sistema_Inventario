@@ -20,6 +20,7 @@ import javax.swing.table.DefaultTableModel;
 public class VentanaSecre extends javax.swing.JFrame {
     Conexion cbd=new Conexion();
     Connection cn=cbd.conexion();
+    boolean limpiar=false;
     /**
      * Creates new form VentanaSecre
      */
@@ -299,7 +300,7 @@ public class VentanaSecre extends javax.swing.JFrame {
     }//GEN-LAST:event_jlfondoMouseDragged
 
     private void jlnusoMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jlnusoMouseClicked
-
+        limpiar=true;
         jlnuso.setIcon(nus);
         NuevaSolicitud ns=new NuevaSolicitud();
         ns.setVisible(true);
@@ -313,13 +314,17 @@ public class VentanaSecre extends javax.swing.JFrame {
     }//GEN-LAST:event_btncerrarsesionActionPerformed
 
     private void formWindowActivated(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowActivated
-        jlnuso.setIcon(nus1);
-        Tasoli();
+        if(limpiar){        
+            jlnuso.setIcon(nus1);
+            Tasoli();
+            limpiar=false;
+        }
     }//GEN-LAST:event_formWindowActivated
 
     private void btn_ImprimirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_ImprimirActionPerformed
         // TODO add your handling code here:
         int fila=-1;
+        limpiar=false;
         String id=null;
         try{
             fila=tablausu.getSelectedRow();
