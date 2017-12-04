@@ -17,7 +17,7 @@ import javax.swing.JFrame;
  */
 public class SolicitudView extends javax.swing.JFrame {
 
-    int id;
+    int id, aoc;
 
     /**
      * Creates new form SolicitudView
@@ -56,6 +56,10 @@ public class SolicitudView extends javax.swing.JFrame {
         lbl_Pernoctado = new javax.swing.JLabel();
         btn_Cerrar = new javax.swing.JLabel();
         jLabel1 = new javax.swing.JLabel();
+        txt_Monto = new javax.swing.JTextField();
+        lbl_Monto = new javax.swing.JLabel();
+        lbl_Folio = new javax.swing.JLabel();
+        txt_Folio = new javax.swing.JTextField();
         Fondo = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -68,23 +72,23 @@ public class SolicitudView extends javax.swing.JFrame {
         getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         jRadioButton1.setEnabled(false);
-        getContentPane().add(jRadioButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(760, 320, -1, -1));
+        getContentPane().add(jRadioButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(580, 510, -1, -1));
 
         jTextField3.setEditable(false);
-        getContentPane().add(jTextField3, new org.netbeans.lib.awtextra.AbsoluteConstraints(540, 500, 340, -1));
+        getContentPane().add(jTextField3, new org.netbeans.lib.awtextra.AbsoluteConstraints(210, 510, 300, -1));
 
         jTextField1.setEditable(false);
         getContentPane().add(jTextField1, new org.netbeans.lib.awtextra.AbsoluteConstraints(210, 320, 170, -1));
 
         jTextField2.setEditable(false);
-        getContentPane().add(jTextField2, new org.netbeans.lib.awtextra.AbsoluteConstraints(490, 320, 170, -1));
+        getContentPane().add(jTextField2, new org.netbeans.lib.awtextra.AbsoluteConstraints(450, 320, 170, -1));
 
         lbl_Nombre.setFont(new java.awt.Font("Arial Black", 0, 14)); // NOI18N
         lbl_Nombre.setText("Nombre");
-        getContentPane().add(lbl_Nombre, new org.netbeans.lib.awtextra.AbsoluteConstraints(200, 240, 60, 20));
+        getContentPane().add(lbl_Nombre, new org.netbeans.lib.awtextra.AbsoluteConstraints(190, 230, 60, 20));
 
         txt_Nombre.setEditable(false);
-        getContentPane().add(txt_Nombre, new org.netbeans.lib.awtextra.AbsoluteConstraints(280, 240, 290, -1));
+        getContentPane().add(txt_Nombre, new org.netbeans.lib.awtextra.AbsoluteConstraints(190, 250, 420, -1));
         getContentPane().add(spr_Nombre, new org.netbeans.lib.awtextra.AbsoluteConstraints(190, 282, 690, 10));
 
         lbl_Fecha_Salida.setFont(new java.awt.Font("Arial Black", 0, 14)); // NOI18N
@@ -93,7 +97,7 @@ public class SolicitudView extends javax.swing.JFrame {
 
         lbl_Fecha_Llegada.setFont(new java.awt.Font("Arial Black", 0, 14)); // NOI18N
         lbl_Fecha_Llegada.setText("Fecha de llegada");
-        getContentPane().add(lbl_Fecha_Llegada, new org.netbeans.lib.awtextra.AbsoluteConstraints(490, 300, 140, -1));
+        getContentPane().add(lbl_Fecha_Llegada, new org.netbeans.lib.awtextra.AbsoluteConstraints(450, 300, 140, -1));
         getContentPane().add(jSeparator1, new org.netbeans.lib.awtextra.AbsoluteConstraints(190, 352, 700, 10));
 
         lbl_Actividad.setFont(new java.awt.Font("Arial Black", 0, 14)); // NOI18N
@@ -111,25 +115,25 @@ public class SolicitudView extends javax.swing.JFrame {
 
         lbl_Puesto.setFont(new java.awt.Font("Arial Black", 0, 14)); // NOI18N
         lbl_Puesto.setText("Puesto");
-        getContentPane().add(lbl_Puesto, new org.netbeans.lib.awtextra.AbsoluteConstraints(680, 240, -1, -1));
+        getContentPane().add(lbl_Puesto, new org.netbeans.lib.awtextra.AbsoluteConstraints(640, 230, -1, -1));
 
         txt_Puesto.setEditable(false);
-        getContentPane().add(txt_Puesto, new org.netbeans.lib.awtextra.AbsoluteConstraints(760, 240, 80, -1));
+        getContentPane().add(txt_Puesto, new org.netbeans.lib.awtextra.AbsoluteConstraints(640, 250, 240, -1));
 
         lbl_Lugar.setFont(new java.awt.Font("Arial Black", 0, 14)); // NOI18N
         lbl_Lugar.setText("Lugar");
-        getContentPane().add(lbl_Lugar, new org.netbeans.lib.awtextra.AbsoluteConstraints(220, 500, -1, -1));
+        getContentPane().add(lbl_Lugar, new org.netbeans.lib.awtextra.AbsoluteConstraints(680, 300, -1, -1));
 
         txt_Lugar.setEditable(false);
-        getContentPane().add(txt_Lugar, new org.netbeans.lib.awtextra.AbsoluteConstraints(270, 500, 90, -1));
+        getContentPane().add(txt_Lugar, new org.netbeans.lib.awtextra.AbsoluteConstraints(680, 320, 200, -1));
 
         lbl_Vehiculo.setFont(new java.awt.Font("Arial Black", 0, 14)); // NOI18N
         lbl_Vehiculo.setText("Vehículo");
-        getContentPane().add(lbl_Vehiculo, new org.netbeans.lib.awtextra.AbsoluteConstraints(460, 500, 70, -1));
+        getContentPane().add(lbl_Vehiculo, new org.netbeans.lib.awtextra.AbsoluteConstraints(210, 490, 70, -1));
 
         lbl_Pernoctado.setFont(new java.awt.Font("Arial Black", 0, 14)); // NOI18N
         lbl_Pernoctado.setText("Pernoctado");
-        getContentPane().add(lbl_Pernoctado, new org.netbeans.lib.awtextra.AbsoluteConstraints(730, 300, 90, -1));
+        getContentPane().add(lbl_Pernoctado, new org.netbeans.lib.awtextra.AbsoluteConstraints(550, 490, 90, -1));
 
         btn_Cerrar.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseReleased(java.awt.event.MouseEvent evt) {
@@ -145,8 +149,22 @@ public class SolicitudView extends javax.swing.JFrame {
         });
         getContentPane().add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(870, 0, 40, 30));
 
+        txt_Monto.setEditable(false);
+        getContentPane().add(txt_Monto, new org.netbeans.lib.awtextra.AbsoluteConstraints(690, 510, 190, -1));
+
+        lbl_Monto.setFont(new java.awt.Font("Arial Black", 0, 14)); // NOI18N
+        lbl_Monto.setText("Monto");
+        getContentPane().add(lbl_Monto, new org.netbeans.lib.awtextra.AbsoluteConstraints(690, 490, 90, -1));
+
+        lbl_Folio.setFont(new java.awt.Font("Arial Black", 0, 14)); // NOI18N
+        lbl_Folio.setText("Folio");
+        getContentPane().add(lbl_Folio, new org.netbeans.lib.awtextra.AbsoluteConstraints(430, 180, 70, -1));
+
+        txt_Folio.setEditable(false);
+        getContentPane().add(txt_Folio, new org.netbeans.lib.awtextra.AbsoluteConstraints(500, 180, 180, -1));
+
         Fondo.setFont(new java.awt.Font("Arial Black", 0, 14)); // NOI18N
-        Fondo.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Imagenes/prueba6.png"))); // NOI18N
+        Fondo.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Imagenes/fondoadminfin.png"))); // NOI18N
         getContentPane().add(Fondo, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, -1, -1));
 
         pack();
@@ -165,27 +183,61 @@ public class SolicitudView extends javax.swing.JFrame {
     private void formWindowActivated(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowActivated
         // TODO add your handling code here:
         try {
-            Class.forName("com.mysql.jdbc.Driver");
-            Connection con = DriverManager.getConnection("jdbc:mysql://127.0.0.1:3306/Viaticos", "root", "");
-            Statement sentencia = con.createStatement();
-            ResultSet rs = sentencia.executeQuery("SELECT * FROM solicitud WHERE idSolicitud = " + id);
-            String p = "";
-            while (rs.next()) {
-                txt_Nombre.setText(rs.getString("Nombre"));
-                txt_Puesto.setText(rs.getString("Puesto"));
-                jTextField1.setText(rs.getString("Fecha_salida"));
-                jTextField2.setText(rs.getString("Fecha_llegada"));
-                txt_Lugar.setText(rs.getString("Lugar"));
-                txt_Actividad.setText(rs.getString("Actividad"));
-                jTextField3.setText("Vehiculo");
-                p = rs.getString("Pernoctado");
+            if (aoc == 0) {
+                Class.forName("com.mysql.jdbc.Driver");
+                Connection con = DriverManager.getConnection("jdbc:mysql://127.0.0.1:3306/Viaticos", "root", "");
+                Statement sentencia = con.createStatement();
+                ResultSet rs = sentencia.executeQuery("SELECT * FROM solicitud WHERE idSolicitud = " + id);
+                String p = "";
+                while (rs.next()) {
+                    txt_Nombre.setText(rs.getString("Nombre"));
+                    txt_Puesto.setText(rs.getString("Puesto"));
+                    jTextField1.setText(rs.getString("Fecha_salida"));
+                    jTextField2.setText(rs.getString("Fecha_llegada"));
+                    txt_Lugar.setText(rs.getString("Lugar"));
+                    txt_Actividad.setText(rs.getString("Actividad"));
+                    jTextField3.setText(rs.getString("Vehiculo"));
+                    p = rs.getString("Pernoctado");
+                }
+                int pern = Integer.parseInt(p);
+                if (pern == 1) {
+                    jRadioButton1.setSelected(true);
+                } else {
+                    jRadioButton1.setSelected(false);
+                }
+                txt_Monto.setVisible(false);
+                lbl_Monto.setVisible(false);
+                txt_Folio.setVisible(false);
+                lbl_Folio.setVisible(false);
+            } else if (aoc == 1) {
+                Class.forName("com.mysql.jdbc.Driver");
+                Connection con = DriverManager.getConnection("jdbc:mysql://127.0.0.1:3306/Viaticos", "root", "");
+                Statement sentencia = con.createStatement();
+                ResultSet rs = sentencia.executeQuery("SELECT * FROM solicitud WHERE idSolicitud = " + id);
+                String p = "";
+                while (rs.next()) {
+                    txt_Nombre.setText(rs.getString("Nombre"));
+                    txt_Puesto.setText(rs.getString("Puesto"));
+                    jTextField1.setText(rs.getString("Fecha_salida"));
+                    jTextField2.setText(rs.getString("Fecha_llegada"));
+                    txt_Lugar.setText(rs.getString("Lugar"));
+                    txt_Actividad.setText(rs.getString("Actividad"));
+                    jTextField3.setText(rs.getString("Vehiculo"));
+                    p = rs.getString("Pernoctado");
+                }
+                ResultSet rs1 = sentencia.executeQuery("SELECT O.Folio, O.Monto FROM solicitud S, oficio_comision O WHERE S.idSolicitud = O.id");
+                while (rs1.next()) {
+                    txt_Folio.setText(rs1.getString("Folio"));
+                    txt_Monto.setText(rs1.getString("Monto"));
+                }
+                int pern = Integer.parseInt(p);
+                if (pern == 1) {
+                    jRadioButton1.setSelected(true);
+                } else {
+                    jRadioButton1.setSelected(false);
+                }
             }
-            int pern = Integer.parseInt(p);
-            if (pern == 1) {
-                jRadioButton1.setSelected(true);
-            } else {
-                jRadioButton1.setSelected(false);
-            }
+
         } catch (SQLException ex) {
             javax.swing.JOptionPane.showMessageDialog(null, "Error en la consulta");
 
@@ -194,8 +246,9 @@ public class SolicitudView extends javax.swing.JFrame {
         }//fin del catch
     }//GEN-LAST:event_formWindowActivated
 
-    public void IdUsuario(int id) {
+    public void IdUsuario(int id, int aoc) {
         this.id = id;
+        this.aoc = aoc;
     }
 
     /**
@@ -246,14 +299,18 @@ public class SolicitudView extends javax.swing.JFrame {
     private javax.swing.JLabel lbl_Actividad;
     private javax.swing.JLabel lbl_Fecha_Llegada;
     private javax.swing.JLabel lbl_Fecha_Salida;
+    private javax.swing.JLabel lbl_Folio;
     private javax.swing.JLabel lbl_Lugar;
+    private javax.swing.JLabel lbl_Monto;
     private javax.swing.JLabel lbl_Nombre;
     private javax.swing.JLabel lbl_Pernoctado;
     private javax.swing.JLabel lbl_Puesto;
     private javax.swing.JLabel lbl_Vehiculo;
     private javax.swing.JSeparator spr_Nombre;
     private javax.swing.JTextArea txt_Actividad;
+    private javax.swing.JTextField txt_Folio;
     private javax.swing.JTextField txt_Lugar;
+    private javax.swing.JTextField txt_Monto;
     private javax.swing.JTextField txt_Nombre;
     private javax.swing.JTextField txt_Puesto;
     // End of variables declaration//GEN-END:variables

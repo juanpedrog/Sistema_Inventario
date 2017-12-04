@@ -490,6 +490,7 @@ public class VentTablonSolicitud extends javax.swing.JFrame {
                 }
             };
             modelo.addColumn("Folio");
+            modelo.addColumn("Nombre");
             modelo.addColumn("Monto");
             modelo.addColumn("Fecha de salida");
             modelo.addColumn("Fecha de llegada");
@@ -501,17 +502,18 @@ public class VentTablonSolicitud extends javax.swing.JFrame {
 
                 Statement sentencia = con.createStatement();
 
-                ResultSet rs = sentencia.executeQuery("SELECT O.Folio, O.Monto, S.Fecha_salida, S.Fecha_llegada,S.Lugar FROM solicitud S, oficio_comision O WHERE S.Estado = 'A' AND S.idSolicitud = O.Solicitud_idSolicitud AND (O.Folio LIKE '%" + jTextField1.getText() + "%'"
-                        + "OR O.Monto LIKE '%" + jTextField1.getText() + "%' OR S.Fecha_salida LIKE '%" + jTextField1.getText() + "%' OR S.Fecha_llegada LIKE '%" + jTextField1.getText() + "%'"
+                ResultSet rs = sentencia.executeQuery("SELECT O.Folio, S.Nombre, O.Monto, S.Fecha_salida, S.Fecha_llegada,S.Lugar FROM solicitud S, oficio_comision O WHERE S.Estado = 'A' AND S.idSolicitud = O.Solicitud_idSolicitud AND (O.Folio LIKE '%" + jTextField1.getText() + "%'"
+                        + "OR S.Nombre LIKE '%" + jTextField1.getText() + "OR O.Monto LIKE '%" + jTextField1.getText() + "%' OR S.Fecha_salida LIKE '%" + jTextField1.getText() + "%' OR S.Fecha_llegada LIKE '%" + jTextField1.getText() + "%'"
                         + "OR S.Lugar LIKE '%" + jTextField1.getText() + "%') ");
 
-                String solicitud[] = new String[5];
+                String solicitud[] = new String[6];
                 while (rs.next()) {
                     solicitud[0] = rs.getString("Folio");
-                    solicitud[1] = rs.getString("Monto");
-                    solicitud[2] = rs.getString("Fecha_salida");
-                    solicitud[3] = rs.getString("Fecha_llegada");
-                    solicitud[4] = rs.getString("Lugar");
+                    solicitud[1] = rs.getString("Nombre");
+                    solicitud[2] = rs.getString("Monto");
+                    solicitud[3] = rs.getString("Fecha_salida");
+                    solicitud[4] = rs.getString("Fecha_llegada");
+                    solicitud[5] = rs.getString("Lugar");
                     modelo.addRow(solicitud);
                 }
 
@@ -644,6 +646,7 @@ public class VentTablonSolicitud extends javax.swing.JFrame {
             }
         };
         modelo.addColumn("Folio");
+        modelo.addColumn("Nombre");
         modelo.addColumn("Monto");
         modelo.addColumn("Fecha de salida");
         modelo.addColumn("Fecha de llegada");
@@ -655,15 +658,16 @@ public class VentTablonSolicitud extends javax.swing.JFrame {
 
             Statement sentencia = con.createStatement();
 
-            ResultSet rs = sentencia.executeQuery("SELECT O.Folio, O.Monto, S.Fecha_salida, S.Fecha_llegada,S.Lugar FROM solicitud S, oficio_comision O WHERE S.Estado = 'A' AND S.idSolicitud = O.Solicitud_idSolicitud");
+            ResultSet rs = sentencia.executeQuery("SELECT O.Folio, S.Nombre, O.Monto, S.Fecha_salida, S.Fecha_llegada,S.Lugar FROM solicitud S, oficio_comision O WHERE S.Estado = 'A' AND S.idSolicitud = O.Solicitud_idSolicitud");
 
-            String solicitud[] = new String[5];
+            String solicitud[] = new String[6];
             while (rs.next()) {
                 solicitud[0] = rs.getString("Folio");
-                solicitud[1] = rs.getString("Monto");
-                solicitud[2] = rs.getString("Fecha_salida");
-                solicitud[3] = rs.getString("Fecha_llegada");
-                solicitud[4] = rs.getString("Lugar");
+                solicitud[1] = rs.getString("Nombre");
+                solicitud[2] = rs.getString("Monto");
+                solicitud[3] = rs.getString("Fecha_salida");
+                solicitud[4] = rs.getString("Fecha_llegada");
+                solicitud[5] = rs.getString("Lugar");
                 modelo.addRow(solicitud);
             }
 
@@ -771,7 +775,7 @@ public class VentTablonSolicitud extends javax.swing.JFrame {
                         idSolicitud = rs.getString("Solicitud_idSolicitud");
                     }
                     s = new SolicitudView();
-                    s.IdUsuario(Integer.parseInt(idSolicitud));
+                    s.IdUsuario(Integer.parseInt(idSolicitud),1);
                 } catch (SQLException ex) {
                     javax.swing.JOptionPane.showMessageDialog(null, "Error en la consulta");
 
@@ -787,7 +791,7 @@ public class VentTablonSolicitud extends javax.swing.JFrame {
             if (k >= 0) {
                 int id = Integer.parseInt(jTable1.getValueAt(k, 0).toString());
                 s = new SolicitudView();
-                s.IdUsuario(id);
+                s.IdUsuario(id,0);
                 s.setVisible(true);
             } else {
                 javax.swing.JOptionPane.showMessageDialog(null, "Seleccionar solicitud");
