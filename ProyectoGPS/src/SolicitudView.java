@@ -72,16 +72,16 @@ public class SolicitudView extends javax.swing.JFrame {
         getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         jRadioButton1.setEnabled(false);
-        getContentPane().add(jRadioButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(580, 510, -1, -1));
+        getContentPane().add(jRadioButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(820, 320, -1, -1));
 
         jTextField3.setEditable(false);
-        getContentPane().add(jTextField3, new org.netbeans.lib.awtextra.AbsoluteConstraints(210, 510, 300, -1));
+        getContentPane().add(jTextField3, new org.netbeans.lib.awtextra.AbsoluteConstraints(190, 500, 220, -1));
 
         jTextField1.setEditable(false);
-        getContentPane().add(jTextField1, new org.netbeans.lib.awtextra.AbsoluteConstraints(210, 320, 170, -1));
+        getContentPane().add(jTextField1, new org.netbeans.lib.awtextra.AbsoluteConstraints(190, 320, 170, -1));
 
         jTextField2.setEditable(false);
-        getContentPane().add(jTextField2, new org.netbeans.lib.awtextra.AbsoluteConstraints(450, 320, 170, -1));
+        getContentPane().add(jTextField2, new org.netbeans.lib.awtextra.AbsoluteConstraints(380, 320, 170, -1));
 
         lbl_Nombre.setFont(new java.awt.Font("Arial Black", 0, 14)); // NOI18N
         lbl_Nombre.setText("Nombre");
@@ -93,11 +93,11 @@ public class SolicitudView extends javax.swing.JFrame {
 
         lbl_Fecha_Salida.setFont(new java.awt.Font("Arial Black", 0, 14)); // NOI18N
         lbl_Fecha_Salida.setText("Fecha de salida");
-        getContentPane().add(lbl_Fecha_Salida, new org.netbeans.lib.awtextra.AbsoluteConstraints(210, 300, 130, -1));
+        getContentPane().add(lbl_Fecha_Salida, new org.netbeans.lib.awtextra.AbsoluteConstraints(190, 300, 130, -1));
 
         lbl_Fecha_Llegada.setFont(new java.awt.Font("Arial Black", 0, 14)); // NOI18N
         lbl_Fecha_Llegada.setText("Fecha de llegada");
-        getContentPane().add(lbl_Fecha_Llegada, new org.netbeans.lib.awtextra.AbsoluteConstraints(450, 300, 140, -1));
+        getContentPane().add(lbl_Fecha_Llegada, new org.netbeans.lib.awtextra.AbsoluteConstraints(380, 300, 140, -1));
         getContentPane().add(jSeparator1, new org.netbeans.lib.awtextra.AbsoluteConstraints(190, 352, 700, 10));
 
         lbl_Actividad.setFont(new java.awt.Font("Arial Black", 0, 14)); // NOI18N
@@ -122,18 +122,18 @@ public class SolicitudView extends javax.swing.JFrame {
 
         lbl_Lugar.setFont(new java.awt.Font("Arial Black", 0, 14)); // NOI18N
         lbl_Lugar.setText("Lugar");
-        getContentPane().add(lbl_Lugar, new org.netbeans.lib.awtextra.AbsoluteConstraints(680, 300, -1, -1));
+        getContentPane().add(lbl_Lugar, new org.netbeans.lib.awtextra.AbsoluteConstraints(570, 300, -1, -1));
 
         txt_Lugar.setEditable(false);
-        getContentPane().add(txt_Lugar, new org.netbeans.lib.awtextra.AbsoluteConstraints(680, 320, 200, -1));
+        getContentPane().add(txt_Lugar, new org.netbeans.lib.awtextra.AbsoluteConstraints(570, 320, 200, -1));
 
         lbl_Vehiculo.setFont(new java.awt.Font("Arial Black", 0, 14)); // NOI18N
         lbl_Vehiculo.setText("Vehículo");
-        getContentPane().add(lbl_Vehiculo, new org.netbeans.lib.awtextra.AbsoluteConstraints(210, 490, 70, -1));
+        getContentPane().add(lbl_Vehiculo, new org.netbeans.lib.awtextra.AbsoluteConstraints(190, 480, 70, -1));
 
         lbl_Pernoctado.setFont(new java.awt.Font("Arial Black", 0, 14)); // NOI18N
         lbl_Pernoctado.setText("Pernoctado");
-        getContentPane().add(lbl_Pernoctado, new org.netbeans.lib.awtextra.AbsoluteConstraints(550, 490, 90, -1));
+        getContentPane().add(lbl_Pernoctado, new org.netbeans.lib.awtextra.AbsoluteConstraints(790, 300, 90, -1));
 
         btn_Cerrar.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseReleased(java.awt.event.MouseEvent evt) {
@@ -150,18 +150,18 @@ public class SolicitudView extends javax.swing.JFrame {
         getContentPane().add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(870, 0, 40, 30));
 
         txt_Monto.setEditable(false);
-        getContentPane().add(txt_Monto, new org.netbeans.lib.awtextra.AbsoluteConstraints(690, 510, 190, -1));
+        getContentPane().add(txt_Monto, new org.netbeans.lib.awtextra.AbsoluteConstraints(690, 500, 190, -1));
 
         lbl_Monto.setFont(new java.awt.Font("Arial Black", 0, 14)); // NOI18N
         lbl_Monto.setText("Monto");
-        getContentPane().add(lbl_Monto, new org.netbeans.lib.awtextra.AbsoluteConstraints(690, 490, 90, -1));
+        getContentPane().add(lbl_Monto, new org.netbeans.lib.awtextra.AbsoluteConstraints(690, 480, 90, -1));
 
         lbl_Folio.setFont(new java.awt.Font("Arial Black", 0, 14)); // NOI18N
         lbl_Folio.setText("Folio");
-        getContentPane().add(lbl_Folio, new org.netbeans.lib.awtextra.AbsoluteConstraints(430, 180, 70, -1));
+        getContentPane().add(lbl_Folio, new org.netbeans.lib.awtextra.AbsoluteConstraints(460, 480, 70, -1));
 
         txt_Folio.setEditable(false);
-        getContentPane().add(txt_Folio, new org.netbeans.lib.awtextra.AbsoluteConstraints(500, 180, 180, -1));
+        getContentPane().add(txt_Folio, new org.netbeans.lib.awtextra.AbsoluteConstraints(460, 500, 180, -1));
 
         Fondo.setFont(new java.awt.Font("Arial Black", 0, 14)); // NOI18N
         Fondo.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Imagenes/fondoadminfin.png"))); // NOI18N

@@ -257,21 +257,26 @@ public class VentTablonSolicitud extends javax.swing.JFrame {
             int i = jTable1.getSelectedRow();
             if (i >= 0) {
                 String id = jTable1.getValueAt(i, 0).toString();
-                try {
-                    Class.forName("com.mysql.jdbc.Driver");
-                    Connection con = DriverManager.getConnection("jdbc:mysql://127.0.0.1:3306/Viaticos", "root", "");
+                String motivo = javax.swing.JOptionPane.showInputDialog("Motivo");
+                if (motivo == null) {
 
-                    Statement sentencia = con.createStatement();
+                } else {
+                    try {
+                        Class.forName("com.mysql.jdbc.Driver");
+                        Connection con = DriverManager.getConnection("jdbc:mysql://127.0.0.1:3306/Viaticos", "root", "");
 
-                    sentencia.executeUpdate("UPDATE solicitud SET Estado = 'C' WHERE (idSolicitud = '" + id + "')");
-                    javax.swing.JOptionPane.showMessageDialog(null, "Solicitud cancelada");
+                        Statement sentencia = con.createStatement();
 
-                } catch (SQLException ex) {
-                    javax.swing.JOptionPane.showMessageDialog(null, "Error en la consulta");
+                        sentencia.executeUpdate("UPDATE solicitud SET Estado = 'C', Movito= '" + motivo + "' WHERE (idSolicitud = '" + id + "')");
+                        javax.swing.JOptionPane.showMessageDialog(null, "Solicitud cancelada");
 
-                } catch (ClassNotFoundException e) {
-                    e.printStackTrace();
-                }//fin del catch
+                    } catch (SQLException ex) {
+                        javax.swing.JOptionPane.showMessageDialog(null, "Error en la consulta");
+
+                    } catch (ClassNotFoundException e) {
+                        e.printStackTrace();
+                    }//fin del catch
+                }
 
             } else {
                 javax.swing.JOptionPane.showMessageDialog(null, "Seleccionar solicitud");
@@ -295,9 +300,14 @@ public class VentTablonSolicitud extends javax.swing.JFrame {
                     }
                     int mont = Integer.parseInt(monto);
                     if (mont == 0) {
-                        sentencia.execute("DELETE FROM oficio_comision WHERE (Folio = " + folio + ")");
-                        sentencia.executeUpdate("UPDATE solicitud SET Estado = 'C' WHERE (idSolicitud = " + idSolicitud + ")");
-                        javax.swing.JOptionPane.showMessageDialog(null, "Solicitud cancelada");
+                        String motivo = javax.swing.JOptionPane.showInputDialog("Motivo");
+                        if (motivo == null) {
+
+                        } else {
+                            sentencia.execute("DELETE FROM oficio_comision WHERE (Folio = " + folio + ")");
+                            sentencia.executeUpdate("UPDATE solicitud SET Estado = 'C', Motivo = '" + motivo + "' WHERE (idSolicitud = " + idSolicitud + ")");
+                            javax.swing.JOptionPane.showMessageDialog(null, "Solicitud cancelada");
+                        }
                     } else {
                         javax.swing.JOptionPane.showMessageDialog(null, "No se puede cancelar solicitud por que se asigno un monto");
                     }
@@ -369,7 +379,7 @@ public class VentTablonSolicitud extends javax.swing.JFrame {
                     folio = Integer.parseInt(valor);
                 }
                 sentencia.execute("INSERT INTO oficio_comision VALUES(" + folio + "," + id + "," + 0.00 + ")");
-                sentencia.executeUpdate("UPDATE solicitud SET Estado = 'A' WHERE (idSolicitud = '" + id + "')");
+                sentencia.executeUpdate("UPDATE solicitud SET Estado = 'A', Motivo = '' WHERE (idSolicitud = '" + id + "')");
                 javax.swing.JOptionPane.showMessageDialog(null, "Solicitud aceptada");
 
             } catch (SQLException ex) {
@@ -413,8 +423,12 @@ public class VentTablonSolicitud extends javax.swing.JFrame {
 
                 } else {
                     float monto = Float.parseFloat(valor);
-                    sentencia.executeUpdate("UPDATE oficio_comision SET Monto = " + monto + "WHERE(Folio =" + folio + ")");
-                    javax.swing.JOptionPane.showMessageDialog(null, "Monto Asignado");
+                    if (monto < 0) {
+                        javax.swing.JOptionPane.showMessageDialog(null, "Monto no valido");
+                    } else {
+                        sentencia.executeUpdate("UPDATE oficio_comision SET Monto = " + monto + "WHERE(Folio =" + folio + ")");
+                        javax.swing.JOptionPane.showMessageDialog(null, "Monto Asignado");
+                    }
                 }
             } catch (SQLException ex) {
                 javax.swing.JOptionPane.showMessageDialog(null, "Error en la consulta");
@@ -775,7 +789,7 @@ public class VentTablonSolicitud extends javax.swing.JFrame {
                         idSolicitud = rs.getString("Solicitud_idSolicitud");
                     }
                     s = new SolicitudView();
-                    s.IdUsuario(Integer.parseInt(idSolicitud),1);
+                    s.IdUsuario(Integer.parseInt(idSolicitud), 1);
                 } catch (SQLException ex) {
                     javax.swing.JOptionPane.showMessageDialog(null, "Error en la consulta");
 
@@ -791,7 +805,7 @@ public class VentTablonSolicitud extends javax.swing.JFrame {
             if (k >= 0) {
                 int id = Integer.parseInt(jTable1.getValueAt(k, 0).toString());
                 s = new SolicitudView();
-                s.IdUsuario(id,0);
+                s.IdUsuario(id, 0);
                 s.setVisible(true);
             } else {
                 javax.swing.JOptionPane.showMessageDialog(null, "Seleccionar solicitud");

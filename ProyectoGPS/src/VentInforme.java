@@ -38,6 +38,7 @@ public class VentInforme extends javax.swing.JFrame {
         jButton4.setVisible(false);
         jButton5.setVisible(false);
         jButton6.setVisible(false);
+        jLabel4.setVisible(false);
         i = 0;
         c = 0;
         Solicitud("SELECT O.Folio, S.Nombre FROM solicitud S, oficio_comision O WHERE S.Estado = 'A' AND S.Reporte = '0' AND S.idSolicitud = O.Solicitud_idSolicitud AND O.Monto != 0");
@@ -71,6 +72,7 @@ public class VentInforme extends javax.swing.JFrame {
         jButton6 = new javax.swing.JButton();
         jLabel3 = new javax.swing.JLabel();
         jTextField1 = new javax.swing.JTextField();
+        jLabel4 = new javax.swing.JLabel();
         jlFondo = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -145,7 +147,7 @@ public class VentInforme extends javax.swing.JFrame {
         });
         getContentPane().add(jlmini, new org.netbeans.lib.awtextra.AbsoluteConstraints(870, 10, 40, 20));
 
-        jButton3.setText("Generar reporte");
+        jButton3.setText("Generar informe");
         jButton3.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton3ActionPerformed(evt);
@@ -161,13 +163,13 @@ public class VentInforme extends javax.swing.JFrame {
         });
         getContentPane().add(jButton4, new org.netbeans.lib.awtextra.AbsoluteConstraints(280, 130, -1, -1));
 
-        jButton5.setText("Nueva Actividad");
+        jButton5.setText("Añadir Actividad");
         jButton5.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton5ActionPerformed(evt);
             }
         });
-        getContentPane().add(jButton5, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 130, -1, -1));
+        getContentPane().add(jButton5, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 140, -1, -1));
 
         jButton6.setText("Eliminar Actividad");
         jButton6.addActionListener(new java.awt.event.ActionListener() {
@@ -175,7 +177,7 @@ public class VentInforme extends javax.swing.JFrame {
                 jButton6ActionPerformed(evt);
             }
         });
-        getContentPane().add(jButton6, new org.netbeans.lib.awtextra.AbsoluteConstraints(270, 130, -1, -1));
+        getContentPane().add(jButton6, new org.netbeans.lib.awtextra.AbsoluteConstraints(280, 140, -1, -1));
 
         jLabel3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Imagenes/buscar.png"))); // NOI18N
         jLabel3.setText("BUSCAR");
@@ -187,6 +189,9 @@ public class VentInforme extends javax.swing.JFrame {
             }
         });
         getContentPane().add(jTextField1, new org.netbeans.lib.awtextra.AbsoluteConstraints(670, 130, 170, -1));
+
+        jLabel4.setText("Actividades Realizadas");
+        getContentPane().add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(150, 120, -1, -1));
 
         jlFondo.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Imagenes/fondoadminfin.png"))); // NOI18N
         jlFondo.addMouseMotionListener(new java.awt.event.MouseMotionAdapter() {
@@ -289,6 +294,7 @@ public class VentInforme extends javax.swing.JFrame {
                 jComboBox1.setVisible(false);
                 jLabel3.setVisible(false);
                 jTextField1.setVisible(false);
+                jLabel4.setVisible(true);
             } catch (SQLException ex) {
                 javax.swing.JOptionPane.showMessageDialog(null, "Error en la consulta");
 
@@ -319,6 +325,7 @@ public class VentInforme extends javax.swing.JFrame {
             jTable1.enable(true);
             jLabel3.setVisible(true);
             jTextField1.setVisible(true);
+            jLabel4.setVisible(false);
             Solicitud("SELECT O.Folio, S.Nombre FROM solicitud S, oficio_comision O WHERE S.Estado = 'A' AND S.Reporte = '0' AND S.idSolicitud = O.Solicitud_idSolicitud");
         } else {
         }
@@ -326,12 +333,18 @@ public class VentInforme extends javax.swing.JFrame {
 
     private void jButton5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton5ActionPerformed
         // TODO add your handling code here:
-        modelo.addRow(new Object[]{"", ""});
+        int filas = jTable1.getRowCount();
+        if (filas == 0) {
+            modelo.addRow(new Object[]{"", ""});
+        } else if (jTable1.getValueAt(filas - 1, 0) != "" && jTable1.getValueAt(filas - 1, 1) != "") {
+            modelo.addRow(new Object[]{"", ""});
+        }
     }//GEN-LAST:event_jButton5ActionPerformed
 
     private void jButton6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton6ActionPerformed
         // TODO add your handling code here:
-        modelo.removeRow(modelo.getRowCount() - 1);
+        int i = jTable1.getSelectedRow();
+        modelo.removeRow(i);
     }//GEN-LAST:event_jButton6ActionPerformed
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
@@ -423,7 +436,7 @@ public class VentInforme extends javax.swing.JFrame {
 
                 Statement sentencia = con.createStatement();
                 ResultSet rs = sentencia.executeQuery("SELECT I.Id_Informe, O.Folio, S.Nombre FROM solicitud S, oficio_comision O, informe I WHERE S.Estado = 'A' AND S.Reporte = '1' AND S.idSolicitud = O.Solicitud_idSolicitud AND I.Solicitud_idSolicitud = S.idSolicitud AND (I.Id_Informe LIKE '%" + jTextField1.getText()
-                    + "%' OR O.Folio LIKE '%" + jTextField1.getText() + "%' OR S.Nombre LIKE '%" + jTextField1.getText() + "%') ");
+                        + "%' OR O.Folio LIKE '%" + jTextField1.getText() + "%' OR S.Nombre LIKE '%" + jTextField1.getText() + "%') ");
 
                 String solicitud[] = new String[3];
                 while (rs.next()) {
@@ -458,7 +471,7 @@ public class VentInforme extends javax.swing.JFrame {
                 Statement sentencia = con.createStatement();
 
                 ResultSet rs = sentencia.executeQuery("SELECT O.Folio, S.Nombre FROM solicitud S, oficio_comision O WHERE S.Estado = 'A' AND S.Reporte = '0' AND S.idSolicitud = O.Solicitud_idSolicitud  AND (O.Folio LIKE '%" + jTextField1.getText() + "%'"
-                    + "OR S.Nombre LIKE '%" + jTextField1.getText() + "%') ");
+                        + "OR S.Nombre LIKE '%" + jTextField1.getText() + "%') ");
 
                 String solicitud[] = new String[2];
                 while (rs.next()) {
@@ -533,8 +546,6 @@ public class VentInforme extends javax.swing.JFrame {
                 modelo.addRow(solicitud);
 
             }
-            
-            
 
         } catch (SQLException ex) {
             javax.swing.JOptionPane.showMessageDialog(null, "Error en la consulta");
@@ -590,6 +601,7 @@ public class VentInforme extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel4;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JScrollPane jScrollPane3;
